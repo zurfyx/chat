@@ -1,0 +1,47 @@
+{
+  "name": "nyao-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run start-dev",
+    "start-dev": "better-npm-run start-dev",
+    "test": "mocha --compilers js:babel-core/register --require ./src/tests/helper.js \"src/tests/**/*@(.js|.jsx)\""
+  },
+  "betterScripts": {
+    "start-dev": {
+      "command": "nodemon src/server.js --exec babel-node",
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": 3030
+      }
+    }
+  },
+  "keywords": [],
+  "author": "zurfyx",
+  "dependencies": {
+    "babel-root-import": "^4.1.3",
+    "bcrypt-nodejs": "0.0.3",
+    "better-npm-run": "0.0.11",
+    "body-parser": "^1.15.2",
+    "concurrently": "^3.1.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "mongoose": "^4.6.2",
+    "mongoose-sequence": "^3.1.0",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-github": "^1.1.0",
+    "passport-google-oauth2": "^0.1.6",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-core": "^6.17.0",
+    "babel-preset-es2015": "^6.16.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.1.0",
+    "nodemon": "^1.10.2"
+  }
+}
