@@ -6,6 +6,8 @@ import session from 'express-session';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import passport from 'passport';
+import { createClient as createRedisClient } from 'redis';
+import connectRedis from 'connect-redis';
 
 import config from '../config/config.js';
 import routes from './routes';
@@ -14,11 +16,29 @@ const app = express();
 const port = process.env.PORT || 3030;
 
 // Hey you! care about my order http://stackoverflow.com/a/16781554/2034015
-// DB.
+
+/*
+ * Databases initialization.
+ */
+// Data database (Mongoose + MongoDB).
+const dbHost = config.database.data.host;
+const dbPort = config.database.data.port;
+const dbName = config.database.data.db;
 mongoose.Promise = global.Promise;
-mongoose.connect(config.database);
+mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'DB connection error!'));
+
+// Session database (Redis).
+const redisClient = createRedisClient();
+const RedisStore = connectRedis(session);
+const dbSession = new RedisStore({
+  client: redisClient,
+  host: config.database.session.host,
+  port: config.database.session.port,
+  prefix: config.database.session.prefix,
+  disableTTL: true
+});
 
 // Cookies.
 app.use(cookieParser());
@@ -30,10 +50,11 @@ app.use(expressValidator([]));
 
 // Session.
 app.use(session({
-  secret: config.sessionSecret,
-  resave: false,
+  resave: true,
   saveUninitialized: true,
-  cookie: { secure: false }
+  key: config.session.key,
+  secret: config.session.secret,
+  store: dbSession
 }));
 
 // Passport.

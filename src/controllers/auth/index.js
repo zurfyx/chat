@@ -16,7 +16,7 @@ export const postSignin = (req, res, next) => {
 
   passport.authenticate('local-signin', (err, user, info) => {
     if (err) return next(err);
-    if (!user) return next(info.message);
+    if (!user) return next(info);
 
     req.logIn(user, (err) => {
       if (err) return next(err);
@@ -42,7 +42,7 @@ export const postSignup = (req, res, next) => {
 
   passport.authenticate('local-signup', (err, user, info) => {
     if (err) return next(err);
-    if (!user) return next(info.message);
+    if (!user) return next(info);
 
     res.json({ msg: 'OK' });
   })(req, res, next);

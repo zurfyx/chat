@@ -1,5 +1,7 @@
 .idea/
 data/
+data-session/
 node_modules/
 
+*.rdb
 npm-debug.log
