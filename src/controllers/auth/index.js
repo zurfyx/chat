@@ -47,3 +47,10 @@ export const postSignup = (req, res, next) => {
     res.json({ msg: 'OK' });
   })(req, res, next);
 };
+
+// Sign out.
+export const getSignout = (req, res) => {
+  req.logout();
+
+  res.json({ msg: 'OK' });
+};
