@@ -4,9 +4,12 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import configureStore from './store';
+import ApiClient from './helpers/ApiClient';
+import configureStore from './redux/create';
 
-const store = configureStore();
+const apiClient = new ApiClient();
+const initialState = {};
+const store = configureStore(initialState, apiClient);
 const history = syncHistoryWithStore(browserHistory, store);
 
 const mountPoint = document.getElementById('main');

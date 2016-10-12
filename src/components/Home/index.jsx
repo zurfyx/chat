@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
-export default class extends Component {
+export default class Home extends Component {
   render() {
+    require('./home.scss');
     return (
-      <h1>Hello world!</h1>
+      <div className="homePage">
+        <h1>Hello world!</h1>
+      </div>
     )
   }
 }

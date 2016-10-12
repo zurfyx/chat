@@ -1,10 +1,11 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import Home from '../components/Home/Home';
+import App from 'containers/App';
+import Home from 'components/Home';
 
 const routes = (
-  <Route path="/">
+  <Route path="/" component={App} >
     <IndexRoute component={Home} />
   </Route>
 );
