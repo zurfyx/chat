@@ -7,8 +7,8 @@ export default class NavBar extends Component {
   }
   render() {
     const Logout = () => (
-      <a onClick={() => this.props.logout()}>
-        {this.loggingOut ? '...' : 'Sign out'}
+      <a onClick={() => this.props.signout()}>
+        {this.signingOut ? '...' : 'Sign out'}
       </a>
     );
 
@@ -36,11 +36,11 @@ NavBar.propTypes = {
   loaded: PropTypes.bool,
   loadError: PropTypes.object,
 
-  loggingIn: PropTypes.bool,
-  logInError: PropTypes.object,
+  signingIn: PropTypes.bool,
+  signingError: PropTypes.object,
 
-  loggingOut: PropTypes.bool,
-  logOutError: PropTypes.object,
+  signingOut: PropTypes.bool,
+  signingOutError: PropTypes.object,
 
   user: PropTypes.object
 };

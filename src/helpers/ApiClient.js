@@ -11,7 +11,8 @@ export default class clientAPI {
   get(url, params) {
     return fetch(url, {
       method: 'GET',
-      headers: this.headers
+      headers: this.headers,
+      credentials: 'include'
     });
   }
 
@@ -20,6 +21,7 @@ export default class clientAPI {
     return fetch(url, {
       method: 'POST',
       headers: this.headers,
+      credentials: 'include',
       body: JSON.stringify(params.data)
     });
   }

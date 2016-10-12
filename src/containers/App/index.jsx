@@ -32,11 +32,11 @@ App.propTypes = {
   loaded: PropTypes.bool,
   loadError: PropTypes.object,
 
-  loggingIn: PropTypes.bool,
-  logInError: PropTypes.object,
+  signingIn: PropTypes.bool,
+  signingError: PropTypes.object,
 
-  loggingOut: PropTypes.bool,
-  logOutError: PropTypes.object,
+  signingOut: PropTypes.bool,
+  signingOutError: PropTypes.object,
 
   user: PropTypes.object
 };
@@ -47,11 +47,11 @@ const mapStateToProps = (state) => {
     loaded: state.auth.loaded,
     loadError: state.auth.loadError,
 
-    loggingIn: state.auth.loggingIn,
-    logInError: state.auth.logInError,
+    signingIn: state.auth.loggingIn,
+    signingInError: state.auth.logInError,
 
-    loggingOut: state.auth.loggingOut,
-    logOutError: state.auth.logOutError,
+    signingOut: state.auth.loggingOut,
+    signingOutError: state.auth.logOutError,
 
     user: state.auth.user
   }

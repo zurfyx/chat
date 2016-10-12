@@ -1,12 +1,12 @@
 const LOAD = 'redux/auth/LOAD';
 const LOAD_SUCCESS = 'redux/auth/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux/auth/LOAD_FAIL';
-const LOGIN = 'redux/auth/LOGIN';
-const LOGIN_SUCCESS = 'redux/auth/LOGIN_SUCCESS';
-const LOGIN_FAIL = 'redux/auth/LOGIN_FAIL';
-const LOGOUT = 'redux/auth/LOGOUT';
-const LOGOUT_SUCCESS = 'redux/auth/LOGOUT_SUCCESS';
-const LOGOUT_FAIL = 'redux/auth/LOGOUT_FAIL';
+const SIGNIN = 'redux/auth/SIGNIN';
+const SIGNIN_SUCCESS = 'redux/auth/SIGNIN_SUCCESS';
+const SIGNIN_FAIL = 'redux/auth/SIGNIN_FAIL';
+const SIGNOUT = 'redux/auth/SIGN_OUT';
+const SIGNOUT_SUCCESS = 'redux/auth/SIGNOUT_SUCCESS';
+const SIGNOUT_FAIL = 'redux/auth/SIGNOUT_FAIL';
 
 /**
  * Reducer overview:
@@ -16,12 +16,12 @@ const LOGOUT_FAIL = 'redux/auth/LOGOUT_FAIL';
  *  loadError: { error object } | null
  *  user: { user object }
  *
- *  loggingIn: true | false, <-- LOGGING IN.
- *  logInError: { error object } | null
+ *  signingIn: true | false, <-- SIGNING IN.
+ *  signingInError: { error object } | null
  *  user: { user object} | null
  *
- *  loggingOut: true | false, <-- LOGGING OUT.
- *  logOutError: { error object } | null
+ *  signingOut: true | false, <-- SIGNING OUT.
+ *  signingOutError: { error object } | null
  *  user: { user object }
  * }
  */
@@ -51,41 +51,41 @@ export default function reducer(state = initialState, action = {}) {
         loaded: false,
         loadError: action.error
       };
-    case LOGIN:
+    case SIGNIN:
       return {
         ...state,
-        loggingIn: true
+        signingIn: true
       };
-    case LOGIN_SUCCESS:
+    case SIGNIN_SUCCESS:
       return {
         ...state,
-        loggingIn: false,
-        logInError: null,
+        signingIn: false,
+        signInError: null,
         user: action.result
       };
-    case LOGIN_FAIL:
+    case SIGNIN_FAIL:
       return {
         ...state,
-        loggingIn: false,
-        loginError: action.error
+        signingIn: false,
+        signInError: action.error
       };
-    case LOGOUT:
+    case SIGNOUT:
       return {
         ...state,
-        loggingOut: true
+        signingOut: true
       };
-    case LOGOUT_SUCCESS:
+    case SIGNOUT_SUCCESS:
       return {
         ...state,
-        loggingOut: false,
-        logOutError: null,
+        signingOut: false,
+        signOutError: null,
         user: null
       };
-    case LOGOUT_FAIL:
+    case SIGNIN_FAIL:
       return {
         ...state,
-        loggingOut: false,
-        logOutError: action.error
+        signingOut: false,
+        signOutError: action.error
       };
     default:
       return state;
@@ -99,9 +99,9 @@ export function load() {
   };
 }
 
-export function login(email, password) {
+export function signin(email, password) {
   return {
-    types: [ LOGIN, LOGIN_SUCCESS, LOGIN_FAIL ],
+    types: [ SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAIL ],
     promise: (client) => client.post('/api/auth/signin', {
       data: {
         email,
@@ -111,9 +111,9 @@ export function login(email, password) {
   };
 }
 
-export function logout() {
+export function signout() {
   return {
-    types: [ LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL ],
-    promise: (client) => client.get('/api/auth/logout')
+    types: [ SIGNOUT, SIGNOUT_SUCCESS, SIGNOUT_SUCCESS ],
+    promise: (client) => client.get('/api/auth/signout')
   };
 }
