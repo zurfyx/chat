@@ -2,6 +2,7 @@ import express from 'express';
 import passport from 'passport';
 
 import * as authController from '~/controllers/auth';
+import * as userController from '~/controllers/user';
 
 const router = express.Router();
 
@@ -18,6 +19,11 @@ router.get('/auth/google', passport.authenticate('google', { scope: 'profile ema
 router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+
+/**
+ * Users
+ */
+router.get('/users/whoami', userController.getWhoami);
 
 /**
  * Default.
