@@ -81,7 +81,7 @@ export default function reducer(state = initialState, action = {}) {
         signOutError: null,
         user: null
       };
-    case SIGNIN_FAIL:
+    case SIGNOUT_FAIL:
       return {
         ...state,
         signingOut: false,

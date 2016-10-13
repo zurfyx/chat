@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
+import { SigninContainer } from 'components/Signin';
+
 export default class NavBar extends Component {
   constructor(props) {
     super(props);
   }
   render() {
-    const Logout = () => (
+    const Signout = () => (
       <a onClick={() => this.props.signout()}>
         {this.signingOut ? '...' : 'Sign out'}
       </a>
@@ -19,13 +21,14 @@ export default class NavBar extends Component {
           {this.props.user
             ? <div>
                 <span>Yo {this.props.user.username}</span>
-                <Logout />
+                <Signout />
               </div>
             : <div>
                 <Link to="/signin">Sign In</Link>
                 <Link to="/signup">Sign Up</Link>
               </div>}
         </nav>
+        <SigninContainer />
       </header>
     );
   }
