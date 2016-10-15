@@ -11,23 +11,23 @@ const SIGNOUT_FAIL = 'redux/auth/SIGNOUT_FAIL';
 /**
  * Reducer overview:
  * {
- *  loading: true | false, <-- LOAD.
- *  loaded: true | false,
+ *  isLoading: true | false, <-- LOAD.
+ *  isLoaded: true | false,
  *  loadError: { error object } | null
  *  user: { user object }
  *
- *  signingIn: true | false, <-- SIGNING IN.
- *  signingInError: { error object } | null
+ *  isSigningIn: true | false, <-- SIGN IN.
+ *  signInError: { error object } | null
  *  user: { user object} | null
  *
- *  signingOut: true | false, <-- SIGNING OUT.
- *  signingOutError: { error object } | null
+ *  isSigningOut: true | false, <-- SIGN OUT.
+ *  signOutError: { error object } | null
  *  user: { user object }
  * }
  */
 
 const initialState = {
-  loading: true
+  isLoading: true
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -35,56 +35,56 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD:
       return {
         ...state,
-        loading: true
+        isLoading: true
       };
     case LOAD_SUCCESS:
       return {
         ...state,
-        loading: false,
-        loaded: true,
+        isLoading: false,
+        isLoaded: true,
         user: action.result
       };
     case LOAD_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
+        isLoading: false,
+        isLoaded: false,
         loadError: action.error
       };
     case SIGNIN:
       return {
         ...state,
-        signingIn: true
+        isSigningIn: true
       };
     case SIGNIN_SUCCESS:
       return {
         ...state,
-        signingIn: false,
+        isSigningIn: false,
         signInError: null,
         user: action.result
       };
     case SIGNIN_FAIL:
       return {
         ...state,
-        signingIn: false,
+        isSigningIn: false,
         signInError: action.error
       };
     case SIGNOUT:
       return {
         ...state,
-        signingOut: true
+        isSigningOut: true
       };
     case SIGNOUT_SUCCESS:
       return {
         ...state,
-        signingOut: false,
+        isSigningOut: false,
         signOutError: null,
         user: null
       };
     case SIGNOUT_FAIL:
       return {
         ...state,
-        signingOut: false,
+        isSigningOut: false,
         signOutError: action.error
       };
     default:
@@ -94,26 +94,26 @@ export default function reducer(state = initialState, action = {}) {
 
 export function load() {
   return {
-    types: [ LOAD, LOAD_SUCCESS, LOAD_FAIL ],
-    promise: (client) => client.get('/api/users/whoami')
+    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    promise: (client) => client.get('/api/users/whoami'),
   };
 }
 
 export function signin(email, password) {
   return {
-    types: [ SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAIL ],
+    types: [SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAIL],
     promise: (client) => client.post('/api/auth/signin', {
       data: {
         email,
         password
       }
-    })
+    }),
   };
 }
 
 export function signout() {
   return {
-    types: [ SIGNOUT, SIGNOUT_SUCCESS, SIGNOUT_SUCCESS ],
-    promise: (client) => client.get('/api/auth/signout')
+    types: [SIGNOUT, SIGNOUT_SUCCESS, SIGNOUT_SUCCESS],
+    promise: (client) => client.get('/api/auth/signout'),
   };
 }

@@ -1,42 +1,51 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import * as authActions from 'redux/modules/auth';
-import NavBar from 'components/NavBar';
+import { load } from 'redux/modules/auth';
+import Body from 'components/Body';
 
+const Loading = () => <div className="loading">Loading...</div>;
+
+/**
+ * Application structure (components & containers).
+ * App
+ *     - Loading (shown when application is booting)
+ *     - Body
+ *             - Header
+ *                     - Signin
+ *                               - SigninForm
+ *                     - Signup
+ *                               - SignupForm
+ *             - Main (<-- routes content)
+ *                     - Home
+ *                     - About
+ *                     - ...
+ */
 export class App extends Component {
   componentWillMount(props) {
     this.props.load();
   }
+
   render() {
-    const Loading = () => <span>Loading...</span>;
-    const Content = () => (
-      <div className="content">
-        <NavBar {...this.props} />
-        <div className="content">
-          {this.children}
-        </div>
-      </div>
-    );
+    const { children, user } = this.props;
 
     return (
-      <div className="content">
-        {this.props.loading ? <Loading/> : <Content/>}
+      <div className="app">
+        {this.props.loading
+          ? <Loading />
+          : <Body user={user}>{children}</Body>}
       </div>
     );
   }
 }
 
 App.propTypes = {
+  children: PropTypes.element.isRequired,
+
+  load: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   loaded: PropTypes.bool,
   loadError: PropTypes.object,
-
-  signingIn: PropTypes.bool,
-  signingError: PropTypes.object,
-
-  signingOut: PropTypes.bool,
-  signingOutError: PropTypes.object,
 
   user: PropTypes.object
 };
@@ -47,14 +56,8 @@ const mapStateToProps = (state) => {
     loaded: state.auth.loaded,
     loadError: state.auth.loadError,
 
-    signingIn: state.auth.loggingIn,
-    signingInError: state.auth.logInError,
-
-    signingOut: state.auth.loggingOut,
-    signingOutError: state.auth.logOutError,
-
     user: state.auth.user
   }
 };
 
-export default connect(mapStateToProps, authActions)(App);
+export default connect(mapStateToProps, { load })(App);

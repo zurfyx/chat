@@ -17,20 +17,22 @@ export default function clientMiddleware(client) {
       const [REQUEST, SUCCESS, FAILURE] = types;
       next({...rest, type: REQUEST});
 
-      const actionPromise = promise(client);
-      actionPromise.then(
-        (result) =>
-          (result.status >= 200 && result.status < 300)
-            ? next({...rest, result, type: SUCCESS})
-            : next({...rest, error: result, type: FAILURE})
-        ,
-        (error) => next({...rest, error, type: FAILURE})
-      ).catch((error)=> {
-        console.error('MIDDLEWARE ERROR:', error);
-        next({...rest, error, type: FAILURE});
-      });
-
-      return actionPromise;
+      /**
+       * Fetch url and return the resulting action.
+       * promise: (client) => client.get('url')
+       * client: obj that contains the definition for get, post...
+       */
+      return promise(client)
+        .then(data => data.json())
+        .then(json => (json.error
+            ? next({...rest, error: json, type: FAILURE })
+            : next({...rest, result: json, type: SUCCESS })
+          )
+        )
+        .catch((error) => {
+          console.error('MIDDLEWARE ERROR:', error);
+          return next({...rest, error, type: FAILURE});
+        });
     };
   };
 }

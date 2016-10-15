@@ -17,7 +17,6 @@ export default class clientAPI {
   }
 
   post(url, params) {
-    console.info(url);
     return fetch(url, {
       method: 'POST',
       headers: this.headers,
