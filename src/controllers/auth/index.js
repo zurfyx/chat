@@ -23,7 +23,7 @@ export const signin = (req, res, next) => {
     req.logIn(user, (err) => {
       if (err) return next(err);
 
-      return res.json({ msg: 'OK' });
+      return res.json({ message: 'OK' });
     });
   })(req, res, next);
 };
@@ -47,7 +47,7 @@ export const signup = (req, res, next) => {
     if (err) return next(err);
     if (!user) return next(info);
 
-    res.json({ msg: 'OK' });
+    res.json({ message: 'OK' });
   })(req, res, next);
 };
 
@@ -57,8 +57,12 @@ export const githubCallback = (req, res, next) => {
     if (err) return next(err);
     if (!user) return next(info);
 
-    // Redirect back to the web application.
-    res.redirect(req.session.returnTo || '/');
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      // Redirect back to the web application.
+      res.redirect(req.session.returnTo || '/');
+    });
   })(req, res, next);
 };
 
@@ -81,10 +85,5 @@ export const googleCallback = (req, res, next) => {
 export const signout = (req, res) => {
   req.logout();
 
-  req.logIn(user, (err) => {
-    if (err) return next(err);
-
-    // Redirect back to the web application.
-    res.redirect(req.session.returnTo || '/');
-  });
+  res.json({ message: 'OK' });
 };
