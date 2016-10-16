@@ -9,27 +9,24 @@ const router = express.Router();
 /**
  * Authentication.
  */
-router.post('/auth/signin', authController.postSignin);
-router.post('/auth/signup', authController.postSignup);
+router.post('/auth/signin', authController.signin);
+router.post('/auth/signup', authController.signup);
 router.get('/auth/github', passport.authenticate('github'));
-router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login'}), (req, res) => {
-  res.redirect(req.session.returnTo || '/');
-});
+router.get('/auth/github/callback', authController.githubCallback);
 router.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
-router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect(req.session.returnTo || '/');
-});
-router.get('/auth/signout', authController.getSignout);
+router.get('/auth/google/callback', authController.googleCallback);
+router.get('/auth/signout', authController.signout);
 
 /**
  * Users
  */
-router.get('/users/whoami', userController.getWhoami);
+router.get('/users/whoami', userController.whoami);
 
 /**
  * Default.
  */
 router.use((err, req, res, next) => {
+  res.status(err.status || 500);
   if (err) {
     res.json({ error: err });
   }

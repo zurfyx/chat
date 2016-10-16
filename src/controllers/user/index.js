@@ -1,8 +1,10 @@
 import User from '~/models/User';
 
 // Current logged in user.
-export const getWhoami = (req, res, next) => {
-  return (req.user)
-    ? res.json(req.user)
-    : res.status(401).json({ error: 'Not signed in' });
+export const whoami = (req, res, next) => {
+  if (!req.user) {
+    next('Not signed in');
+  }
+
+  return res.json(req.user);
 };
