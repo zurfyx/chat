@@ -1,9 +1,15 @@
 const LOAD = 'redux/auth/LOAD';
 const LOAD_SUCCESS = 'redux/auth/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux/auth/LOAD_FAIL';
+
 const SIGNIN = 'redux/auth/SIGNIN';
 const SIGNIN_SUCCESS = 'redux/auth/SIGNIN_SUCCESS';
 const SIGNIN_FAIL = 'redux/auth/SIGNIN_FAIL';
+
+const SIGNUP = 'redux/auth/SIGNUP';
+const SIGNUP_SUCCESS = 'redux/auth/SIGNUP_SUCCESS';
+const SIGNUP_FAIL = 'redux/auth/SIGNUP_FAIL';
+
 const SIGNOUT = 'redux/auth/SIGN_OUT';
 const SIGNOUT_SUCCESS = 'redux/auth/SIGNOUT_SUCCESS';
 const SIGNOUT_FAIL = 'redux/auth/SIGNOUT_FAIL';
@@ -18,7 +24,10 @@ const SIGNOUT_FAIL = 'redux/auth/SIGNOUT_FAIL';
  *
  *  isSigningIn: true | false, <-- SIGN IN.
  *  signInError: { error object } | null
- *  user: { user object} | null
+ *  user: null // Refresh with load() once signed in.
+ *
+ *  isSigningUp: true | false, <-- SIGN UP.
+ *  signUpError: { error object} | null
  *
  *  isSigningOut: true | false, <-- SIGN OUT.
  *  signOutError: { error object } | null
@@ -61,7 +70,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         isSigningIn: false,
         signInError: null,
-        user: action.result
+        user: null,
       };
     case SIGNIN_FAIL:
       return {
@@ -69,6 +78,25 @@ export default function reducer(state = initialState, action = {}) {
         isSigningIn: false,
         signInError: action.error
       };
+    case SIGNUP:
+      return {
+        ...state,
+        isSigningUp: true
+      };
+    case SIGNUP_SUCCESS: {
+      return {
+        ...state,
+        isSigningUp: false,
+        signUpError: null
+      }
+    }
+    case SIGNUP_FAIL: {
+      return {
+        ...state,
+        isSigningUp: false,
+        signUpError: action.error
+      }
+    }
     case SIGNOUT:
       return {
         ...state,
@@ -105,10 +133,23 @@ export function signin(email, password) {
     promise: (client) => client.post('/api/auth/signin', {
       data: {
         email,
-        password
+        password,
       }
     }),
   };
+}
+
+export function signup(email, password, name) {
+  return {
+    types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
+    promise: (client) => client.post('/api/auth/signup', {
+      data: {
+        email,
+        password,
+        name,
+      }
+    }),
+  }
 }
 
 export function signout() {

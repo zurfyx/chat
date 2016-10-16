@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import Signin from 'containers/Signin';
+import Signup from 'containers/Signup';
 
 // const Signout = () => (
 //   <a onClick={() => this.props.signout()}>
@@ -17,7 +18,7 @@ export default class NavBar extends Component {
         <nav>
           {this.props.user
             ? <div>
-                <span>Yo {this.props.user.email}</span>
+                <span>Yo {this.props.user.profile.name}</span>
               </div>
             : <div>
                 <Link to="/signin">Sign In</Link>
@@ -25,6 +26,7 @@ export default class NavBar extends Component {
               </div>}
         </nav>
         <Signin />
+        <Signup />
       </header>
     );
   }

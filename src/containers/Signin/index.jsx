@@ -16,7 +16,7 @@ export class Signin extends Component {
     return this.props.signin(data.email, data.password)
       .then(() => {
         if (this.props.signInError) {
-          throw new SubmissionError({ _error: 'Login failed' });
+          throw new SubmissionError({ _error: `Sign in failed! ${this.props.signInError.message}` });
         }
 
         // Refresh logged in user.
@@ -24,7 +24,7 @@ export class Signin extends Component {
       })
       .then(() => {
         // Redirect to Home page.
-        console.info('Successfully logged in! Redirecting to Home page...');
+        console.info('Successfully signed in! Redirecting to Home page...');
       });
   }
 
@@ -33,6 +33,8 @@ export class Signin extends Component {
       <div>
         <h2>Sign in</h2>
         <SigninForm onSubmit={this.handleSignin} />
+        <a href="/api/auth/github">Sign in with GitHub</a>
+        <a href="/api/auth/google">Sign in with Google</a>
       </div>
     );
   }
@@ -40,17 +42,17 @@ export class Signin extends Component {
 
 Signin.propTypes = {
   signin: PropTypes.func.isRequired,
-  signingIn: PropTypes.bool,
+  isSigningIn: PropTypes.bool,
   signInError: PropTypes.object,
 
-  user: PropTypes.object
+  user: PropTypes.object,
 };
 
 const mapStateToProps = function mapStateToProps(state) {
   return {
-    signingIn: state.auth.signingIn,
+    isSigningIn: state.auth.isSigningIn,
     signInError: state.auth.signInError,
-    user: state.auth.user
+    user: state.auth.user,
   };
 };
 

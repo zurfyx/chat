@@ -25,7 +25,7 @@ export default function clientMiddleware(client) {
       return promise(client)
         .then(data => data.json())
         .then(json => (json.error
-            ? next({...rest, error: json, type: FAILURE })
+            ? next({...rest, error: json.error, type: FAILURE })
             : next({...rest, result: json, type: SUCCESS })
           )
         )
