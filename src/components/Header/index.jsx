@@ -3,12 +3,7 @@ import { Link } from 'react-router';
 
 import Signin from 'containers/Signin';
 import Signup from 'containers/Signup';
-
-// const Signout = () => (
-//   <a onClick={() => this.props.signout()}>
-//     {this.signingOut ? '...' : 'Sign out'}
-//   </a>
-// );
+import Signout from 'containers/Signout';
 
 export default class NavBar extends Component {
   render() {
@@ -19,6 +14,7 @@ export default class NavBar extends Component {
           {this.props.user
             ? <div>
                 <span>Yo {this.props.user.profile.name}</span>
+                <Signout />
               </div>
             : <div>
                 <Link to="/signin">Sign In</Link>
