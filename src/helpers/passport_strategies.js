@@ -28,14 +28,14 @@ passport.use('local-signin', new LocalStrategy({ usernameField: 'email' }, (emai
   User.findOne({ email }, (err, user) => {
     if (err) { return done(err); }
     if (!user) {
-      return done(null, false, { msg: `Email ${email} not found.` });
+      return done(null, false, { message: `Email ${email} not found.` });
     }
     user.comparePassword(password, (err, isMatch) => {
       if (err) { return done(err); }
       if (isMatch) {
         return done(null, user);
       }
-      return done(null, false, { msg: 'Invalid email or password.' });
+      return done(null, false, { message: 'Invalid email or password.' });
     });
   });
 }));
@@ -96,8 +96,8 @@ function oauthSignedIn(mappings, req, accessToken, refreshToken, profile, done) 
   User.findOne({ [mappings.providerField]: profile.id }, (err, existingUser) => {
     if (existingUser) {
       // Provider ID already linked (on another account).
-      const msg = `There is already a ${mappings.provider} account that belongs to you. Sign in with that account or delete it, then link it with your current account.`;
-      return done(err, false, { msg });
+      const message = `There is already a ${mappings.provider} account that belongs to you. Sign in with that account or delete it, then link it with your current account.`;
+      return done(err, false, { message });
     }
 
     // Provider ID not linked yet.
@@ -105,8 +105,8 @@ function oauthSignedIn(mappings, req, accessToken, refreshToken, profile, done) 
       if (err) { return done(err); }
       if (user[mappings.providerField]) {
         // A Provider ID has already been linked to this account
-        const msg = `There is already a ${mappings.provider} account linked to this account. Unlink your current ${mappings.provider} account, or create a new account.`
-        return done(err, false, { msg});
+        const message = `There is already a ${mappings.provider} account linked to this account. Unlink your current ${mappings.provider} account, or create a new account.`
+        return done(err, false, { message });
       }
 
       // Link this GitHub profile to this user account.
@@ -131,8 +131,8 @@ function oauthSignedOut(mappings, req, accessToken, refreshToken, profile, done)
         // Email was found on one of the registered accounts. Link it.
         if (existingEmailUser[mappings.providerField]) {
           // Only one provider link is supported per account.
-          const msg = `There is already an account using this ${mappings.provider} email address, but it has been already linked to another ${mappings.provider} account.`
-          return done(err, false, { msg });
+          const message = `There is already an account using this ${mappings.provider} email address, but it has been already linked to another ${mappings.provider} account.`
+          return done(err, false, { message });
         } else {
           // Link that account with the GitHub account.
           return oauthLink(mappings, existingEmailUser, accessToken, profile, done);
@@ -161,7 +161,7 @@ function oauthLink(mappings, user, accessToken, profile, done) {
   user.profile.location = user.profile.location || objectByString(profile, mappings.location);
   user.profile.website = user.profile.website || objectByString(profile, mappings.website);
   user.save((err) => {
-    return done(err, user, { msg: `${mappings.provider} account has been linked.` });
+    return done(err, user, { message : `${mappings.provider} account has been linked.` });
   });
 }
 
