@@ -1,8 +1,12 @@
 import express from 'express';
 import passport from 'passport';
 
+import { isAuthenticated } from '~/middleware/auth';
+import { isRoomSlugValid } from '~/middleware/room';
+
 import * as authController from '~/controllers/auth';
 import * as userController from '~/controllers/user';
+import * as roomController from '~/controllers/room';
 
 const router = express.Router();
 
@@ -20,7 +24,19 @@ router.get('/auth/signout', authController.signout);
 /**
  * Users
  */
-router.get('/users/whoami', userController.whoami);
+router.get('/users/whoami', isAuthenticated, userController.whoami);
+// router.get('/users/me/joined-rooms', authController, roomController.joinedRooms);
+// router.get('/users/me/owned-rooms', authController, roomController.ownedRooms);
+
+/**
+ * Rooms
+ */
+router.get('/rooms', roomController.rooms);
+router.post('/rooms', isAuthenticated, roomController.createRoom);
+router.get('/rooms/:slug', isRoomSlugValid, roomController.getRoom);
+router.post('/rooms/:slug/join', isAuthenticated, isRoomSlugValid, roomController.joinRoom);
+router.post('/rooms/:slug/leave', isAuthenticated, isRoomSlugValid, roomController.leaveRoom);
+// router.delete('/rooms/:slug', isAuthenticated, isRoomSlugValid, roomController.deleteRoom);
 
 /**
  * Default.

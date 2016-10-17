@@ -46,7 +46,17 @@ app.use(cookieParser());
 // Body.
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(expressValidator([]));
+app.use(expressValidator({
+  customValidators: {
+    isSlug: function (input) {
+      if (typeof input !== 'string' ||
+          input.length < 5 || input.length > 55) return false;
+
+      const re = /^[a-zA-Z0-9_-]+$/;
+      return input.match(re);
+    }
+  }
+}));
 
 // Session.
 app.use(session({
@@ -61,11 +71,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// URLs.
-app.use('/', routes);
-
 // Logging (debug only).
 app.use(morgan('dev'));
+
+// URLs.
+app.use('/', routes);
 
 // Listen.
 app.listen(port);

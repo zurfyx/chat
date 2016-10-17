@@ -207,13 +207,3 @@ passport.use(new GoogleStrategy({
   };
   return oauth(mappings, ...args);
 }));
-
-/**
- * Login Required middleware.
- */
-export const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-};

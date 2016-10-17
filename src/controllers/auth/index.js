@@ -4,8 +4,8 @@ import '~/helpers/passport_strategies';
 
 // Sign in using email and password.
 export const signin = (req, res, next) => {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password cannot be blank').notEmpty();
+  req.checkBody('email', 'Email is not valid').isEmail();
+  req.checkBody('password', 'Password cannot be blank').notEmpty();
   req.sanitize('email');
 
   const errors = req.validationErrors();
@@ -30,9 +30,9 @@ export const signin = (req, res, next) => {
 
 // Sign up using email and password.
 export const signup = (req, res, next) => {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('name', 'Name cannot be blank').notEmpty();
+  req.checkBody('email', 'Email is not valid').isEmail();
+  req.checkBody('password', 'Password must be at least 4 characters long').len(4);
+  req.checkBody('name', 'Name cannot be blank').notEmpty();
   req.sanitize('email');
   req.sanitize('name');
 
@@ -41,7 +41,8 @@ export const signup = (req, res, next) => {
     return next(errors);
   }
 
-  req.body.email = req.body.email.toLowerCase();
+  req.body.email = req.body.email.toLowerCase().trim();
+  req.body.name = req.body.name.trim();
 
   passport.authenticate('local-signup', (err, user, info) => {
     if (err) return next(err);
