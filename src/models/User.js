@@ -8,15 +8,19 @@ import crypto from 'crypto';
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, trim: true, unique: true, sparse: true }, // Null or unique.
-  email: { type: String, unique: true },
+  username: { type: String, unique: true, sparse: true }, // Null or unique.
+  email: { type: String, required: true, unique: true }, // Always required.
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
 
-  github: String,
-  google: String,
-  tokens: Array,
+  github: { type: String, unique: true, sparse: true }, // Null or unique.
+  google: { type: String, unique: true, sparse: true }, // Null or unique.
+  tokens: [{
+    _id: false,
+    kind: String,
+    accessToken: String
+  }],
 
   profile: {
     name: String,

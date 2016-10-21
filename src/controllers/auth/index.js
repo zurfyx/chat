@@ -14,7 +14,7 @@ export const signin = (req, res, next) => {
     return next(errors);
   }
 
-  req.body.email = req.body.email.toLowerCase();
+  req.body.email = req.body.email.toLowerCase().trim();
 
   passport.authenticate('local-signin', (err, user, info) => {
     if (err) return next(err);
