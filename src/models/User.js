@@ -5,9 +5,9 @@
 
 import bcrypt from 'bcrypt-nodejs';
 import crypto from 'crypto';
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   username: { type: String, unique: true, sparse: true }, // Null or unique.
   email: { type: String, required: true, unique: true }, // Always required.
   password: String,
