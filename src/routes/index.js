@@ -2,11 +2,16 @@ import express from 'express';
 import passport from 'passport';
 
 import { isAuthenticated } from '~/middleware/auth';
-import { isRoomSlugValid } from '~/middleware/room';
+import { isUserIdValid } from '~/middleware/user';
+import { isRoomIdValid, isRoomOwner } from '~/middleware/room';
+import { isChatIdValid } from '~/middleware/chat';
+import { isMessageIdValid, isMessageOwner } from '~/middleware/message';
 
 import * as authController from '~/controllers/auth';
 import * as userController from '~/controllers/user';
 import * as roomController from '~/controllers/room';
+import * as chatController from '~/controllers/chat';
+import * as messageController from '~/controllers/message';
 
 const router = express.Router();
 
@@ -25,18 +30,44 @@ router.get('/auth/signout', authController.signout);
  * Users
  */
 router.get('/users/whoami', isAuthenticated, userController.whoami);
-// router.get('/users/me/joined-rooms', authController, roomController.joinedRooms);
-// router.get('/users/me/owned-rooms', authController, roomController.ownedRooms);
+
+// User -> Room.
+router.get('/users/:_id/rooms/joined', isUserIdValid, roomController.joinedRooms);
+router.get('/users/:_id/rooms/owned', isUserIdValid, roomController.ownedRooms);
 
 /**
  * Rooms
  */
 router.get('/rooms', roomController.rooms);
 router.post('/rooms', isAuthenticated, roomController.createRoom);
-router.get('/rooms/:slug', isRoomSlugValid, roomController.getRoom);
-router.post('/rooms/:slug/join', isAuthenticated, isRoomSlugValid, roomController.joinRoom);
-router.post('/rooms/:slug/leave', isAuthenticated, isRoomSlugValid, roomController.leaveRoom);
-// router.delete('/rooms/:slug', isAuthenticated, isRoomSlugValid, roomController.deleteRoom);
+router.get('/rooms/search', roomController.searchRooms);
+router.get('/rooms/:_id', isRoomIdValid, roomController.getRoom);
+router.put('/rooms/:_id', isAuthenticated, isRoomIdValid, isRoomOwner, roomController.editRoom);
+router.post('/rooms/:_id/join', isAuthenticated, isRoomIdValid, roomController.joinRoom);
+router.post('/rooms/:_id/leave', isAuthenticated, isRoomIdValid, roomController.leaveRoom);
+router.delete('/rooms/:_id', isAuthenticated, isRoomIdValid, isRoomOwner, roomController.deleteRoom);
+
+// Room -> Chat.
+router.get('/rooms/:_id/chats', isRoomIdValid, chatController.chats);
+router.post('/rooms/:_id/chats', isAuthenticated, isRoomIdValid, isRoomOwner, chatController.createChat);
+
+/**
+ * Chats
+ */
+router.delete('/chats/:_id', isAuthenticated, isChatIdValid, chatController.deleteChat);
+router.post('/chats/:_id/fork', isAuthenticated, isChatIdValid, chatController.forkChat);
+router.post('/chats/:_id/fork-merge', isAuthenticated, isChatIdValid, chatController.forkMerge); // Merge fork with the original chat. (?)
+router.post('/chats/:_id/fork-upgrade', isAuthenticated, isChatIdValid, chatController.forkUpgrade); // Fork to chat.
+
+// Chat -> Message.
+router.get('/chats/:_id', isChatIdValid, messageController.messages);
+router.post('/chats/:_id', isAuthenticated, isChatIdValid, messageController.createMessage);
+
+/**
+ * Messages
+ */
+router.put('/messages/:_id', isAuthenticated, isMessageIdValid, isMessageOwner, messageController.editMessage);
+router.delete('/messages/:_id', isAuthenticated, isMessageIdValid, isMessageOwner, messageController.deleteMessage);
 
 /**
  * Default.
