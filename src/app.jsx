@@ -15,6 +15,9 @@ const history = syncHistoryWithStore(browserHistory, store);
 const mountPoint = document.getElementById('main');
 
 const renderApp = () => {
+  // Import global styles. Specific styles can be found inside Components or Containers.
+  require('./styles/global.scss');
+
   const routes = require('./routes').default;
 
   render((

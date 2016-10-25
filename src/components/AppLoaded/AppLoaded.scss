@@ -1,0 +1,9 @@
+.bodyApp {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.contentContainer {
+  flex: 1;
+}

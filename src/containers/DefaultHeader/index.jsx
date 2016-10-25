@@ -1,14 +1,16 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import Signin from 'containers/Signin';
 import Signup from 'containers/Signup';
 import Signout from 'containers/Signout';
 
-export default class NavBar extends Component {
+export class DefaultHeader extends Component {
   render() {
+    const styles = require('./Header.scss');
     return (
-      <header>
+      <header className={styles.headerPage}>
         Logo
         <nav>
           {this.props.user
@@ -21,13 +23,21 @@ export default class NavBar extends Component {
                 <Link to="/signup">Sign Up</Link>
               </div>}
         </nav>
-        <Signin />
-        <Signup />
+        {/*<Signin />*/}
+        {/*<Signup />*/}
       </header>
     );
   }
 }
 
-NavBar.propTypes = {
+DefaultHeader.propTypes = {
   user: PropTypes.object
 };
+
+const mapStateToProps = function mapStateToProps(state) {
+  return {
+    user: state.auth.user
+  };
+};
+
+export default connect(mapStateToProps)(DefaultHeader);

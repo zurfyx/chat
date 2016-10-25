@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { load } from 'redux/modules/auth';
-import Body from 'components/Body';
+import AppLoaded from 'components/AppLoaded';
 
 const Loading = () => <div className="loading">Loading...</div>;
 
@@ -10,44 +10,43 @@ const Loading = () => <div className="loading">Loading...</div>;
  * Application structure (components & containers).
  * App
  *     - Loading (shown when application is booting)
- *     - Body
- *             - Header
+ *     - AppLoaded
+ *             - Header (optional prop.)
  *                     - Signin
  *                               - SigninForm
  *                     - Signup
  *                               - SignupForm
- *             - Main (<-- routes content)
+ *             - Main
  *                     - Home
  *                     - About
  *                     - ...
+ *             - Footer (optional prop.)
  */
 export class App extends Component {
-  componentWillMount(props) {
+  componentWillMount() {
     this.props.load();
   }
 
   render() {
-    const { children, user } = this.props;
+    const styles = require('./App.scss');
 
     return (
-      <div className="app">
-        {this.props.loading
-          ? <Loading />
-          : <Body user={user}>{children}</Body>}
+      <div className={styles.appPage}>
+        {this.props.loading ? <Loading /> : <AppLoaded {...this.props} />}
       </div>
     );
   }
 }
 
 App.propTypes = {
-  children: PropTypes.element.isRequired,
+  header: PropTypes.element,
+  main: PropTypes.element.isRequired,
+  footer: PropTypes.element,
 
   load: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   loaded: PropTypes.bool,
   loadError: PropTypes.object,
-
-  user: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
@@ -55,8 +54,6 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     loaded: state.auth.loaded,
     loadError: state.auth.loadError,
-
-    user: state.auth.user
   }
 };
 
