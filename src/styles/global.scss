@@ -1,5 +1,8 @@
 /* Loaded on application boot, not component / container dependent. */
 
+@import url('https://fonts.googleapis.com/css?family=Raleway|Source+Sans+Pro');
+@import 'variables';
+
 html {
   height: 100%;
 }
@@ -8,4 +11,88 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+}
+
+a, a:link, a:visited, a:active {
+  color: $blueMedium1;
+  text-decoration: none;
+
+  &:hover {
+    color: $blueLight1;
+    text-decoration: none;
+  }
+}
+
+button {
+  color: $black2;
+  background-color: #9ecadd;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: none;
+  padding: 5px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+:global .big-transparent-button {
+  background-color: transparent;
+  border: 3px solid $whiteLight2;
+  border-radius: 10px;
+  color: $whiteLight1;
+  height: 4em;
+  font-size: 0.6em;
+  font-weight: 200;
+  width: 100%;
+  transition: background 0.2s ease,
+              color 0.2s ease;
+
+  &:hover {
+    background-color: $whiteLight2;
+    color: $blueLight1;
+  }
+}
+
+:global .full-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+:global a.underline {
+  text-decoration: none;
+
+  &::after {
+    display: block;
+    content: "";
+    background-color: currentColor;
+    height: 2px;
+    width: 0;
+    margin-top: 1px;
+    transition: all 0.2s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+:global ul.horizontal-list {
+  display: inline-block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+    list-style-type: none;
+  }
+
+  li + li {
+    margin-left: 5px;
+  }
 }

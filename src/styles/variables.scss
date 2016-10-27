@@ -1,5 +1,20 @@
-/* Variables that can be throughout the application.
+/* Application-wide variables.
  * Import: @import '../../styles/variables';
  */
 
-$primaryColor: blue;
+$blueLight1: #0ca7d3;
+$blueLight2: #0a99c3;
+$blueMedium1: #0785ab;
+$blueMedium2: #0084ab;
+$blueDark1: #044c62;
+
+$whiteLight1: #fff;
+$whiteLight2: #fafffe;
+$whiteLight3: #f4f4f4;
+$whiteLight4: #f2f2f2;
+
+$black: #000;
+$black2: #333;
+$black3: #555;
+
+$headerHeight: 60px;

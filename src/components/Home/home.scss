@@ -1,8 +1,25 @@
-$blue: #00ffd2;
+@import '../../styles/variables';
 
 .homePage {
+  background-color: $blueLight1;
+  min-height: 100%;
+
   h1 {
-    color: $blue;
-    text-transform: uppercase;
+    color: #fff;
+  }
+}
+
+.intro {
+  font-size: 2em;
+  width: 60%;
+  max-width: 666px;
+
+  button {
+    display: inline-block;
+    width: 49%;
+  }
+
+  button + button {
+    margin-left: 2%;
   }
 }

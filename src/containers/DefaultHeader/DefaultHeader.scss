@@ -1,0 +1,39 @@
+@import '../../styles/variables';
+
+.headerPage {
+  position:fixed;
+  height: 60px;
+  background-color: #ccc;
+  min-width: 100%;
+}
+
+.headerPage nav {
+  float: right;
+  font-size: 1.2em;
+  padding: 15px;
+
+  a {
+    color: $whiteLight2;
+
+    &:hover {
+      color: $whiteLight2;
+    }
+  }
+
+  li + li {
+    margin-left: 12px;
+  }
+}
+
+.headerPage.transparent {
+  background-color: transparent;
+  border: 0;
+  color: $whiteLight2;
+}
+
+.logo {
+  display: block;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 1.2em;
+}
