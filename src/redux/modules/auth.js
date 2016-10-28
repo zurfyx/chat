@@ -14,6 +14,8 @@ const SIGNOUT = 'redux/auth/SIGN_OUT';
 const SIGNOUT_SUCCESS = 'redux/auth/SIGNOUT_SUCCESS';
 const SIGNOUT_FAIL = 'redux/auth/SIGNOUT_FAIL';
 
+const AUTH_MODAL = 'redux/auth/AUTH_MODAL';
+
 /**
  * Reducer overview:
  * {
@@ -115,6 +117,11 @@ export default function reducer(state = initialState, action = {}) {
         isSigningOut: false,
         signOutError: action.error
       };
+    case AUTH_MODAL:
+      return {
+        ...state,
+        authModal: action.authType,
+      };
     default:
       return state;
   }
@@ -157,4 +164,8 @@ export function signout() {
     types: [SIGNOUT, SIGNOUT_SUCCESS, SIGNOUT_SUCCESS],
     promise: (client) => client.get('/api/auth/signout'),
   };
+}
+
+export function enableAuthModal(authType) {
+  return (dispatch) => dispatch({ type: AUTH_MODAL, authType });
 }

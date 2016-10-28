@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
+import FontAwesome from 'react-fontawesome';
 
-import { load, signin } from 'redux/modules/auth';
+import { load, signin, enableAuthModal } from 'redux/modules/auth';
 import SigninForm from 'components/SigninForm';
 
 export class Signin extends Component {
@@ -10,6 +11,7 @@ export class Signin extends Component {
     super(props);
 
     this.handleSignin = this.handleSignin.bind(this);
+    this.changeAuth = this.changeAuth.bind(this);
   }
 
   handleSignin(data) {
@@ -23,18 +25,38 @@ export class Signin extends Component {
         return this.props.load();
       })
       .then(() => {
-        // Redirect to Home page.
-        console.info('Successfully signed in! Redirecting to Home page...');
+        // Close modal.
+        this.props.enableAuthModal();
       });
+  }
+
+  changeAuth() {
+    this.props.enableAuthModal('signup');
   }
 
   render() {
     return (
-      <div>
-        <h2>Sign in</h2>
+      <div className="form-container">
+        <header className="with-subtitle">
+          <h2>Sign in</h2>
+          Don't have an account? <a onClick={this.changeAuth}>Sign up</a>
+        </header>
+
+        <div className="field-container">
+          <form action="/api/auth/github">
+            <button type="submit"><FontAwesome name="github" /> Sign in with GitHub</button>
+          </form>
+        </div>
+        <div className="field-container">
+          <form action="/api/auth/google">
+            <button type="submit"><FontAwesome name="google" /> Sign in with Google</button>
+          </form>
+        </div>
+        <div className="spacer">
+          <span>or</span>
+        </div>
+
         <SigninForm onSubmit={this.handleSignin} />
-        <a href="/api/auth/github">Sign in with GitHub</a>
-        <a href="/api/auth/google">Sign in with Google</a>
       </div>
     );
   }
@@ -44,6 +66,8 @@ Signin.propTypes = {
   signin: PropTypes.func.isRequired,
   isSigningIn: PropTypes.bool,
   signInError: PropTypes.object,
+
+  enableAuthModal: PropTypes.func.isRequired,
 
   user: PropTypes.object,
 };
@@ -56,4 +80,4 @@ const mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-export default connect(mapStateToProps, { load, signin })(Signin);
+export default connect(mapStateToProps, { load, signin, enableAuthModal })(Signin);

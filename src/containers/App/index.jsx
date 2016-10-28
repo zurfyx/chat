@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { load } from 'redux/modules/auth';
+import { load, enableAuthModal } from 'redux/modules/auth';
 import AppLoaded from 'components/AppLoaded';
 
 const Loading = () => <div className="loading">Loading...</div>;
@@ -23,7 +23,7 @@ const Loading = () => <div className="loading">Loading...</div>;
  *             - Footer (optional prop.)
  */
 export class App extends Component {
-  componentWillMount() {
+componentWillMount() {
     this.props.load();
   }
 
@@ -47,6 +47,9 @@ App.propTypes = {
   loading: PropTypes.bool,
   loaded: PropTypes.bool,
   loadError: PropTypes.object,
+
+  enableAuthModal: PropTypes.func.isRequired,
+  authModal: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -54,7 +57,9 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     loaded: state.auth.loaded,
     loadError: state.auth.loadError,
+
+    authModal: state.auth.authModal,
   }
 };
 
-export default connect(mapStateToProps, { load })(App);
+export default connect(mapStateToProps, { load, enableAuthModal })(App);

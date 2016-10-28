@@ -1,13 +1,7 @@
-import React, { Component, PropTypes } from 'react'
-import { reduxForm, Field } from 'redux-form'
+import React, { Component, PropTypes } from 'react';
+import { reduxForm, Field } from 'redux-form';
 
-const renderInput = field =>
-  <div>
-    <input {...field.input} type={field.type}/>
-    {field.meta.touched &&
-    field.meta.error &&
-    <span className="error">{field.meta.error}</span>}
-  </div>;
+import FieldComponent from 'components/FieldComponent';
 
 
 class SignupForm extends Component {
@@ -16,43 +10,41 @@ class SignupForm extends Component {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Name</label>
-          <Field
-            name="name"
-            component={renderInput}
-            type="text" />
+        <Field
+          name="name"
+          label="Name"
+          placeholder="Luke"
+          component={FieldComponent}
+          type="text" />
+
+        <Field
+          name="email"
+          label="Email"
+          placeholder="luke@example.com"
+          component={FieldComponent}
+          type="text" />
+
+        <Field
+          name="password"
+          label="Password"
+          placeholder="*****"
+          component={FieldComponent}
+          type="password" />
+
+        <Field
+          name="confirmPassword"
+          label="Password confirmation"
+          placeholder="*****"
+          component={FieldComponent}
+          type="password" />
+
+        <div className="field-container">
+          <button type="submit" disabled={submitting}>Sign up</button>
         </div>
 
-        <div>
-          <label>Email</label>
-          <Field
-            name="email"
-            component={renderInput}
-            type="text" />
+        <div className="field-container">
+          {error && <span className="error">{error}</span>}
         </div>
-
-        <div>
-          <label>Password</label>
-          <Field
-            name="password"
-            component={renderInput}
-            type="password" />
-        </div>
-
-        <div>
-          <label>Confirm Password</label>
-          <Field
-            name="confirmPassword"
-            component={renderInput}
-            type="password" />
-        </div>
-
-        <div>
-          {error && <strong>{error}</strong>}
-        </div>
-
-        <button type="submit" disabled={submitting}>Sign up</button>
       </form>
     );
   }

@@ -1,9 +1,12 @@
-import React, { Component, PropTypes } from 'react'
-import { reduxForm, Field } from 'redux-form'
+import React, { Component, PropTypes } from 'react';
+import { reduxForm, Field } from 'redux-form';
+
+import FieldComponent from 'components/FieldComponent';
 
 const renderInput = field =>
-  <div>
-    <input {...field.input} type={field.type}/>
+  <div className="field-container">
+    {field.label && <label>{field.label}</label>}
+    <input {...field.input} type={field.type} placeholder={field.placeholder} />
     {field.meta.touched &&
     field.meta.error &&
     <span className="error">{field.meta.error}</span>}
@@ -16,27 +19,27 @@ class SigninForm extends Component {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Email</label>
-          <Field
-            name="email"
-            component={renderInput}
-            type="text" />
+        <Field
+          name="email"
+          label="Email"
+          placeholder="you@example.com"
+          component={FieldComponent}
+          type="text" />
+
+        <Field
+          name="password"
+          label="Password"
+          placeholder="*****"
+          component={FieldComponent}
+          type="password" />
+
+        <div className="field-container">
+          <button type="submit" disabled={submitting}>Sign in</button>
         </div>
 
-        <div>
-          <label>Password</label>
-          <Field
-            name="password"
-            component={renderInput}
-            type="password" />
+        <div className="field-container">
+          {error && <span className="error">{error}</span>}
         </div>
-
-        <div>
-          {error && <strong>{error}</strong>}
-        </div>
-
-        <button type="submit" disabled={submitting}>Sign in</button>
       </form>
     );
   }
