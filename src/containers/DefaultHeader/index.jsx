@@ -25,13 +25,13 @@ export class DefaultHeader extends Component {
 
     const generateNavList = (arr) => arr.map((ele, i) => <li key={i}>{ele}</li>);
     const guestNav = generateNavList([
-      <a href="#" className="underline">Rooms</a>,
+      <Link to="/rooms" className="underline">Rooms</Link>,
       <a className="underline" onClick={this.handleSignin}>Sign in</a>,
-      <a href="#" className="underline" onClick={this.handleSignup}>Sign up</a>,
+      <a className="underline" onClick={this.handleSignup}>Sign up</a>,
       <a href="#"><FontAwesome name="bars" /></a>,
     ]);
     const userNav = generateNavList([
-      <a href="#" className="underline">Rooms</a>,
+      <Link to="/rooms" className="underline">Rooms</Link>,
       <a href="#" className="underline">{user && user.profile.name}</a>,
       <Signout />,
       <a href="#"><FontAwesome name="bars" /></a>,
@@ -48,7 +48,7 @@ export class DefaultHeader extends Component {
                 {guestNav}
               </ul>}
         </nav>
-        <span className={styles.logo}>NYAO.IO</span>
+        <Link to="/" className={styles.logo}>NYAO.IO</Link>
       </header>
     );
   }
@@ -57,7 +57,9 @@ export class DefaultHeader extends Component {
 DefaultHeader.propTypes = {
   styleType: PropTypes.string, // Accepting 'transparent'.
 
-  user: PropTypes.object
+  user: PropTypes.object,
+
+  enableAuthModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = function mapStateToProps(state) {

@@ -23,7 +23,7 @@ export class Signup extends Component {
 
   render() {
     return (
-      <a onClick={this.handleSignout}>
+      <a className="underline" onClick={this.handleSignout}>
         {this.isSigningOut ? '...' : 'Sign out' }
       </a>
     );

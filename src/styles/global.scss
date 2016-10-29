@@ -37,6 +37,13 @@ input {
   font-weight: 200;
   padding: 7px 10px 7px 10px;
   width: 100%;
+  transition: border 0.2s ease;
+}
+
+textarea:focus, input:focus {
+  outline: none;
+  box-shadow: none;
+  border: 1px solid $blueLight1;
 }
 
 button {
@@ -46,6 +53,7 @@ button {
   border-radius: 2px;
   box-shadow: none;
   padding: 5px;
+  transition: background-color 0.2s ease;
 
   &:focus {
     outline: none;
@@ -54,6 +62,15 @@ button {
   &:hover {
     background-color: #2ecc71;
     cursor: pointer;
+  }
+}
+
+:global button.transparent {
+  background-color: $whiteLight1;
+  border: 2px solid $black5;
+
+  &:hover {
+    border: 2px solid $blueLight1;
   }
 }
 
@@ -188,6 +205,23 @@ button {
   }
 }
 
+:global .form-container-2 {
+  @extend .form-container;
+
+  header {
+    text-align: left;
+
+    h2 {
+      font-size: 2em;
+      text-transform: capitalize;
+    }
+  }
+
+  input, button {
+    border-radius: 2px;
+  }
+}
+
 :global .spacer {
   background-color: $greyExtreme;
   width: 100%;
@@ -203,4 +237,74 @@ button {
     padding-left: 7px;
     padding-right: 7px;
   }
+}
+
+:global .page {
+  padding-top: $headerHeight;
+  min-height: calc(100% - 60px);
+}
+
+:global .content {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+  max-width: 1100px;
+}
+
+:global .box {
+  border: 1px solid $grey;
+  border-radius: 3px;
+  background-color: $whiteLight1;
+  margin-top: 5%;
+  padding: 40px;
+  width: 60%;
+
+  h2 {
+    margin-top: 0;
+  }
+}
+
+:global .card-list {
+  margin: 15px 0 0 0;
+  padding: 0;
+
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+  }
+
+  .card {
+    display: inline-block;
+    width: 23.5%;
+    margin-right: 2%;
+    vertical-align: top;
+
+    &:nth-child(4n) {
+      margin-right: 0;
+    }
+  }
+}
+
+:global .card {
+  text-align: left;
+  border-top: 1px solid $black3;
+  height: 200px;
+
+  > span {
+    display: block;
+    word-wrap: break-word;
+  }
+
+  .title {
+    font-size: 2em;
+    margin-bottom: 1px;
+  }
+
+  .subtitle {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .description {}
 }
