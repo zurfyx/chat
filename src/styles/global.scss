@@ -247,6 +247,10 @@ button {
 :global .page {
   padding-top: $headerHeight;
   min-height: calc(100% - 60px);
+
+  .box {
+    margin-top: 5%;
+  }
 }
 
 :global .content {
@@ -260,7 +264,6 @@ button {
   border: 1px solid $grey;
   border-radius: 3px;
   background-color: $whiteLight1;
-  margin-top: 5%;
   padding: 40px;
   width: 60%;
 

@@ -1,10 +1,10 @@
-const CREATE = 'redux/room/CREATE';
-const CREATE_SUCCESS = 'redux/room/CREATE_SUCCESS';
-const CREATE_FAIL = 'redux/room/CREATE_FAIL';
+const CREATE = 'redux/chat/CREATE';
+const CREATE_SUCCESS = 'redux/chat/CREATE_SUCCESS';
+const CREATE_FAIL = 'redux/chat/CREATE_FAIL';
 
-const RETRIEVE = 'redux/room/retrieve';
-const RETRIEVE_SUCCESS = 'redux/room/RETRIEVE_SUCCESS';
-const RETRIEVE_FAIL = 'redux/room/RETRIEVE_FAIL';
+const RETRIEVE = 'redux/chat/RETRIEVE';
+const RETRIEVE_SUCCESS = 'redux/chat/RETRIEVE_SUCCESS';
+const RETRIEVE_FAIL = 'redux/chat/RETRIEVE_FAIL';
 
 export default function reducer(state = {}, action = {}) {
   switch(action.type) {
@@ -47,25 +47,21 @@ export default function reducer(state = {}, action = {}) {
   }
 }
 
-export function create(title, slug, description) {
+export function create(room, title, description) {
   return {
     types: [CREATE, CREATE_SUCCESS, CREATE_FAIL],
-    promise: (client) => client.post('/api/rooms', {
+    promise: (client) => client.post(`/api/rooms/${room._id}/chats`, {
       data: {
         title,
-        slug,
         description,
       }
     }),
   };
 }
 
-export function retrieve(params) {
-  let paramsQuery = '';
-  if (params && params.slug) paramsQuery = `?slug=${params.slug}`;
-
+export function retrieve(room) {
   return {
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
-    promise: (client) => client.get(`/api/rooms/search${paramsQuery}`),
+    promise: (client) => client.get(`api/rooms/${room._id}/chats`),
   };
 }

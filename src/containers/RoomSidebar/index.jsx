@@ -1,7 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import CreateChat from 'containers/CreateChat';
+
 export class RoomSidebar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleNewChat = this.handleNewChat.bind(this);
+  }
+
+  handleNewChat() {
+    {this.props.createModal(<CreateChat complete={this.props.createModal} />);}
+  }
+
   render() {
     const styles = require('./RoomSidebar.scss');
 
@@ -15,7 +27,7 @@ export class RoomSidebar extends Component {
           </div>
           <div className="chatListContainer">
             <div className="chatListSummary">
-              <button className={styles.new}>+</button>
+              <button className={styles.new} onClick={this.handleNewChat}>+</button>
               Chats (2)
             </div>
             <ul className={styles.chatList}>
@@ -29,9 +41,15 @@ export class RoomSidebar extends Component {
   }
 }
 
+RoomSidebar.PropTypes = {
+  createModal: PropTypes.func.isRequired,
+
+  room: PropTypes.Array,
+};
+
 const mapStateToProps = function mapStateToProps(state) {
   return {
-
+    room: state.room.retrieveResult,
   }
 };
 
