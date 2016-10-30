@@ -33,11 +33,12 @@ export const isRoomOwner = (req, res, next) => {
   const _id = req.params._id;
   const user = req.user;
 
-  Room.findOne({ _id, members: user }, (err, room) => {
+  Room.findOne({ _id, owner: user }, (err, room) => {
     if (err) return res.status(500).json({ error: err });
 
     if (!room) {
-      const message = 'Either the room does not exist or you are no its owner.';
+      // Either the room does not exist or the user is not its owner.
+      const message = 'You are not the room owner.';
       return res.status(500).json({ error: { message } });
     }
 
