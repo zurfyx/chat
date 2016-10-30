@@ -17,6 +17,11 @@ export const createMessage = (req, res, next) => {
   req.checkBody('content', 'Content cannot be blank').notEmpty();
   req.sanitize('content').trim();
 
+  const errors = req.validationErrors();
+  if (errors) {
+    return next(errors);
+  }
+
   const newMessage = new Message();
   newMessage.chat = chat;
   newMessage.owner = user;

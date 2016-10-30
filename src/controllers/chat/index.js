@@ -36,6 +36,12 @@ export const createChat = (req, res, next) => {
   });
 };
 
+export const getChat = (req, res, next) => {
+  const chat = req.chat;
+
+  return res.json(chat);
+};
+
 export const deleteChat = (req, res, next) => {
   const chat = req.chat;
 
