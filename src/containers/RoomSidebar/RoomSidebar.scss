@@ -5,6 +5,8 @@
   color: $whiteLight1;
   width: 220px;
   height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
 
   > div {
     padding: 15px;
@@ -15,16 +17,12 @@
   margin-bottom: 50px;
 }
 
-.roomTitle {
+.roomTitle > h2 {
+  margin-top: 0;
   color: $whiteLight1;
 
-  &:hover {
+  &:hover, &:link, &:visited, &:active {
     color: $whiteLight1;
-  }
-
-  > h2 {
-    padding: 0;
-    margin: 0;
   }
 }
 

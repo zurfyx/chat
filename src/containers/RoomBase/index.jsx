@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { retrieve as retrieveRoom } from 'redux/modules/room';
+import { retrieve as retrieveChat } from 'redux/modules/chat';
 import RoomSidebar from 'containers/RoomSidebar';
 import RoomChat from 'containers/RoomChat';
 
@@ -14,11 +15,12 @@ export class RoomBase extends Component {
       chat: props.routing.locationBeforeTransitions.pathname.split('/')[3],
     };
 
-    this.state = {};
+    this.state = {
+      loaded: false,
+    };
 
     this.createModal = this.createModal.bind(this);
     this.destroyModal = this.destroyModal.bind(this);
-    this.handleCreateChat = this.handleCreateChat.bind(this);
   }
 
   componentWillMount() {
@@ -26,10 +28,14 @@ export class RoomBase extends Component {
     console.info('Socket connection...');
 
     // Retrieve room details.
-    this.props.retrieveRoom({ slug: this.params.room }).then(() => {
-      // Retrieve room chats.
-      const id = this.props.room[0]._id;
-    });
+    this.props.retrieveRoom({ slug: this.params.room })
+      .then(() => {
+        // Retrieve room chats.
+        return this.props.retrieveChat(this.props.rooms[0]);
+      })
+      .then(() => {
+        this.setState({ loaded: true });
+      });
   }
 
   createModal(element) {
@@ -42,15 +48,11 @@ export class RoomBase extends Component {
     }
   }
 
-  handleCreateChat() {
-
-  }
-
   render() {
     return (
       <div>
         {this.state.modal && <div className="modal" onClick={this.destroyModal}>{this.state.modal}</div>}
-        {this.isRetrievingRoom
+        {!this.state.loaded
           ? <span>Loading...</span>
           : <div className="row">
               <RoomSidebar createModal={this.createModal} />
@@ -67,7 +69,9 @@ RoomSidebar.PropTypes = {
   retrieveRoom: PropTypes.func.isRequired,
   isRetrievingRoom: PropTypes.bool,
   roomRetrieveError: PropTypes.any,
-  room: PropTypes.Array,
+  rooms: PropTypes.Array,
+
+  retrieveChat: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = function mapStateToProps(state) {
@@ -76,8 +80,8 @@ const mapStateToProps = function mapStateToProps(state) {
 
     isRetrievingRoom: state.room.isRetrieving,
     roomRetrieveError: state.room.retrieveError,
-    room: state.room.retrieveResult,
+    rooms: state.room.retrieveResult,
   }
 };
 
-export default connect(mapStateToProps, { retrieveRoom })(RoomBase);
+export default connect(mapStateToProps, { retrieveRoom, retrieveChat })(RoomBase);

@@ -16,23 +16,28 @@ export class RoomSidebar extends Component {
 
   render() {
     const styles = require('./RoomSidebar.scss');
+    const { rooms, chats } = this.props;
+    const room = rooms[0];
+
+    const chatsList = chats.map((chat) =>
+      <li>{chat.title}</li>
+    );
 
     return (
       <div className={styles.roomSidebarPage}>
         <div>
           <div className={styles.roomInfo}>
             <a className={styles.roomTitle}>
-              <h2>My Room</h2>
+              <h2>{room.title}</h2>
             </a>
           </div>
           <div className="chatListContainer">
             <div className="chatListSummary">
               <button className={styles.new} onClick={this.handleNewChat}>+</button>
-              Chats (2)
+              Chats ({chats.length})
             </div>
             <ul className={styles.chatList}>
-              <li>/my-first-chat</li>
-              <li>/my-second-chat</li>
+              {chatsList}
             </ul>
           </div>
         </div>
@@ -44,12 +49,14 @@ export class RoomSidebar extends Component {
 RoomSidebar.PropTypes = {
   createModal: PropTypes.func.isRequired,
 
-  room: PropTypes.Array,
+  rooms: PropTypes.Array,
+  chats: PropTypes.Array,
 };
 
 const mapStateToProps = function mapStateToProps(state) {
   return {
-    room: state.room.retrieveResult,
+    rooms: state.room.retrieveResult,
+    chats: state.chat.retrieveResult,
   }
 };
 
