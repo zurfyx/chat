@@ -60,7 +60,7 @@ button {
   }
 
   &:hover {
-    background-color: #2ecc71;
+    background-color: $greenLight1;
     cursor: pointer;
   }
 }
@@ -97,6 +97,11 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+:global .row {
+  display: flex;
+  flex-direction: row;
 }
 
 :global .modal {

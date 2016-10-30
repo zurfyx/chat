@@ -4,13 +4,13 @@ import { Link } from 'react-router';
 
 import { retrieve } from 'redux/modules/room';
 
-export class Room extends Component {
+export class Rooms extends Component {
   componentWillMount() {
     this.props.retrieve();
   }
 
   render() {
-    const styles = require('./Room.scss');
+    const styles = require('./Rooms.scss');
     const { retrieving, retrieveError, retrieveResult } = this.props;
 
     const cards = () => this.props.retrieveResult.map((room, i) => {
@@ -32,7 +32,7 @@ export class Room extends Component {
           </Link>
           <h2>Explore</h2>
           <div className="search">
-            <input type="text" />
+            <input type="text" placeholder="Room name" />
           </div>
           {retrieving && <span>...</span>}
           {!retrieving && retrieveError && <span>{retrieveError}</span>}
@@ -43,7 +43,7 @@ export class Room extends Component {
   }
 }
 
-Room.propTypes = {
+Rooms.propTypes = {
   retrieve: PropTypes.func.isRequired,
   isRetrieving: PropTypes.bool,
   retrieveError: PropTypes.any,
@@ -58,4 +58,4 @@ const mapStateToProps = function mapStateToProps(state) {
   }
 };
 
-export default connect(mapStateToProps, { retrieve })(Room);
+export default connect(mapStateToProps, { retrieve })(Rooms);

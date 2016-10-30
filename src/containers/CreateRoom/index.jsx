@@ -21,7 +21,7 @@ export class CreateRoom extends Component {
           throw new SubmissionError({ _error: errorMessage });
         }
 
-        // TODO Redirect to Room. It will now redirect to the full list of rooms.
+        // TODO Redirect to Rooms. It will now redirect to the full list of rooms.
         return browserHistory.push('/rooms');
       });
   }
