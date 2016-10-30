@@ -6,6 +6,10 @@ const RETRIEVE = 'redux/chat/RETRIEVE';
 const RETRIEVE_SUCCESS = 'redux/chat/RETRIEVE_SUCCESS';
 const RETRIEVE_FAIL = 'redux/chat/RETRIEVE_FAIL';
 
+const ACTIVATE = 'redux/chat/ACTIVATE';
+const ACTIVATE_SUCCESS = 'redux/chat/ACTIVATE_SUCCESS';
+const ACTIVATE_FAIL = 'redux/chat/ACTIVATE_FAIL';
+
 export default function reducer(state = {}, action = {}) {
   switch(action.type) {
     case CREATE:
@@ -34,6 +38,7 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         isRetrieving: false,
+        retrieveError: null,
         retrieveResult: action.result,
       };
     case RETRIEVE_FAIL:
@@ -41,6 +46,26 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         isRetrieving: false,
         retrieveError: action.error,
+        retrieveResult: null,
+      };
+    case ACTIVATE:
+      return {
+        ...state,
+        isActivating: true,
+      };
+    case ACTIVATE_SUCCESS:
+      return {
+        ...state,
+        isActivating: false,
+        activateError: null,
+        activateResult: action.result,
+      };
+    case ACTIVATE_FAIL:
+      return {
+        ...state,
+        isActivating: false,
+        activateError: action.error,
+        activateResult: null,
       };
     default:
       return state;
@@ -63,5 +88,12 @@ export function retrieve(room) {
   return {
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
     promise: (client) => client.get(`/api/rooms/${room._id}/chats`),
+  };
+}
+
+export function activate(chatId) {
+  return {
+    types: [ACTIVATE, ACTIVATE_SUCCESS, ACTIVATE_FAIL],
+    promise: (client) => client.get(`/api/chats/${chatId}`),
   };
 }

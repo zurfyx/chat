@@ -16,7 +16,7 @@ export class CreateChat extends Component {
     const { create, rooms, createError } = this.props;
     const room = rooms[0];
 
-    return create(this.props.rooms[0], data.title, data.description)
+    return create(room, data.title, data.description)
       .then(() => {
         if (createError) {
           const errorMessage = `Chat creation failed! ${typeof createError.message === 'string' ? createError.message : ''}`;

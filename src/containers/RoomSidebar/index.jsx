@@ -19,8 +19,8 @@ export class RoomSidebar extends Component {
     const { rooms, chats } = this.props;
     const room = rooms[0];
 
-    const chatsList = chats.map((chat) =>
-      <li>{chat.title}</li>
+    const chatsList = chats.map((chat, i) =>
+      <li key={i}>{chat.title}</li>
     );
 
     return (
