@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 import { retrieve as retrieveRoom } from 'redux/modules/room';
 import { retrieve as retrieveChat, activate as activateChat } from 'redux/modules/chat';
@@ -35,11 +36,13 @@ export class RoomBase extends Component {
     };
 
     this.activateChat = this.activateChat.bind(this);
+    this.changeActiveChat = this.changeActiveChat.bind(this);
     this.createModal = this.createModal.bind(this);
     this.destroyModal = this.destroyModal.bind(this);
   }
 
   componentWillMount() {
+    console.info('mount');
     // TODO Socket connection.
     console.info('Socket connection...');
 
@@ -63,6 +66,12 @@ export class RoomBase extends Component {
     }
   }
 
+  changeActiveChat(chatId) {
+    browserHistory.push(`/room/${this.params.room}/${chatId}`);
+    this.params['chat'] = chatId;
+    this.activateChat();
+  }
+
   createModal(element) {
     this.setState({ modal: element });
   }
@@ -83,13 +92,17 @@ export class RoomBase extends Component {
 
         {/* Sidebar */}
         {!this.state.loaded && <span>Loading...</span>}
-        {this.state.loaded && <RoomSidebar createModal={this.createModal} />}
+        {this.state.loaded
+          && <RoomSidebar createModal={this.createModal} changeActiveChat={this.changeActiveChat} />}
 
         {/* Chat */}
         {this.props.isActivatingChat && <span>Loading chat...</span>}
-        {this.state.loaded && !this.props.isActivatingChat && this.props.activeChat && <RoomChat />}
         {this.state.loaded && !this.props.isActivatingChat && this.props.activateChatError && <RoomChatError />}
         {this.state.loaded && !this.props.isActivatingChat && !this.props.activeChat && !this.props.activateChatError && <NoChatSelected />}
+        {this.state.loaded
+          && !this.props.isActivatingChat
+          && this.props.activeChat
+          && <RoomChat />}
       </div>
     );
   }

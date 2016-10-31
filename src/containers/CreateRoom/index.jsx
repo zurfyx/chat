@@ -14,15 +14,15 @@ export class CreateRoom extends Component {
   }
 
   handleSubmit(data) {
-    return this.props.create(data.title, data.slug, data.description)
+    const { title, slug, description } = data;
+    return this.props.create(title, slug, description)
       .then(() => {
         if (this.props.createError) {
           const errorMessage = `Room creation failed! ${typeof this.props.createError.message === 'string' ? this.props.createError.message : ''}`;
           throw new SubmissionError({ _error: errorMessage });
         }
 
-        // TODO Redirect to Rooms. It will now redirect to the full list of rooms.
-        return browserHistory.push('/rooms');
+        return browserHistory.push(`/room/${slug}`);
       });
   }
 

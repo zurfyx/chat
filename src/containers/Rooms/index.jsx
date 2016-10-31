@@ -16,7 +16,7 @@ export class Rooms extends Component {
     const cards = () => this.props.retrieveResult.map((room, i) => {
       return (
         <li className="card" key={i}>
-          <span className="title">{room.title}</span>
+          <Link to={`/room/${room.slug}`} className="title">{room.title}</Link>
           <span className="subtitle">{room.slug}</span>
           <span className="description">{room.description}</span>
           <span className="members">Members: {room.members.length}</span>

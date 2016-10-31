@@ -16,11 +16,13 @@ export class RoomSidebar extends Component {
 
   render() {
     const styles = require('./RoomSidebar.scss');
-    const { rooms, chats } = this.props;
+    const { rooms, chats, changeActiveChat } = this.props;
     const room = rooms[0];
 
     const chatsList = chats.map((chat, i) =>
-      <li key={i}>{chat.title}</li>
+      <a key={i} onClick={() => changeActiveChat(chat._id)}>
+        <li>{chat.title}</li>
+      </a>
     );
 
     return (
@@ -48,6 +50,7 @@ export class RoomSidebar extends Component {
 
 RoomSidebar.PropTypes = {
   createModal: PropTypes.func.isRequired,
+  changeActiveChat: PropTypes.func.isRequired,
 
   rooms: PropTypes.Array,
   chats: PropTypes.Array,
