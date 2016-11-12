@@ -54,7 +54,7 @@ router.post('/rooms/:_id/chats', isAuthenticated, isRoomIdValid, isRoomOwner, ch
 /**
  * Chats
  */
-router.get('/chats/:_id', isAuthenticated, isChatIdValid, chatController.getChat);
+router.get('/chats/:_id', isChatIdValid, chatController.getChat);
 router.delete('/chats/:_id', isAuthenticated, isChatIdValid, chatController.deleteChat);
 router.post('/chats/:_id/fork', isAuthenticated, isChatIdValid, chatController.forkChat);
 router.post('/chats/:_id/fork-merge', isAuthenticated, isChatIdValid, chatController.forkMerge); // Merge fork with the original chat. (?)
