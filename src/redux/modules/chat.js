@@ -84,10 +84,10 @@ export function create(room, title, description) {
   };
 }
 
-export function retrieve(room) {
+export function retrieve(roomId) {
   return {
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
-    promise: (client) => client.get(`/api/rooms/${room._id}/chats`),
+    promise: (client) => client.get(`/api/rooms/${roomId}/chats`),
   };
 }
 

@@ -2,6 +2,19 @@ const RETRIEVE = 'redux/message/RETRIEVE';
 const RETRIEVE_SUCCESS = 'redux/message/RETRIEVE_SUCCESS';
 const RETRIEVE_FAIL = 'redux/message/RETRIEVE_FAIL';
 
+// TODO
+const SEND = 'redux/message/SEND';
+const SEND_SUCCESS = 'redux/message/SEND_SUCCESS';
+const SEND_FAIL = 'redux/message/SEND_FAIL';
+
+// Receive doesn't get any message. Just prepares the socket to receive messages.
+// TODO
+const RECEIVE = 'redux/message/RECEIVE';
+const RECEIVE_SUCCESS = 'redux/message/RECEIVE_SUCCESS';
+const RECEIVE_FAIL = 'redux/message/RECEIVE_FAIL';
+
+const NEW_MESSAGE = 'redux/message/NEW_MESSAGE';
+
 export default function reducer(state = {}, action = {}) {
   switch(action.type) {
     case RETRIEVE:
@@ -14,15 +27,22 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         isRetrieving: false,
         retrieveError: null,
-        retrieveResult: action.result,
+        retrieveResult: action.result, // TODO: merge with current results.
       };
     case RETRIEVE_FAIL:
       return {
         ...state,
         isRetrieving: false,
         retrieveError: action.error,
-        retrieveResult: null,
+        retrieveResult: null, // TODO: do not empty the store.
       };
+    case NEW_MESSAGE:
+      return {
+        ...state,
+        retrieve,
+        retrieveResult: state.retrieveResult.concat(action.result), // TODO: merge with current results.
+      };
+    // TODO: clear messages.
     default:
       return state;
   }
@@ -32,5 +52,32 @@ export function retrieve(chatId) {
   return {
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
     promise: (client) => client.get(`/api/chats/${chatId}/messages`),
+  }
+}
+
+export function send(chatId, content) {
+  const message = { chatId, content };
+  return {
+    type: 'socket',
+    types: [SEND, SEND_SUCCESS, SEND_FAIL],
+    promise: (socket) => socket.emit('SendMessage', message),
+  }
+}
+
+// Receive any messages.
+export function receive() {
+  return (dispatch) => {
+    const newMessage = (message) => {
+      dispatch({
+        type: NEW_MESSAGE,
+        result: message,
+      });
+    };
+
+    return dispatch({
+      type: 'socket',
+      types: [RECEIVE, RECEIVE_SUCCESS, RECEIVE_FAIL],
+      promise: (socket) => socket.on('ReceiveMessage', newMessage),
+    });
   }
 }

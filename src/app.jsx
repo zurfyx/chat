@@ -4,12 +4,15 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
+import SocketClient from './helpers/SocketClient';
 import ApiClient from './helpers/ApiClient';
 import configureStore from './redux/create';
 
+const socketClient = new SocketClient();
 const apiClient = new ApiClient();
+
 const initialState = {};
-const store = configureStore(initialState, apiClient);
+const store = configureStore(initialState, socketClient, apiClient);
 const history = syncHistoryWithStore(browserHistory, store);
 
 const mountPoint = document.getElementById('main');

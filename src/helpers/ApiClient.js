@@ -1,5 +1,8 @@
 import fetch from 'isomorphic-fetch';
 
+// TODO Move me elsewhere!
+const host = 'http://localhost:3000';
+
 export default class clientAPI {
   constructor() {
     this.headers = {
@@ -9,15 +12,22 @@ export default class clientAPI {
   }
 
   get(url, params) {
-    return fetch(url, {
+    const fullUrl = new URL(host + url);
+
+    // Optional query parameters.
+    if (params) {
+      Object.keys(params).forEach(key => fullUrl.searchParams.append(key, params[key]));
+    }
+
+    return fetch(fullUrl, {
       method: 'GET',
       headers: this.headers,
-      credentials: 'include'
+      credentials: 'include',
     });
   }
 
   post(url, params) {
-    return fetch(url, {
+    return fetch(host + url, {
       method: 'POST',
       headers: this.headers,
       credentials: 'include',

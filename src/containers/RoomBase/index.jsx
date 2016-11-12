@@ -1,26 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 
-import { retrieve as retrieveRoom } from 'redux/modules/room';
-import { retrieve as retrieveChat, activate as activateChat } from 'redux/modules/chat';
+import { connect as connectSocket, disconnect as disconnectSocket } from 'redux/modules/socket';
+import { enter as enterRoom } from 'redux/modules/room';
+import { receive as receiveMessages } from 'redux/modules/message';
 import RoomSidebar from 'containers/RoomSidebar';
-import RoomChat from 'containers/RoomChat';
-
-const NoChatAvailable = () => (
-  <div className="full-center">
-    <h1 className="thin">No chats were found!</h1>
-    <button>Create</button>
-  </div>
-);
-
-const RoomChatError = () => (
-  <span>There was an error retrieving the chat (does it exist?)</span>
-);
-
-const NoChatSelected = () => (
-  <span>No chat selected</span>
-);
+import RoomChatLoader from 'containers/RoomChatLoader';
 
 export class RoomBase extends Component {
   constructor(props) {
@@ -31,45 +16,32 @@ export class RoomBase extends Component {
       chat: props.routing.locationBeforeTransitions.pathname.split('/')[3],
     };
 
+    // The page is considered loaded when the socket has connected to the room successfully.
     this.state = {
       loaded: false,
     };
 
-    this.activateChat = this.activateChat.bind(this);
-    this.changeActiveChat = this.changeActiveChat.bind(this);
     this.createModal = this.createModal.bind(this);
     this.destroyModal = this.destroyModal.bind(this);
   }
 
   componentWillMount() {
-    console.info('mount');
-    // TODO Socket connection.
-    console.info('Socket connection...');
-
-    // Retrieve room details.
-    this.props.retrieveRoom({ slug: this.params.room })
+    /*
+     * 1. Connect to Socket.
+     * 2. Enter Room.
+     * 3. Listen for new messages.
+     */
+    this.props.connectSocket()
       .then(() => {
-        // Retrieve room chats.
-        return this.props.retrieveChat(this.props.rooms[0]);
+        return this.props.enterRoom(this.params.rooms);
+      })
+      .then(() => {
+        console.error('hey');
+        return this.props.receiveMessages();
       })
       .then(() => {
         this.setState({ loaded: true });
-
-        this.activateChat();
       });
-  }
-
-  activateChat() {
-    // Activate a chat (defined in the URI).
-    if (this.params.chat) {
-      this.props.activateChat(this.params.chat);
-    }
-  }
-
-  changeActiveChat(chatId) {
-    browserHistory.push(`/room/${this.params.room}/${chatId}`);
-    this.params['chat'] = chatId;
-    this.activateChat();
   }
 
   createModal(element) {
@@ -83,62 +55,58 @@ export class RoomBase extends Component {
   }
 
   render() {
-    const { chats } = this.props;
+    const loadingPage = <div>
+      Loading... (taking too long?)
+      {this.props.connectError}
+    </div>;
+    const loadedPage = <div className="row">
+      {/* Full page modal */}
+      {this.state.modal && <div className="modal" onClick={this.destroyModal}>{this.state.modal}</div>}
 
-    return (
-      <div className="row">
-        {/* Modal */}
-        {this.state.modal && <div className="modal" onClick={this.destroyModal}>{this.state.modal}</div>}
+      {/* Sidebar */}
+      {/*{this.params.room}*/}
+      <RoomSidebar params={this.params} createModal={this.createModal} />
 
-        {/* Sidebar */}
-        {!this.state.loaded && <span>Loading...</span>}
-        {this.state.loaded
-          && <RoomSidebar createModal={this.createModal} changeActiveChat={this.changeActiveChat} />}
+       {/* Chat
+         * Why does RoomChat require loaded, and not the sidebar?
+         * 1. Socket is not ready yet, sending messages would throw ugly errors.
+         * 2. (most important) If messages history is retrieved before client is
+         * connected to server socket it might miss messages (the newest ones
+         * that have arrived after retrieving from AJAX API to Entering the Room
+         * through socket. */}
+      {this.state.loaded && <RoomChatLoader />}
+    </div>;
 
-        {/* Chat */}
-        {this.props.isActivatingChat && <span>Loading chat...</span>}
-        {this.state.loaded && !this.props.isActivatingChat && this.props.activateChatError && <RoomChatError />}
-        {this.state.loaded && !this.props.isActivatingChat && !this.props.activeChat && !this.props.activateChatError && <NoChatSelected />}
-        {this.state.loaded
-          && !this.props.isActivatingChat
-          && this.props.activeChat
-          && <RoomChat />}
-      </div>
-    );
+    return this.state.loaded ? loadedPage : loadingPage;
   }
 }
 
 RoomSidebar.PropTypes = {
   routing: PropTypes.element.isRequired,
 
-  retrieveRoom: PropTypes.func.isRequired,
-  isRetrievingRoom: PropTypes.bool,
-  roomRetrieveError: PropTypes.any,
-  rooms: PropTypes.Array,
+  connectSocket: PropTypes.func.isRequired,
+  isConnecting: PropTypes.bool,
+  connectError: PropTypes.any,
 
-  retrieveChat: PropTypes.func.isRequired,
-  chats: PropTypes.Array,
+  disconnectSocket: PropTypes.func.isRequired,
+  isDisconnecting: PropTypes.bool,
+  disconnectError: PropTypes.any,
 
-  activateChat: PropTypes.func.isRequired,
-  activate: PropTypes.bool,
-  activateChatError: PropTypes.any,
-  activeChat: PropTypes.element,
+  enterRoom: PropTypes.func.isRequired,
+
+  receiveMessages: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = function mapStateToProps(state) {
   return {
     routing: state.routing,
 
-    isRetrievingRoom: state.room.isRetrieving,
-    roomRetrieveError: state.room.retrieveError,
-    rooms: state.room.retrieveResult,
+    isConnecting: state.socket.isConnecting,
+    connectError: state.socket.connectError,
 
-    chats: state.chat.retrieveResult,
-
-    isActivatingChat: state.chat.isActivating,
-    activateChatError: state.chat.activateError,
-    activeChat: state.chat.activateResult,
+    isDisconnecting: state.socket.isDisconnecting,
+    disconnectError: state.socket.disconnectError,
   }
 };
 
-export default connect(mapStateToProps, { retrieveRoom, retrieveChat, activateChat })(RoomBase);
+export default connect(mapStateToProps, { connectSocket, disconnectSocket, enterRoom, receiveMessages })(RoomBase);

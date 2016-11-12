@@ -2,13 +2,19 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 
+import socketMiddleware from './middleware/socketMiddleware';
 import clientMiddleware from './middleware/clientMiddleware';
 import reducer from './modules/reducer';
 
-export default function configureStore(initialState, apiClient) {
+export default function configureStore(initialState, socketClient, apiClient) {
   // Create middleware
   const loggerMiddleware = createLogger();
-  const middleware = [thunkMiddleware, clientMiddleware(apiClient), loggerMiddleware];
+  const middleware = [
+    thunkMiddleware,
+    socketMiddleware(socketClient),
+    clientMiddleware(apiClient),
+    loggerMiddleware
+  ];
 
   const store = createStore(
     reducer,

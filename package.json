@@ -54,6 +54,7 @@
     "redux-thunk": "^2.1.0",
     "resolve-url": "^0.2.1",
     "sass-loader": "^4.0.2",
+    "socket.io-client": "^1.5.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2"
