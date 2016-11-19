@@ -31,7 +31,7 @@ export const createMessage = (req, res, next) => {
     if (err) return next(err);
 
     return res.json(message);
-  })
+  });
 };
 
 export const editMessage = (req, res, next) => {
