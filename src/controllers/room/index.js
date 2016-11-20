@@ -1,25 +1,22 @@
 import Room from '~/models/Room';
+import { findUser } from '~/services/user';
+import { findJoinedRoomsByUser, findRoomBySlug } from '~/services/room';
 
-// Returns rooms that an user has joined.
-export const joinedRooms = (req, res, next) => {
-  const user = req.paramUser;
-
-  Room.find({ members: user }, (err, rooms) => {
-    if (err) next(err);
-
-    return res.json(rooms);
-  });
+// Returns the rooms that an user has joined.
+export const findJoinedByUser = (userId) => {
+  return findUser(userId)
+    .then(() => findJoinedRoomsByUser(userId));
 };
 
-// Returns rooms that an user owns.
-export const ownedRooms = (req, res, next) => {
-  const user = req.paramUser;
+// Returns the rooms that an user owns.
+export const ownedRooms = (userId) => { // TODO: fix
+  return findUser(userId)
+    .then(() => findJoinedRoomsByUser(userId));
+};
 
-  Room.find({ owner: user }, (err, rooms) => {
-    if (err) next(err);
-
-    return res.json(rooms);
-  });
+// Returns the room that matches the slug.
+export const findBySlug = (slug) => {
+  return findRoomBySlug(slug);
 };
 
 // Returns all available rooms.

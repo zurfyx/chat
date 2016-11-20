@@ -1,5 +1,10 @@
 import Message from '~/models/Message';
 
+import { chain } from '~/helpers/promise';
+import { isAuthenticated } from '~/services/auth';
+import { findChat } from '~/services/chat';
+import { createMessage, emitMessage } from '~/services/message';
+
 export const messages = (req, res, next) => {
   const chat = req.chat;
 
@@ -10,28 +15,15 @@ export const messages = (req, res, next) => {
   });
 };
 
-export const createMessage = (req, res, next) => {
-  const chat = req.chat;
-  const user = req.user;
-
-  req.checkBody('content', 'Content cannot be blank').notEmpty();
-  req.sanitize('content').trim();
-
-  const errors = req.validationErrors();
-  if (errors) {
-    return next(errors);
-  }
-
-  const newMessage = new Message();
-  newMessage.chat = chat;
-  newMessage.owner = user;
-  newMessage.content = req.body.content;
-
-  newMessage.save((err, message) => {
-    if (err) return next(err);
-
-    return res.json(message);
-  });
+// Create a new message, and emit it to all connected users in the room.
+export const create = (currentUserId, chatId, content) => {
+  let roomId;
+  return chain
+    .then(() => isAuthenticated(currentUserId))
+    .then(() => findChat(chatId))
+    .then((chat) => roomId = chat.room)
+    .then(() => createMessage(currentUserId, chatId, content))
+    .then((message) => emitMessage(roomId, message));
 };
 
 export const editMessage = (req, res, next) => {

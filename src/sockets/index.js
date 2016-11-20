@@ -1,98 +1,72 @@
-import Room from '~/models/Room';
-import Chat from '~/models/Chat';
-import Message from '~/models/Message';
+import { infoDev } from '~/helpers/development';
+import store from '~/store';
+import { addSocketToRoom, removeSocketFromRoom } from '~/store/room';
+import * as room from '~/controllers/room';
+import * as message from '~/controllers/message';
 
-const roomConnections = {}; // { roomId: Set([socket, ...]) }.
+/**
+ * Handles controller execution and responds to user (socket version).
+ * This way controllers are not attached to the socket.
+ * API has a similar handler implementation.
+ * @param promise Controller Promise.
+ * @param params (req) => [params, ...].
+ */
+const controllerHandler = (promise, params) => (data, acknowledgement) => {
+  const boundParams = params(data);
+
+  if (!acknowledgement) {
+    return promise(...boundParams);
+  }
+
+  return promise(...boundParams)
+    .then((result) => acknowledgement(result))
+    .catch((error) => acknowledgement({error})
+    );
+};
+const c = controllerHandler; // Just a name shortener.
 
 export default function connectionHandler(socket) {
   const userId = socket.handshake.session.passport && socket.handshake.session.passport.user;
   let enteredRoomId;
 
-  if (process.env.NODE_ENV !== 'production') {
-    console.info(`⚡︎ New connection: ${userId}`);
-  }
+  infoDev(`⚡︎ New connection: ${userId}`);
 
-  // Give the user a warm welcome.
-  socket.emit('UserID', userId);
-
-  // Handle disconnection.
-  socket.on('disconnect', () => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.info(`⚡︎ Disconnection: ${userId}`);
-    }
-    leaveRoom();
-  });
-
-  /*
+  /**
    * Listen for user commands.
    */
-
-  socket.on('EnterRoom', (slug, callback) => {
-    console.info('enter room');
-
-    // Leave any previous entered Room first.
-    leaveRoom();
-
-    Room.find({ slug }, (err, room) => {
-      if (err) return socket.emit('EnterRoomError', 'There was an error finding the room.');
-      if (!room) return socket.emit('EnterRoomError', 'The room does not exist');
-
-      // Enter the room.
-      enteredRoomId = room._id;
-      if (!roomConnections[enteredRoomId]) {
-        roomConnections[enteredRoomId] = new Set();
-      }
-      roomConnections[enteredRoomId].add(socket);
-
-      return callback(room);
-    });
-  });
-
-  socket.on('SendMessage', (data, callback) => {
-    console.info('send message');
-    const { chatId, content } = data;
-
-    Chat.findOne({ _id: chatId }, (err, chat) => {
-      if (err) return socket.emit('SendMessageError', 'There was an error sending your message');
-      if (!chat) return socket.emit('SendMessageError', 'The chat does not exist');
-
-      // Save message in the DB.
-      const newMessage = new Message();
-      newMessage.chat = chat;
-      newMessage.owner = userId;
-      newMessage.content = content;
-
-      newMessage.save((err, message) => {
-        if (err) return console.info(err) && socket.emit('SendMessageError', 'There was an error saving your message.');
-
-        // Message saving succeeded.
-        callback(newMessage);
-
-        // Send message to other online users.
-        emitMessage(chat.room._id, message);
-      });
-    });
-  });
-
-  /*
-   * Functions.
-   */
-
-  // Remove connection from the previous room (if any).
-  function leaveRoom() {
+  socket.on('disconnect', () => {
+    infoDev(`⚡︎ Disconnection: ${userId}`);
     if (enteredRoomId) {
-      const roomMembers = roomConnections[enteredRoomId];
-      roomMembers.delete(socket);
+      store.dispatch(removeSocketFromRoom(enteredRoomId, socket));
     }
-  }
+  });
 
-  // Emit a message to all room users.
-  function emitMessage(roomId, message) {
-    const membersList = roomConnections[roomId];
-    if (membersList) {
-      membersList.forEach((socket) => {
-        socket.emit('ReceiveMessage', message);
-      });
-    }
-  }
+  socket.on('UserID', (callback) => callback(userId));
+
+  /**
+   * Socket will join (and listen) the given room notifications.
+   * EnterRoom is a unique event that has no equivalent in the API.
+   */
+  socket.on('EnterRoom', c((slug) => {
+    let enteredRoom;
+
+    return new Promise((resolve) => {
+        // An user can only be listening a room at a time
+        if (enteredRoomId) {
+          return store.dispatch(removeSocketFromRoom(enteredRoomId, socket))
+            .then(() => resolve());
+        }
+        return resolve();
+      })
+      .then(() => room.findBySlug(slug))
+      .then((room) => {
+        enteredRoomId = room._id;
+        enteredRoom = room;
+
+        return store.dispatch(addSocketToRoom(enteredRoomId, socket));
+      })
+      .then(() => enteredRoom);
+  }, (data) => [data]));
+
+  socket.on('SendMessage', c(message.create, (data) => [userId, data.chatId, data.content]))
 }
