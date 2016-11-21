@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 import { retrieve as retrieveRooms } from 'redux/modules/room';
 import { retrieve as retrieveChats, activate as activateChat } from 'redux/modules/chat';
@@ -19,7 +20,7 @@ export class RoomSidebar extends Component {
      * - Retrieve Room Chats and activate the one that is in the URL (skip if
      * wasn't specified). Activating will enable ChatRoom.
      */
-    this.props.retrieveRooms(this.props.params.room).then(() => {
+    this.props.retrieveRooms({ slug: this.props.params.room }).then(() => {
       // In order to retrieve room chats, we required its _id first.
       this.props.retrieveChats(this.props.rooms[0]._id);
     });
@@ -34,15 +35,20 @@ export class RoomSidebar extends Component {
   }
 
   handleActivateChat(chatId) {
+    // If the user by their own switches to another chat, we will reflect it
+    // to the route as well, so they can come back by using that reference.
+    // Route: /room/room-slug/chat-identifier
+    browserHistory.push(`/room/${this.props.params.room}/${chatId}`);
+
     this.props.activateChat(chatId);
   }
 
   render() {
     const styles = require('./RoomSidebar.scss');
-    const { rooms, chats, handleActiveChat } = this.props;
+    const { rooms, chats } = this.props;
 
     const chatsList = chats.map((chat, i) =>
-      <a key={i} onClick={() => handleActiveChat(chat._id)}>
+      <a key={i} onClick={() => this.handleActivateChat(chat._id)}>
         <li>{chat.title}</li>
       </a>
     );
@@ -57,7 +63,7 @@ export class RoomSidebar extends Component {
           </div>
           <div className="chatListContainer">
             <div className="chatListSummary">
-              <button className={styles.new} onClick={this.handleNewChat}>+</button>
+              {rooms && <button className={styles.new} onClick={this.handleNewChat}>+</button>}
               Chats ({chats.length})
             </div>
             <ul className={styles.chatList}>

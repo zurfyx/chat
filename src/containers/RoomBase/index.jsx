@@ -33,10 +33,9 @@ export class RoomBase extends Component {
      */
     this.props.connectSocket()
       .then(() => {
-        return this.props.enterRoom(this.params.rooms);
+        return this.props.enterRoom(this.params.room);
       })
       .then(() => {
-        console.error('hey');
         return this.props.receiveMessages();
       })
       .then(() => {

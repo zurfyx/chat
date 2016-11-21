@@ -32,7 +32,7 @@ componentWillMount() {
 
     return (
       <div className={styles.appPage}>
-        {this.props.loading ? <Loading /> : <AppLoaded {...this.props} />}
+        {this.props.isLoading ? <Loading /> : <AppLoaded {...this.props} />}
       </div>
     );
   }
@@ -44,7 +44,7 @@ App.propTypes = {
   footer: PropTypes.element,
 
   load: PropTypes.func.isRequired,
-  loading: PropTypes.bool,
+  isLoading: PropTypes.bool,
   loaded: PropTypes.bool,
   loadError: PropTypes.object,
 
@@ -54,7 +54,7 @@ App.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.auth.loading,
+    isLoading: state.auth.isLoading,
     loaded: state.auth.loaded,
     loadError: state.auth.loadError,
 

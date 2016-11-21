@@ -14,9 +14,9 @@ export class CreateChat extends Component {
 
   handleSubmit(data) {
     const { create, rooms, createError } = this.props;
-    const room = rooms[0];
+    const roomId = rooms[0]._id;
 
-    return create(room, data.title, data.description)
+    return create(roomId, data.title, data.description)
       .then(() => {
         if (createError) {
           const errorMessage = `Chat creation failed! ${typeof createError.message === 'string' ? createError.message : ''}`;
@@ -24,7 +24,7 @@ export class CreateChat extends Component {
         }
 
         // Retrieve updated list of chats.
-        return this.props.retrieve(room);
+        return this.props.retrieve(roomId);
       })
       .then(() => {
         return this.props.complete();
@@ -32,6 +32,7 @@ export class CreateChat extends Component {
   }
 
   render() {
+    console.info(this.props.rooms);
     return (
       <div className="content box">
         <div className="form-container-2">
@@ -45,12 +46,14 @@ export class CreateChat extends Component {
   }
 }
 
-CreateChat.propTypes = {
-  room: PropTypes.Array,
+CreateChat.PropTypes = {
   complete: PropTypes.func.isRequired,
 
-  create: PropTypes.func.isRequired,
+  rooms: PropTypes.Array,
+
   retrieve: PropTypes.func.isRequired,
+
+  create: PropTypes.func.isRequired,
   isCreating: PropTypes.bool,
   createError: PropTypes.any,
 };

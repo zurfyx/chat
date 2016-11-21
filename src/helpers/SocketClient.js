@@ -28,8 +28,10 @@ export default class socketAPI {
     return new Promise((resolve, reject) => {
       if (!this.socket) return reject('No socket connection.');
 
-      return this.socket.emit(event, data, () => {
-        resolve();
+      return this.socket.emit(event, data, (response) => {
+        if (response.error) return reject();
+
+        return resolve();
       });
     });
   }

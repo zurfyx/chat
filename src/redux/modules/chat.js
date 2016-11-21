@@ -72,10 +72,10 @@ export default function reducer(state = {}, action = {}) {
   }
 }
 
-export function create(room, title, description) {
+export function create(roomId, title, description) {
   return {
     types: [CREATE, CREATE_SUCCESS, CREATE_FAIL],
-    promise: (client) => client.post(`/api/rooms/${room._id}/chats`, {
+    promise: (client) => client.post(`/api/rooms/${roomId}/chats`, {
       data: {
         title,
         description,

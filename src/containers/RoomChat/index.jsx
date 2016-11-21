@@ -37,8 +37,10 @@ export class RoomChat extends Component {
     const styles = require('./RoomChat.scss');
     const { chat, messages } = this.props;
 
-
-    let messagesList = messages.map((message, i) => (
+    const chatMessages = messages.filter((message) => {
+      return message.chat === chat._id;
+    });
+    const renderedMessages = chatMessages.map((message, i) => (
       <div className="message" key={i}>
         {message.content}
       </div>
@@ -53,7 +55,7 @@ export class RoomChat extends Component {
 
         <div className={styles.chatHistory}>
           <div className="message">
-            {messagesList}
+            {renderedMessages}
           </div>
         </div>
 

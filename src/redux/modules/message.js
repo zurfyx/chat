@@ -15,6 +15,12 @@ const RECEIVE_FAIL = 'redux/message/RECEIVE_FAIL';
 
 const NEW_MESSAGE = 'redux/message/NEW_MESSAGE';
 
+/**
+ *
+ * @param state
+ * @param action
+ * @returns {*}
+ */
 export default function reducer(state = {}, action = {}) {
   switch(action.type) {
     case RETRIEVE:
