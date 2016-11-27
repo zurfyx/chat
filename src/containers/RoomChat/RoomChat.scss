@@ -11,6 +11,8 @@
   color: $black5;
   font-size: 0.9em;
   padding: 9px 15px;
+  margin-left: 10px;
+  margin-right: 10px;
 
   h3 {
     color: $black4;
@@ -20,14 +22,10 @@
   }
 }
 
-.chatHistory {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-}
-
 .chatBox {
   border-top: 1px solid $grey;
+  margin-left: 10px;
+  margin-right: 10px;
 
   form {
     margin: 0;

@@ -1,0 +1,58 @@
+@import '../../styles/variables';
+
+
+.messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.loadMore {
+  color: $black9;
+  font-weight: bold;
+  text-align: center;
+}
+
+.message {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid $grey;
+  padding-top: 25px;
+  margin-top: 25px;
+}
+
+.messageSenderImage {
+  background-image: url(http://orig06.deviantart.net/6c2b/f/2016/260/7/4/bonfim_br_sprite_by_prettyjianachica-dahzsnt.png);
+  background-size: cover;
+  border-radius: 999px;
+  width: 40px;
+  height: 40px;
+}
+
+.messageInformation {
+  flex: 1;
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+.messageHeader {
+  padding-bottom: 10px;
+}
+
+.messageSenderName {
+  font-weight: 600;
+}
+
+.messageTimestamp {
+  float: right;
+  color: $black5;
+  font-size: 0.8em;
+}
+
+.messageEdited {
+
+}
+
+.messageContent {
+
+}

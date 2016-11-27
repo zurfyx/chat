@@ -1,10 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import {
-  retrieve as retrieveMessages,
-  send as sendMessage,
-} from 'redux/modules/message';
+import { send as sendMessage } from 'redux/modules/message';
+import RoomChatHistory from 'containers/RoomChatHistory';
 
 export class RoomChat extends Component {
   constructor(props) {
@@ -16,10 +14,6 @@ export class RoomChat extends Component {
 
     this.handleFormContentChange = this.handleFormContentChange.bind(this);
     this.handleSendMessage = this.handleSendMessage.bind(this);
-  }
-  componentDidMount() {
-    const chatId = this.props.chat._id;
-    this.props.retrieveMessages(chatId);
   }
 
   handleFormContentChange(e) {
@@ -35,16 +29,7 @@ export class RoomChat extends Component {
 
   render() {
     const styles = require('./RoomChat.scss');
-    const { chat, messages } = this.props;
-
-    const chatMessages = messages.filter((message) => {
-      return message.chat === chat._id;
-    });
-    const renderedMessages = chatMessages.map((message, i) => (
-      <div className="message" key={i}>
-        {message.content}
-      </div>
-    ));
+    const { chat } = this.props;
 
     return (
       <div className={styles.roomChatPage}>
@@ -53,14 +38,10 @@ export class RoomChat extends Component {
           {chat.description}
         </div>
 
-        <div className={styles.chatHistory}>
-          <div className="message">
-            {renderedMessages}
-          </div>
-        </div>
+        <RoomChatHistory />
 
         <div className={styles.chatBox}>
-          <form onSubmit={this.handleSendMessage}> {/* TODO */}
+          <form onSubmit={this.handleSendMessage}>
             <input
               type="text"
               placeholder="Type a message"
@@ -78,24 +59,13 @@ export class RoomChat extends Component {
 RoomChat.PropTypes = {
   chat: PropTypes.element,
 
-  retrieveMessages: PropTypes.func.isRequired,
-  isRetrievingMessages: PropTypes.bool,
-  retrieveMessagesError: PropTypes.any,
-  messages: PropTypes.Array,
-};
-
-RoomChat.defaultProps = {
-  messages: [],
+  sendMessage: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = function mapStateToProps(state) {
   return {
     chat: state.chat.activateResult,
-
-    isRetrievingMessages: state.message.isRetrieving,
-    retrieveMessagesError: state.message.retrieveError,
-    messages: state.message.retrieveResult,
   }
 };
 
-export default connect(mapStateToProps, { retrieveMessages, sendMessage })(RoomChat);
+export default connect(mapStateToProps, { sendMessage })(RoomChat);
