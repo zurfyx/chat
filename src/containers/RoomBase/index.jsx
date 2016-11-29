@@ -43,6 +43,15 @@ export class RoomBase extends Component {
       });
   }
 
+  componentWillUnmount() {
+    /*
+     * Disconnect from Socket.
+     * Will prevent the user from "running out of sockets" if he enters - leaves
+     * rooms too quickly.
+     */
+    return this.props.disconnectSocket();
+  }
+
   createModal(element) {
     this.setState({ modal: element });
   }
