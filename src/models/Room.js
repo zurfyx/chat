@@ -16,10 +16,6 @@ const roomSchema = new Schema({
     ref: 'User',
     index: true,
   }],
-  online: [{
-    type: Schema.ObjectId,
-    ref: 'User',
-  }]
 }, { timestamps: true });
 
 const Room = mongoose.model('Room', roomSchema);

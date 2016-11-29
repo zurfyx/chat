@@ -11,6 +11,18 @@ const messageSchema = new Schema({
     ref: 'User',
   },
 
+  // contentType defines the sort of content that this message will contain, to
+  // identify the stored content:
+  // plain: standard text.
+  // language: a programming language (define language).
+  contentType: {
+    type: String,
+    enum: ['plain', 'language'],
+    required: 'Message type is required',
+
+    language: { String, enum: ['markdown', 'html', 'javascript', 'css'] },
+  },
+
   content: String,
 
   deletedAt: Date,
