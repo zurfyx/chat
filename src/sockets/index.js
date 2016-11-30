@@ -1,4 +1,5 @@
 import { infoDev } from '~/helpers/development';
+import { chain } from '~/helpers/promise';
 import store from '~/store';
 import { addSocketToRoom, removeSocketFromRoom } from '~/store/room';
 import * as room from '~/controllers/room';
@@ -50,13 +51,11 @@ export default function connectionHandler(socket) {
   socket.on('EnterRoom', c((slug) => {
     let enteredRoom;
 
-    return new Promise((resolve) => {
-        // An user can only be listening a room at a time
+    return chain
+      .then(() => {
         if (enteredRoomId) {
-          return store.dispatch(removeSocketFromRoom(enteredRoomId, socket))
-            .then(() => resolve());
+          return store.dispatch(removeSocketFromRoom(enteredRoomId, socket));
         }
-        return resolve();
       })
       .then(() => room.findBySlug(slug))
       .then((room) => {

@@ -22,13 +22,32 @@ export default function reducer(state = {}, action = {}) {
     }
     case REMOVE_SOCKET_FROM_ROOM: {
       const { roomId, socket } = action;
-      if (state[roomId].size === 1) {
-        // This socket is the last one in the room. There is no need to keep
-        // the Set in memory anymore.
-        delete state[roomId];
-      } else {
+
+      // Note: multiple connections from the same client have the same socket.id,
+      // hence it's possible that we get 2+ room removals from the same socket.
+      // There's no clear need that we need that we need to keep track of these
+      // different connections (since we are only expecting the client to make a
+      // connection at a time, and reconnect only if the previous connection
+      // crashed), but we have to ensure that the app won't crash if that is the
+      // case.
+      // https://github.com/socketio/socket.io/issues/430#issuecomment-13875222
+
+      // If there is no populated room, we assume all members already left, and
+      // the current one is simply one of these repeated connections (which is
+      // no longer in the room because at least one of their other clones left).
+      if (state[roomId]) {
+        // If the socket is not found in this room it is totally fine. Just no
+        // removal will be done (same case as above, but this time there's at
+        // least someone connected).
         state[roomId].delete(socket);
+
+        if (state[roomId].size === 0) {
+          // There's no-one else in this room, let's remove the empty Set()
+          // object, to avoid wasting unnecessary memory.
+          state[roomId].delete(socket);
+        }
       }
+
       return { ...state };
     }
     default: {
