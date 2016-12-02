@@ -1,8 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
+import marked from 'marked';
 
 import { retrieve as retrieveMessages } from 'redux/modules/message';
+
+// Text messages Markdown config
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: false
+});
 
 export class RoomChatHistory extends Component {
   constructor(props) {
@@ -53,8 +66,7 @@ export class RoomChatHistory extends Component {
               {message.createdAt != message.updatedAt && <span className={styles.messageEdited}>(edited)</span>}
             </span>
           </div>
-          <div className={styles.messageContent}>
-            {message.content}
+          <div className={styles.messageContent} dangerouslySetInnerHTML={{__html: marked(message.content)}}>
           </div>
         </div>
       </div>

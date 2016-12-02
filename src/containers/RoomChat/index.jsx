@@ -13,18 +13,18 @@ export class RoomChat extends Component {
     };
 
     this.handleFormContentChange = this.handleFormContentChange.bind(this);
-    this.handleSendMessage = this.handleSendMessage.bind(this);
+    this.handleSendTextMessage = this.handleSendTextMessage.bind(this);
   }
 
   handleFormContentChange(e) {
     this.setState({ formContent: e.target.value });
   }
 
-  handleSendMessage(e) {
+  handleSendTextMessage(e) {
     e.preventDefault();
 
     this.setState({ formContent: '' });
-    this.props.sendMessage(this.props.chat._id, this.state.formContent);
+    this.props.sendMessage(this.props.chat._id, this.state.formContent, 'plain');
   }
 
   render() {
@@ -41,7 +41,7 @@ export class RoomChat extends Component {
         <RoomChatHistory />
 
         <div className={styles.chatBox}>
-          <form onSubmit={this.handleSendMessage}>
+          <form onSubmit={this.handleSendTextMessage}>
             <input
               type="text"
               placeholder="Type a message"

@@ -61,8 +61,8 @@ export function retrieve(chatId) {
   }
 }
 
-export function send(chatId, content) {
-  const message = { chatId, content };
+export function send(chatId, content, contentType, contentTypeSpecifics) {
+  const message = { chatId, content, contentType, contentTypeSpecifics };
   return {
     type: 'socket',
     types: [SEND, SEND_SUCCESS, SEND_FAIL],
