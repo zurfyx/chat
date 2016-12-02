@@ -16,13 +16,13 @@ export const messages = (req, res, next) => {
 };
 
 // Create a new message, and emit it to all connected users in the room.
-export const create = (currentUserId, chatId, content) => {
+export const create = (currentUserId, chatId, content, contentType, contentTypeSpecifics) => {
   let roomId;
   return chain
     .then(() => isAuthenticated(currentUserId))
     .then(() => findChat(chatId))
     .then((chat) => roomId = chat.room)
-    .then(() => createMessage(currentUserId, chatId, content))
+    .then(() => createMessage(currentUserId, chatId, content, contentType, contentTypeSpecifics))
     .then((message) => emitMessage(roomId, message));
 };
 

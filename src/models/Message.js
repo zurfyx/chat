@@ -9,21 +9,24 @@ const messageSchema = new Schema({
   owner: {
     type: Schema.ObjectId,
     ref: 'User',
+    required: 'Owner is required',
   },
+
+  content: String,
 
   // contentType defines the sort of content that this message will contain, to
   // identify the stored content:
   // plain: standard text.
-  // language: a programming language (define language).
+  // language: a programming language.
   contentType: {
     type: String,
     enum: ['plain', 'language'],
-    required: 'Message type is required',
-
-    language: { String, enum: ['markdown', 'html', 'javascript', 'css'] },
+    required: 'Content type is required',
   },
-
-  content: String,
+  contentTypeSpecifics: {
+    // Use with 'language'.
+    language: { type: String, enum: ['markdown', 'html', 'javascript', 'css'] }
+  },
 
   deletedAt: Date,
 }, { timestamps: true });

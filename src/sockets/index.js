@@ -67,5 +67,5 @@ export default function connectionHandler(socket) {
       .then(() => enteredRoom);
   }, (data) => [data]));
 
-  socket.on('SendMessage', c(message.create, (data) => [userId, data.chatId, data.content]))
+  socket.on('SendMessage', c(message.create, (data) => [userId, data.chatId, data.content, data.contentType, data.contentTypeSpecifics]))
 }

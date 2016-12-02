@@ -7,7 +7,7 @@ import Message from '~/models/Message';
  * Given an existing userId and chatId, save a new message with the given string
  * content.
  */
-export function createMessage(userId, chatId, content) {
+export function createMessage(userId, chatId, content, contentType, contentTypeSpecifics) {
   const sanitizedContent = validator.trim(content);
 
   if (validator.isEmpty(content)) {
@@ -18,6 +18,8 @@ export function createMessage(userId, chatId, content) {
   newMessage.owner = userId;
   newMessage.chat = chatId;
   newMessage.content = sanitizedContent;
+  newMessage.contentType = contentType;
+  newMessage.contentTypeSpecifics = contentTypeSpecifics;
 
   return newMessage.save();
 }
