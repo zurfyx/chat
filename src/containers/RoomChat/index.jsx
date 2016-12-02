@@ -12,8 +12,17 @@ export class RoomChat extends Component {
       formContent: '',
     };
 
+    this.handleFormKeyDown = this.handleFormKeyDown.bind(this);
     this.handleFormContentChange = this.handleFormContentChange.bind(this);
     this.handleSendTextMessage = this.handleSendTextMessage.bind(this);
+  }
+
+  handleFormKeyDown(e) {
+    // Form can be submitted through the input message textarea too!
+    // That is by using the Enter key (Shift-Enter for new lines).
+    if (e.keyCode === 13 && !e.shiftKey) {
+      this.handleSendTextMessage(e);
+    }
   }
 
   handleFormContentChange(e) {
@@ -23,8 +32,10 @@ export class RoomChat extends Component {
   handleSendTextMessage(e) {
     e.preventDefault();
 
-    this.setState({ formContent: '' });
-    this.props.sendMessage(this.props.chat._id, this.state.formContent, 'plain');
+    if (this.state.formContent !== '') {
+      this.props.sendMessage(this.props.chat._id, this.state.formContent, 'plain');
+      this.setState({formContent: ''});
+    }
   }
 
   render() {
@@ -41,8 +52,9 @@ export class RoomChat extends Component {
         <RoomChatHistory />
 
         <div className={styles.chatBox}>
-          <form onSubmit={this.handleSendTextMessage}>
-            <input
+          <form onKeyDown={this.handleFormKeyDown}
+                onSubmit={this.handleSendTextMessage}>
+            <textarea
               type="text"
               placeholder="Type a message"
               required
