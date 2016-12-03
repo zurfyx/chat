@@ -33,7 +33,7 @@ export class RoomChatHistory extends Component {
 
   componentWillUpdate() {
     const node = findDOMNode(this);
-    this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight
+    this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
   }
 
   componentDidUpdate() {
@@ -55,7 +55,7 @@ export class RoomChatHistory extends Component {
       return message.chat === chat._id;
     });
     const renderedMessages = chatMessages.map((message, i) => (
-      <div className={styles.message} key={i}>
+      <div className={styles.message} key={i} onLoadedData={() => console.info('loaded')}>
         <div className={styles.messageSenderImage}>
         </div>
         <div className={styles.messageInformation}>
