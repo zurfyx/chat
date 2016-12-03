@@ -31,8 +31,9 @@ a, a:link, a:visited, a:active {
   }
 }
 
-input {
+input, textarea {
   border: 1px solid #888;
+  font-family: 'Raleway', sans-serif;
   font-size: 1.1em;
   font-weight: 200;
   padding: 7px 10px 7px 10px;

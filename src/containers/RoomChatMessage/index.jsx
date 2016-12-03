@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import Textarea from 'react-textarea-autosize';
 
 import { send as sendMessage } from 'redux/modules/message';
 
@@ -44,7 +45,7 @@ export class RoomChatMessage extends Component {
       <div className={styles.chatBox}>
         <form onKeyDown={this.handleFormKeyDown}
               onSubmit={this.handleSendTextMessage}>
-            <textarea
+            <Textarea
               type="text"
               placeholder="Type a message"
               required
