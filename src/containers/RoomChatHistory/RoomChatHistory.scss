@@ -5,6 +5,48 @@
   flex: 1;
   padding: 15px;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-button {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $grey;
+    border: 0 none #ffffff;
+    border-radius: 5px;
+
+    &:hover {
+      background: $grey;
+    }
+
+    &:active {
+      background: $black9;
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $greyExtreme;
+    border: 0 none #ffffff;
+    border-radius: 5px;
+
+    &:hover {
+      background: $greyExtreme;
+    }
+
+    &:active {
+      background: $greyExtreme;
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }
 
 .loadMore {
