@@ -39,21 +39,20 @@ export class RoomChatMessage extends Component {
   }
 
   render() {
-    const styles = require('./RoomChatMessage.scss');
+    const styles = require('./MessageForm.scss');
 
     return (
-      <div className={styles.chatBox}>
-        <form onKeyDown={this.handleFormKeyDown}
-              onSubmit={this.handleSendTextMessage}>
-            <Textarea
-              type="text"
-              placeholder="Type a message"
-              required
-              value={this.state.formContent}
-              onChange={this.handleFormContentChange}
-            />
-        </form>
-      </div>
+      <form className={styles.chatForm}
+            onKeyDown={this.handleFormKeyDown}
+            onSubmit={this.handleSendTextMessage}>
+        <Textarea
+          type="text"
+          placeholder="Type a message"
+          required
+          value={this.state.formContent}
+          onChange={this.handleFormContentChange}
+        />
+      </form>
     );
   }
 }

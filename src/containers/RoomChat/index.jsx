@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import RoomChatHistory from 'containers/RoomChatHistory';
-import RoomChatMessage from 'containers/RoomChatMessage';
+import RoomChatMessage from 'components/RoomChatMessage';
 
 export class RoomChat extends Component {
   render() {

@@ -1,0 +1,24 @@
+@import '../../styles/variables';
+
+.messageMore {
+  width: 50px;
+  text-align: center;
+}
+
+.moreButton {
+  color: $black3;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  display: inline-block;
+  margin-top: 1em;
+  padding: 4px;
+  font-size: 1.1em;
+
+  &:hover {
+    background-color: $blueLight1;
+
+    i {
+      color: $whiteLight1;
+    }
+  }
+}

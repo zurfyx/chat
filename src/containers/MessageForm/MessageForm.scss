@@ -1,13 +1,8 @@
 @import '../../styles/variables';
 
-.chatBox {
-  border-top: 1px solid $grey;
-  margin-left: 10px;
-  margin-right: 10px;
-
-  form {
-    margin: 0;
-  }
+.chatForm {
+  flex: 1;
+  margin: 0;
 
   textarea {
     border: 0;
