@@ -20,14 +20,22 @@ h2 {
   text-transform: uppercase;
 }
 
-a, a:link, a:visited, a:active {
-  color: $blueMedium1;
-  text-decoration: none;
+a {
+  &, &:link, &:visited, &:active {
+    color: $blueMedium1;
+    text-decoration: none;
+  }
 
   &:hover {
     color: $blueLight1;
     text-decoration: none;
     cursor: pointer;
+  }
+}
+
+:global a.no-decorate {
+  &, &:link, &:visited, &:active {
+    color: $black5;
   }
 }
 
@@ -317,4 +325,29 @@ button {
   }
 
   .description {}
+}
+
+:global .vertical-fold {
+
+  &:hover {
+    > ul {
+      display: inherit;
+    }
+  }
+
+  > ul {
+    display: none;
+    border: 1px solid $black5;
+    border-radius: 5px;
+    background-color: $whiteLight1;
+    position: absolute;
+    padding-left: 0;
+    transition: all 0.2s ease;
+  }
+
+  li {
+    list-style-type: none;
+    padding: 15px;
+    font-size: 1.5em;
+  }
 }
