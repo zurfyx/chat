@@ -18,7 +18,9 @@ const history = syncHistoryWithStore(browserHistory, store);
 const mountPoint = document.getElementById('main');
 
 const renderApp = () => {
-  // Import global styles. Specific styles can be found inside Components or Containers.
+  // Import global styles. Specific styles can be found inside ./src/components
+  // or ./src/containers.
+  // require('../node_modules/font-awesome/css/font-awesome.min.css');
   require('./styles/global.scss');
 
   const routes = require('./routes').default;

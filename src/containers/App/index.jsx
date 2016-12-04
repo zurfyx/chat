@@ -23,7 +23,7 @@ const Loading = () => <div className="loading">Loading...</div>;
  *             - Footer (optional prop.)
  */
 export class App extends Component {
-componentWillMount() {
+  componentWillMount() {
     this.props.load();
   }
 
