@@ -46,7 +46,7 @@ App.propTypes = {
   load: PropTypes.func.isRequired,
   isLoading: PropTypes.bool,
   loaded: PropTypes.bool,
-  loadError: PropTypes.object,
+  loadError: PropTypes.any,
 
   enableAuthModal: PropTypes.func.isRequired,
   authModal: PropTypes.string,

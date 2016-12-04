@@ -39,7 +39,8 @@ a {
   }
 }
 
-input, textarea {
+input, textarea, select {
+  background-color: $whiteLight1;
   border: 1px solid #888;
   font-family: 'Raleway', sans-serif;
   font-size: 1.1em;
@@ -49,10 +50,14 @@ input, textarea {
   transition: border 0.2s ease;
 }
 
-textarea:focus, input:focus {
+textarea:focus, input:focus, select:focus {
   outline: none;
   box-shadow: none;
   border: 1px solid $blueLight1;
+}
+
+:global .CodeMirror {
+  border: 1px solid #888;
 }
 
 button {
@@ -233,6 +238,14 @@ button {
 
   input, button {
     border-radius: 2px;
+  }
+}
+
+:global .form-container-modal {
+  @extend .form-container-2;
+
+  h2 {
+    margin-top: 0;
   }
 }
 

@@ -49,7 +49,8 @@ module.exports = {
         test: /\.scss$/,
         loaders: [
           "style-loader",
-          "css-loader?modules&importLoaders=1&localIdentName=[name]__[local]--[hash:base64:5]",
+          // "css-loader?modules&importLoaders=1&localIdentName=[name]__[local]--[hash:base64:5]", // TODO
+          "css-loader?modules&importLoaders=1",
           "sass"
         ]
       },
@@ -57,7 +58,8 @@ module.exports = {
         test: /\.css$/,
         loaders: [
           "style-loader",
-          "css-loader?modules&importLoaders=1&localIdentName=[name]__[local]--[hash:base64:5]"
+          // "css-loader?modules&importLoaders=1&localIdentName=[name]__[local]--[hash:base64:5]" // TODO
+          "css-loader"
         ]
       },
       {
