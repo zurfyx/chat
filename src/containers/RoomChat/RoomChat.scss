@@ -4,6 +4,7 @@
   flex: 1; // From RoomBase.
   display: flex; // For the Chat.
   flex-direction: column;
+  overflow: hidden;
 }
 
 .chatHeader {

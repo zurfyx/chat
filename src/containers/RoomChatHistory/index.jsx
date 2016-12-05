@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import marked from 'marked';
+import Prism from 'prismjs';
 
 import { retrieve as retrieveMessages } from 'redux/modules/message';
 
@@ -47,7 +48,32 @@ export class RoomChatHistory extends Component {
     node.scrollTop = node.scrollHeight;
   }
 
+  renderMessageContent(message, styles) {
+    if (message.contentType === 'code') {
+      const language = message.contentTypeSpecifics.language;
+      const prismLanguage = Prism.languages[language]
+                              ? Prism.languages[language]
+                              : Prism.languages['markup'];
+      const codeHtml = Prism.highlight(message.content, prismLanguage);
+      return (
+        <pre>
+          <code dangerouslySetInnerHTML={{__html: codeHtml}} />
+        </pre>
+      );
+    }
+    // Plain text (render with Markdown).
+    return (
+      <div
+        className={styles.messageContent}
+        dangerouslySetInnerHTML={{__html: marked(message.content)}}
+      />
+    );
+  }
+
   render() {
+    // Prism css libraries
+    require('../../../node_modules/prismjs/themes/prism.css');
+
     const styles = require('./RoomChatHistory.scss');
     const { chat, messages } = this.props;
 
@@ -66,8 +92,7 @@ export class RoomChatHistory extends Component {
               {message.createdAt != message.updatedAt && <span className={styles.messageEdited}>(edited)</span>}
             </span>
           </div>
-          <div className={styles.messageContent} dangerouslySetInnerHTML={{__html: marked(message.content)}}>
-          </div>
+          {this.renderMessageContent(message, styles)}
         </div>
       </div>
     ));

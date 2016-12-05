@@ -51,6 +51,7 @@
     "react-codemirror": "^0.3.0",
     "react-dom": "^15.3.2",
     "react-fontawesome": "^1.2.0",
+    "react-modal": "^1.5.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.0",
     "react-router-redux": "^4.0.5",

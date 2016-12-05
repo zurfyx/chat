@@ -61,6 +61,8 @@
   border-top: 1px solid $grey;
   padding-top: 25px;
   margin-top: 25px;
+  overflow: auto;
+  word-break: break-all;
 }
 
 .messageSenderImage {
