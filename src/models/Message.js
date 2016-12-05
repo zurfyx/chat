@@ -17,15 +17,15 @@ const messageSchema = new Schema({
   // contentType defines the sort of content that this message will contain, to
   // identify the stored content:
   // plain: standard text.
-  // language: a programming language.
+  // code: a programming snippet.
   contentType: {
     type: String,
-    enum: ['plain', 'language'],
+    enum: ['plain', 'code'],
     required: 'Content type is required',
   },
   contentTypeSpecifics: {
-    // Use with 'language'.
-    language: { type: String, enum: ['markdown', 'html', 'javascript', 'css'] }
+    // Use with 'code'.
+    language: { type: String, enum: ['plain', 'markdown', 'html', 'javascript', 'css'] }
   },
 
   deletedAt: Date,
