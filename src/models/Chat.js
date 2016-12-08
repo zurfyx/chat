@@ -14,6 +14,11 @@ const chatSchema = new Schema({
 
   firstMessage: Date,
   lastMessage: Date,
+
+  stickies: [{
+    type: Schema.ObjectId,
+    ref: 'Message',
+  }],
 }, { timestamps: true });
 
 const Chat = mongoose.model('Chat', chatSchema);
