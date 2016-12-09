@@ -18,16 +18,16 @@
       }
     },
     "test": {
-      "command": "mocha --compilers js:babel-core/register --timeout 10000 \"./test/**/*@(.js|.jsx)\"",
+      "command": "mocha --compilers js:babel-core/register \"./test/**/*@(.js|.jsx)\"",
       "env": {
-        "NODE_ENV": "development",
+        "NODE_ENV": "production",
         "PORT": 3030
       }
     },
     "coverage": {
       "command": "istanbul cover _mocha -- --compilers js:babel-core/register \"./test/**/*@(.js|.jsx)\"",
       "env": {
-        "NODE_ENV": "development",
+        "NODE_ENV": "production",
         "PORT": 3030
       }
     }
@@ -65,10 +65,9 @@
     "babel-core": "^6.17.0",
     "babel-preset-es2015": "^6.16.0",
     "chai": "^3.5.0",
-    "chai-http": "^3.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.0",
-    "mockgoose": "^6.0.8",
-    "nodemon": "^1.10.2"
+    "nodemon": "^1.10.2",
+    "superagent": "^3.1.0"
   }
 }

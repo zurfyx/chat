@@ -23,7 +23,7 @@ const router = express.Router();
  * @param params (req) => [params, ...].
  */
 const controllerHandler = (promise, params) => (req, res, next) => {
-  const boundParams = params(req);
+  const boundParams = params ? params(req) : [];
   return promise(...boundParams)
     .then((result) => res.json(result))
     .catch((error) => res.status(500).json({ error })
@@ -48,6 +48,7 @@ router.get('/auth/signout', auth.signout);
 /**
  * Users
  */
+router.get('/users', c(user.users));
 router.get('/users/whoami', c(user.whoami, (req) => [req.user]));
 router.get('/users/:_id', c(user.find, (req) => [req.params._id]));
 

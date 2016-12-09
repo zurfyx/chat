@@ -1,29 +1,26 @@
-import { Mongoose } from 'mongoose';
-import mockgoose from 'mockgoose';
-import chai from 'chai';
-import chaiHttp from 'chai-http';
+import mongoose from 'mongoose';
+import request from 'superagent';
 
 import config from '../config/config';
 
 const PORT = process.env.PORT || 3030;
 
-chai.use(chaiHttp);
-
-const mongoose = new Mongoose();
-mongoose.Promise = global.Promise;
-
 // Globals.
 global.server = `http://localhost:${PORT}`;
-global.mockdb = mockgoose(mongoose);
+global.request = request.agent();
 
 // Setup.
-before((done) => {
-  mockdb.then(() => {
-    const { host, port, db } = config.database.data;
-    console.info(`mongodb://${host}:${port}/${db}`);
-    mongoose.connect(`mongodb://${host}:${port}/${db}`, (err) => {
-      if (err) console.error (err);
-      done(err);
-    });
-  });
+before(() => {
+  // Switch to test databases
+  config.database.data.db += '-test';
+  config.database.session.prefix += '-test';
+
+  // Run the server with these new configs.
+  require('~/server');
+});
+
+// Teardown
+after(() => {
+  // Drop the test databases. TODO. Clear Redis one.
+  mongoose.connection.db.dropDatabase();
 });

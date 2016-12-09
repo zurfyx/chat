@@ -77,7 +77,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Logging (debug only).
-app.use(morgan('dev'));
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 
 // URLs.
 app.use('/', routes);
@@ -93,5 +95,6 @@ io.on('connection', socketConnectionHandler);
 
 // Listen.
 server.listen(port);
-console.info(`🌐  API listening on port ${port}`);
-console.info(`🗲 Socket listening on port ${port}`);
+console.info(`🌐  API + 🗲 Socket listening on port ${port}`);
+
+export default server;
