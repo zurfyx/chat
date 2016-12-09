@@ -49,15 +49,3 @@ export function createAndSignin() {
   return create()
     .then(() => signin());
 }
-
-// function createAuthenticatedRequest(server, loginDetails, done) {
-//   var authenticatedRequest = request.agent();
-//   authenticatedRequest
-//     .post(server)
-//     .send(loginDetails)
-//     .end(function(error, response) {
-//       if (error) {
-//         throw error;
-//       }
-//       done(authenticatedRequest)
-//     });

@@ -17,7 +17,7 @@ export function findUsers() {
  */
 export function findUser(userId) {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw 'No user matched the given userId.';
+    throw 'User ID is invalid.';
   }
 
   return User.findOne({ _id: userId }, basicFields).exec().then((user) => {
