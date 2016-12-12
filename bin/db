@@ -1,6 +1,22 @@
 #!/bin/bash
-# Initializes a MongoDB on project_root/data/
+# On development, you might want to use this to initialize databases.
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
-mkdir -p "${DIR}/../data/"
-mongod --dbpath "${DIR}/../data/"
+
+# Initializes a MongoDB database on project_root/data/
+(
+  mkdir -p "${DIR}/../data/"
+  mongod --dbpath "${DIR}/../data/" &
+)
+
+# Initializes a Redis DB server on project_root/data-session/
+(
+  cd "${DIR}/../"
+  mkdir -p data-session/
+  cd data-session/
+  redis-server &
+)
+
+# On exit script kill databases
+trap 'killall mongod; killall redis-server; exit' SIGINT EXIT
+while true; do read; done

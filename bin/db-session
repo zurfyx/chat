@@ -1,9 +1,0 @@
-#!/bin/bash
-# Initializes a Redis DB server on the system.
-# It will be used to store user session data.
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
-cd "${DIR}../"
-mkdir -p data-session/
-cd data-session/
-redis-server
