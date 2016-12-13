@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 
+import { chain } from '~/helpers/promise';
 import User from '~/models/User';
 
 export const demoUser = {
@@ -46,6 +47,10 @@ export function signin() {
 }
 
 export function createAndSignin() {
-  return create()
-    .then(() => signin());
+  let user;
+  return chain
+    .then(() => create())
+    .then((createdUser) => user = createdUser)
+    .then(() => signin())
+    .then(() => user);
 }

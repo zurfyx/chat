@@ -12,13 +12,13 @@ const chatSchema = new Schema({
 
   github: String,
 
-  firstMessage: Date,
-  lastMessage: Date,
+  firstMessageDate: Date,
+  lastMessageDate: Date,
 
-  stickies: [{
+  sticky: {
     type: Schema.ObjectId,
     ref: 'Message',
-  }],
+  },
 }, { timestamps: true });
 
 const Chat = mongoose.model('Chat', chatSchema);

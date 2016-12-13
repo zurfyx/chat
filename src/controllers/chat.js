@@ -1,4 +1,7 @@
+import { chain } from '~/helpers/promise';
 import Chat from '~/models/Chat';
+import { isAuthenticated } from '~/services/auth';
+import { findChat, editChat } from '~/services/chat';
 
 export const chats = (req, res, next) => {
   const room = req.room;
@@ -34,6 +37,13 @@ export const createChat = (req, res, next) => {
 
     return res.json(chat);
   });
+};
+
+export const edit = (currentUser, chatId, chatValues) => {
+  return chain
+    .then(() => isAuthenticated(currentUser))
+    .then(() => findChat(chatId))
+    .then(() => editChat(chatId, chatValues));
 };
 
 export const getChat = (req, res, next) => {

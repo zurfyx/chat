@@ -26,7 +26,7 @@ const controllerHandler = (promise, params) => (req, res, next) => {
   const boundParams = params ? params(req) : [];
   return promise(...boundParams)
     .then((result) => res.json(result))
-    .catch((error) => res.status(500).json({ error })
+    .catch((error) => res.status(500) && next(error)
     );
 };
 const c = controllerHandler; // Just a name shortener.
@@ -76,6 +76,7 @@ router.post('/rooms/:_id/chats', isAuthenticated, isRoomIdValid, isRoomOwner, ch
  * Chats
  */
 router.get('/chats/:_id', isChatIdValid, chat.getChat);
+router.patch('/chats/:_id', c(chat.edit, (req) => [req.user, req.params._id, req.body]));
 router.delete('/chats/:_id', isAuthenticated, isChatIdValid, chat.deleteChat);
 router.post('/chats/:_id/fork', isAuthenticated, isChatIdValid, chat.forkChat);
 router.post('/chats/:_id/fork-merge', isAuthenticated, isChatIdValid, chat.forkMerge); // Merge fork with the original chat. (?)
@@ -93,13 +94,19 @@ router.delete('/messages/:_id', isAuthenticated, isMessageIdValid, isMessageOwne
 
 /**
  * Default.
- * Authentication errors will end up here.
+ * Authentication errors & de will end up here.
  */
 router.use((err, req, res, next) => {
   res.status(err.status || 500);
-  if (err) {
-    res.json({ error: err });
+
+  if (!err.status) {
+    console.error('~~~ UNEXPECTED ERROR ~~~');
+    console.error(err);
+    err.stack && console.error(err.stack);
+    console.error('~~~~~~~~~~~~~~~~~~~~~~~~~');
   }
+
+  return res.json({ error: err });
 });
 
 export default router;

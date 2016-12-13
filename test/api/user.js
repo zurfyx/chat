@@ -24,7 +24,7 @@ function expectDemoUserBasicFields(user) {
 }
 
 describe('User', () => {
-  beforeEach((done) => {
+  afterEach((done) => {
     User.remove({}).then(() => done());
   });
 

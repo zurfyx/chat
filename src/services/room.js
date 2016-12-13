@@ -1,9 +1,14 @@
+import { isId } from '~/helpers/validation';
 import Room from '~/models/Room';
 
 /**
  * Given a room identifier string, return its object.
  */
 export function findRoom(roomId) {
+  if (!isId(roomId)) {
+    throw 'Room ID is invalid';
+  }
+
   return Room.findOne({ _id: roomId }).exec().then((room) => {
     if (!room) throw 'No room matched the given roomId';
 
