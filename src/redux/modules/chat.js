@@ -6,6 +6,10 @@ const RETRIEVE = 'redux/chat/RETRIEVE';
 const RETRIEVE_SUCCESS = 'redux/chat/RETRIEVE_SUCCESS';
 const RETRIEVE_FAIL = 'redux/chat/RETRIEVE_FAIL';
 
+const EDIT = 'redux/chat/EDIT';
+const EDIT_SUCCESS = 'redux/chat/EDIT_SUCCESS';
+const EDIT_FAIL = 'redux/chat/EDIT_FAIL';
+
 const ACTIVATE = 'redux/chat/ACTIVATE';
 const ACTIVATE_SUCCESS = 'redux/chat/ACTIVATE_SUCCESS';
 const ACTIVATE_FAIL = 'redux/chat/ACTIVATE_FAIL';
@@ -48,6 +52,25 @@ export default function reducer(state = {}, action = {}) {
         retrieveError: action.error,
         retrieveResult: null,
       };
+    case EDIT:
+      return {
+        ...state,
+        isEditing: true,
+      };
+    case EDIT_SUCCESS:
+      return {
+        ...state,
+        isEditing: false,
+        editError: null,
+        editResult: action.result,
+      };
+    case EDIT_FAIL:
+      return {
+        ...state,
+        isEditing: false,
+        editError: action.error,
+        editResult: null,
+      };
     case ACTIVATE:
       return {
         ...state,
@@ -89,6 +112,15 @@ export function retrieve(roomId) {
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
     promise: (client) => client.get(`/api/rooms/${roomId}/chats`),
   };
+}
+
+export function socketEdit(chatId, values) {
+  const editValues = Object.assign({ _id: chatId }, values);
+  return {
+    type: 'socket',
+    types: [EDIT, EDIT_SUCCESS, EDIT_FAIL],
+    promise: (socket) => socket.emit('EditChat', editValues),
+  }
 }
 
 export function activate(chatId) {

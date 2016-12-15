@@ -1,0 +1,18 @@
+@import '../../styles/variables';
+
+.text {
+  display: inline-block;
+  width: 100%;
+
+  &:hover {
+    background-color: $greyExtreme-2;
+  }
+}
+
+.defaultText {
+  font-style: italic;
+}
+
+.edit {
+
+}
