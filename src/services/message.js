@@ -1,7 +1,7 @@
 import validator from 'validator';
 
 import { isId } from '~/helpers/validation';
-import store from '~/store';
+import { emitToRoom } from '~/helpers/socket';
 import Message from '~/models/Message';
 
 /**
@@ -46,11 +46,5 @@ export function createMessage(userId, chatId, content, contentType, contentTypeS
  * Emission will run in background.
  */
 export function emitMessage(roomId, message) {
-  const membersList = store.getState().room[roomId];
-  if (membersList) {
-    membersList.forEach((socket) => {
-      setTimeout(() => socket.emit('ReceiveMessage', message), 0);
-    });
-  }
-  return message;
+  return emitToRoom(roomId, 'ReceiveMessage', message);
 }

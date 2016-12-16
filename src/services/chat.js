@@ -3,6 +3,7 @@ import { isDate } from 'validator';
 import { chain } from '~/helpers/promise';
 import { isId } from '~/helpers/validation';
 import { filterPermittedKeys } from '~/helpers/validation';
+import { emitToRoom } from '~/helpers/socket';
 import Chat from '~/models/Chat';
 import { findMessage } from '~/services/message';
 
@@ -51,8 +52,11 @@ export function editChat(chatId, values) {
       return findMessage(permittedValues.sticky, { chat: chatId });
     })
     .then(() => {
-      console.info(permittedValues);
       return Chat.findOneAndUpdate({ _id: chatId }, { $set: permittedValues },
         { new: true }).exec();
     });
+}
+
+export function emitChat(roomId, chat) {
+  return emitToRoom(roomId, 'ReceiveChatEdit', chat);
 }

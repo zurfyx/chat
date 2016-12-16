@@ -4,6 +4,7 @@ import store from '~/store';
 import { addSocketToRoom, removeSocketFromRoom } from '~/store/room';
 import * as room from '~/controllers/room';
 import * as message from '~/controllers/message';
+import * as chat from '~/controllers/chat';
 
 /**
  * Handles controller execution and responds to user (socket version).
@@ -21,8 +22,10 @@ const controllerHandler = (promise, params) => (data, acknowledgement) => {
 
   return promise(...boundParams)
     .then((result) => acknowledgement(result))
-    .catch((error) => acknowledgement({error})
-    );
+    .catch((error) => {
+      console.error(error);
+      return acknowledgement({error});
+    });
 };
 const c = controllerHandler; // Just a name shortener.
 
@@ -67,5 +70,7 @@ export default function connectionHandler(socket) {
       .then(() => enteredRoom);
   }, (data) => [data]));
 
-  socket.on('SendMessage', c(message.create, (data) => [userId, data.chatId, data.content, data.contentType, data.contentTypeSpecifics]))
+  socket.on('SendMessage', c(message.create, (data) => [userId, data.chatId, data.content, data.contentType, data.contentTypeSpecifics]));
+
+  socket.on('EditChat', c(chat.edit, (data) => [userId, data._id, data]));
 }
