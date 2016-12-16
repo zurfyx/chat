@@ -7,7 +7,7 @@ export default class EditableText extends Component {
     super(props);
 
     this.state = {
-      value: this.props.value,
+      value: this.props.value || '',
       isEditing: false,
     };
 

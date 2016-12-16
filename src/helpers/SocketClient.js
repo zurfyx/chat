@@ -31,7 +31,7 @@ export default class socketAPI {
       return this.socket.emit(event, data, (response) => {
         if (response.error) {
           console.error(response.error);
-          return reject();
+          return reject(response.error);
         }
 
         return resolve();

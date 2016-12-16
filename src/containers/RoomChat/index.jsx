@@ -16,13 +16,13 @@ export class RoomChat extends Component {
 
   editChatTitle(title) {
     if (title === this.props.chat.title) return;
-    socketEdit(this.props.chat._id, { title });
+    this.props.socketEdit(this.props.chat._id, { title });
   }
 
 
   editChatDescription(description) {
     if (description === this.props.chat.description) return;
-    socketEdit(this.props.chat._id, { description });
+    this.props.socketEdit(this.props.chat._id, { description });
   }
 
   render() {
@@ -44,7 +44,9 @@ export class RoomChat extends Component {
 }
 
 RoomChat.PropTypes = {
-  chat: PropTypes.element,
+  socketEdit: PropTypes.func.isRequired,
+
+  chat: PropTypes.element.isRequired,
 };
 
 const mapStateToProps = function mapStateToProps(state) {
@@ -53,4 +55,4 @@ const mapStateToProps = function mapStateToProps(state) {
   }
 };
 
-export default connect(mapStateToProps)(RoomChat);
+export default connect(mapStateToProps, { socketEdit })(RoomChat);
