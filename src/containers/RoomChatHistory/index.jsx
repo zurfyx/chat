@@ -1,11 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import marked from 'marked';
 import Prism from 'prismjs';
 
 import { retrieve as retrieveMessages } from 'redux/modules/message';
 import { socketEdit } from 'redux/modules/chat';
+import ScrollContainer from 'components/ScrollContainer';
+
+import '../../../node_modules/prismjs/themes/prism.css'; // Prism CSS libraries.
+import styles from './RoomChatHistory.scss';
 
 // Text messages Markdown config
 marked.setOptions({
@@ -23,10 +26,11 @@ export class RoomChatHistory extends Component {
   constructor(props) {
     super(props);
 
-    this.shouldScrollBottom = true;
-
-    this.scrollToBottom = this.scrollToBottom.bind(this);
     this.stickMessage = this.stickMessage.bind(this);
+    this.renderMessages = this.renderMessages.bind(this);
+    this.renderSticky = this.renderSticky.bind(this);
+    this.renderMessage = this.renderMessage.bind(this);
+    this.renderMessageContent = this.renderMessageContent.bind(this);
   }
 
   componentDidMount() {
@@ -34,29 +38,52 @@ export class RoomChatHistory extends Component {
     this.props.retrieveMessages(chatId);
   }
 
-  componentWillUpdate() {
-    const node = findDOMNode(this);
-    this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
-  }
-
-  componentDidUpdate() {
-    this.scrollToBottom();
-  }
-
-  scrollToBottom() {
-    if (!this.shouldScrollBottom) return;
-
-    const node = findDOMNode(this);
-    node.scrollTop = node.scrollHeight;
-  }
-
   stickMessage(message) {
-    const sticky = message._id;
-    if (sticky === this.props.chat.sticky) return;
+    const sticky = message._id === this.props.chat.sticky ? null : message._id;
     this.props.socketEdit(this.props.chat._id, { sticky });
   }
 
-  renderMessageContent(message, styles) {
+  renderMessages() {
+    return this.props.messages
+      .filter((message) => message.chat === this.props.chat._id)
+      .map((message, i) => this.renderMessage(message, i));
+  }
+
+  renderSticky() {
+    const sticky = this.props.chat.sticky;
+    if (sticky) {
+      // TODO. Find message in memory or retrieve it.
+      const stickyMessage = this.props.messages
+        .filter((message) => message._id === sticky && message.chat === this.props.chat._id)[0];
+      return stickyMessage && this.renderMessage(stickyMessage, 0, true);
+    }
+  }
+
+  renderMessage(message, i, isSticky) {
+    return (
+      <div className={`${styles.message} ${isSticky && styles.sticky}`} key={i}>
+        <div className={styles.messageSenderImage}>
+        </div>
+        <div className={styles.messageInformation}>
+          <div className={styles.messageHeader}>
+            <span className={styles.messageSenderName}>{message.owner}</span>
+            <div className={styles.messageRight}>
+              <a className={styles.messageStick} onClick={() => this.stickMessage(message)}>
+                <i className="fa fa-thumb-tack" title="Stick message"></i>
+              </a>
+              <span className={styles.messageTimestamp}>
+                {message.createdAt}
+                {message.createdAt != message.updatedAt && <span className={styles.messageEdited}>(edited)</span>}
+              </span>
+            </div>
+          </div>
+          {this.renderMessageContent(message, styles)}
+        </div>
+      </div>
+    );
+  }
+
+  renderMessageContent(message) {
     if (message.contentType === 'code') {
       const language = message.contentTypeSpecifics.language;
       const prismLanguage = Prism.languages[language]
@@ -79,43 +106,17 @@ export class RoomChatHistory extends Component {
   }
 
   render() {
-    // Prism css libraries
-    require('../../../node_modules/prismjs/themes/prism.css');
-
-    const styles = require('./RoomChatHistory.scss');
-    const { chat, messages } = this.props;
-
-    const chatMessages = messages.filter((message) => {
-      return message.chat === chat._id;
-    });
-    const renderedMessages = chatMessages.map((message, i) => (
-      <div className={styles.message} key={i}>
-        <div className={styles.messageSenderImage}>
-        </div>
-        <div className={styles.messageInformation}>
-          <div className={styles.messageHeader}>
-            <span className={styles.messageSenderName}>{message.owner}</span>
-            <div className={styles.messageRight}>
-              <a className={styles.messageStick} onClick={() => this.stickMessage(message)}>
-                <i className="fa fa-thumb-tack" title="Stick message"></i>
-              </a>
-              <span className={styles.messageTimestamp}>
-                {message.createdAt}
-                {message.createdAt != message.updatedAt && <span className={styles.messageEdited}>(edited)</span>}
-              </span>
-            </div>
-          </div>
-          {this.renderMessageContent(message, styles)}
-        </div>
-      </div>
-    ));
-
     return (
-      <div className={styles.messages}>
-        <div className={styles.loadMore}>
-          Load more
+      <div className={styles.roomChatHistory}>
+        <div className={styles.stickies}>
+          {this.renderSticky()}
         </div>
-        {renderedMessages}
+        <ScrollContainer>
+            <div className={styles.loadMore}>
+              Load more
+            </div>
+            {this.renderMessages()}
+        </ScrollContainer>
       </div>
     );
   }

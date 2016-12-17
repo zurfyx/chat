@@ -1,51 +1,23 @@
 @import '../../styles/variables';
 
-
-.messages {
+.roomChatHistory {
   flex: 1;
-  padding: 15px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
 
-  &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+.stickies {
+  padding: 0 15px 15px 15px;
+
+  > .message {
+    margin-top: 0;
+    padding-bottom: 15px;
+    border: 0;
+    border-bottom: 1px solid $grey;
   }
 
-  &::-webkit-scrollbar-button {
-    width: 5px;
-    height: 5px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $grey;
-    border: 0 none #ffffff;
-    border-radius: 5px;
-
-    &:hover {
-      background: $grey;
-    }
-
-    &:active {
-      background: $black9;
-    }
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $greyExtreme;
-    border: 0 none #ffffff;
-    border-radius: 5px;
-
-    &:hover {
-      background: $greyExtreme;
-    }
-
-    &:active {
-      background: $greyExtreme;
-    }
-  }
-
-  &::-webkit-scrollbar-corner {
-    background: transparent;
+  .messageStick {
+    visibility: visible;
   }
 }
 
@@ -63,6 +35,10 @@
   margin-top: 25px;
   overflow: auto;
   word-break: break-all;
+
+  &:hover .messageStick {
+    visibility: visible;
+  }
 }
 
 .messageSenderImage {
@@ -103,6 +79,7 @@
 .messageStick {
   color: $black9;
   padding: 3px;
+  visibility: hidden;
 
   &:hover {
     background-color: $black9;
