@@ -58,5 +58,5 @@ export function editChat(chatId, values) {
 }
 
 export function emitChat(roomId, chat) {
-  return emitToRoom(roomId, 'ReceiveChatEdit', chat);
+  return emitToRoom(roomId, 'ReceiveChat', chat);
 }

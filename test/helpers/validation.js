@@ -3,8 +3,8 @@ import { filterPermittedKeys } from '~/helpers/validation';
 
 describe('Validation', () => {
   describe('filterPermittedKeys', () => {
-    const permitted = ['a', 'b', 'c', 'd'];
-    const input = { a: 1, b: 2, z: 3 };
+    const permitted = ['a', 'b', 'c', 'd', 'e'];
+    const input = { a: 1, b: 2, z: 3, d: null };
 
     it ('should return an empty object if permitted is not an array', () => {
       const result = filterPermittedKeys(100, input);
@@ -18,7 +18,7 @@ describe('Validation', () => {
 
     it('should remove non-permitted fields', () => {
       const result = filterPermittedKeys(permitted, input);
-      expect(result).to.eql({ a: 1, b: 2 });
+      expect(result).to.eql({ a: 1, b: 2, d: null });
     });
   });
 });
