@@ -5,6 +5,7 @@ import marked from 'marked';
 import Prism from 'prismjs';
 
 import { retrieve as retrieveMessages } from 'redux/modules/message';
+import { socketEdit } from 'redux/modules/chat';
 
 // Text messages Markdown config
 marked.setOptions({
@@ -25,6 +26,7 @@ export class RoomChatHistory extends Component {
     this.shouldScrollBottom = true;
 
     this.scrollToBottom = this.scrollToBottom.bind(this);
+    this.stickMessage = this.stickMessage.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +48,12 @@ export class RoomChatHistory extends Component {
 
     const node = findDOMNode(this);
     node.scrollTop = node.scrollHeight;
+  }
+
+  stickMessage(message) {
+    const sticky = message._id;
+    if (sticky === this.props.chat.sticky) return;
+    this.props.socketEdit(this.props.chat._id, { sticky });
   }
 
   renderMessageContent(message, styles) {
@@ -87,10 +95,15 @@ export class RoomChatHistory extends Component {
         <div className={styles.messageInformation}>
           <div className={styles.messageHeader}>
             <span className={styles.messageSenderName}>{message.owner}</span>
-            <span className={styles.messageTimestamp}>
-              {message.createdAt}
-              {message.createdAt != message.updatedAt && <span className={styles.messageEdited}>(edited)</span>}
-            </span>
+            <div className={styles.messageRight}>
+              <a className={styles.messageStick} onClick={() => this.stickMessage(message)}>
+                <i className="fa fa-thumb-tack" title="Stick message"></i>
+              </a>
+              <span className={styles.messageTimestamp}>
+                {message.createdAt}
+                {message.createdAt != message.updatedAt && <span className={styles.messageEdited}>(edited)</span>}
+              </span>
+            </div>
           </div>
           {this.renderMessageContent(message, styles)}
         </div>
@@ -115,6 +128,8 @@ RoomChatHistory.PropTypes = {
   isRetrievingMessages: PropTypes.bool,
   retrieveMessagesError: PropTypes.any,
   messages: PropTypes.Array,
+
+  socketEdit: PropTypes.func.isRequired,
 };
 
 RoomChatHistory.defaultProps = {
@@ -131,4 +146,4 @@ const mapStateToProps = function mapStateToProps(state) {
   }
 };
 
-export default connect(mapStateToProps, { retrieveMessages })(RoomChatHistory);
+export default connect(mapStateToProps, { retrieveMessages, socketEdit })(RoomChatHistory);

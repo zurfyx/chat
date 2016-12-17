@@ -83,14 +83,32 @@
   padding-bottom: 10px;
 }
 
+.messageRight {
+  float: right;
+
+  > * {
+    margin-left: 10px;
+  }
+}
+
 .messageSenderName {
   font-weight: 600;
 }
 
-.messageTimestamp {
-  float: right;
+.messageTimestamp, .messageStick {
   color: $black5;
   font-size: 0.8em;
+}
+
+.messageStick {
+  color: $black9;
+  padding: 3px;
+
+  &:hover {
+    background-color: $black9;
+    border-radius: 5px;
+    color: $greyExtreme-1;
+  }
 }
 
 .messageEdited {
