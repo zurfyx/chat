@@ -18,6 +18,10 @@ export default class EditableText extends Component {
     this.onChangeValue = this.onChangeValue.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ value: nextProps.value });
+  }
+
   toggleEdit() {
     this.setState({ isEditing: !this.state.isEditing });
   }

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { connect as connectSocket, disconnect as disconnectSocket } from 'redux/modules/socket';
 import { enter as enterRoom } from 'redux/modules/room';
 import { receive as receiveMessages } from 'redux/modules/message';
+import { receive as receiveChat } from 'redux/modules/chat';
 import RoomSidebar from 'containers/RoomSidebar';
 import RoomChatLoader from 'containers/RoomChatLoader';
 
@@ -30,17 +31,13 @@ export class RoomBase extends Component {
      * 1. Connect to Socket.
      * 2. Enter Room.
      * 3. Listen for new messages.
+     * 4. Listen for chat updates.
      */
     this.props.connectSocket()
-      .then(() => {
-        return this.props.enterRoom(this.params.room);
-      })
-      .then(() => {
-        return this.props.receiveMessages();
-      })
-      .then(() => {
-        this.setState({ loaded: true });
-      });
+      .then(() => this.props.enterRoom(this.params.room))
+      .then(() => this.props.receiveMessages())
+      .then(() => this.props.receiveChat())
+      .then(() => this.setState({ loaded: true }));
   }
 
   componentWillUnmount() {
@@ -103,6 +100,7 @@ RoomSidebar.PropTypes = {
   enterRoom: PropTypes.func.isRequired,
 
   receiveMessages: PropTypes.func.isRequired,
+  receiveChat: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = function mapStateToProps(state) {
@@ -117,4 +115,4 @@ const mapStateToProps = function mapStateToProps(state) {
   }
 };
 
-export default connect(mapStateToProps, { connectSocket, disconnectSocket, enterRoom, receiveMessages })(RoomBase);
+export default connect(mapStateToProps, { connectSocket, disconnectSocket, enterRoom, receiveMessages, receiveChat })(RoomBase);

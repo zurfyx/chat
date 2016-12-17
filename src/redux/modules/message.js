@@ -74,7 +74,7 @@ export function send(chatId, content, contentType, contentTypeSpecifics) {
 export function receive() {
   return (dispatch) => {
     const newMessage = (message) => {
-      dispatch({
+      return dispatch({
         type: NEW_MESSAGE,
         result: message,
       });

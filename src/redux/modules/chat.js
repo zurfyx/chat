@@ -10,6 +10,8 @@ const EDIT = 'redux/chat/EDIT';
 const EDIT_SUCCESS = 'redux/chat/EDIT_SUCCESS';
 const EDIT_FAIL = 'redux/chat/EDIT_FAIL';
 
+const RECEIVE_CHAT = 'redux/chat/RECEIVE_CHAT';
+
 const ACTIVATE = 'redux/chat/ACTIVATE';
 const ACTIVATE_SUCCESS = 'redux/chat/ACTIVATE_SUCCESS';
 const ACTIVATE_FAIL = 'redux/chat/ACTIVATE_FAIL';
@@ -71,6 +73,15 @@ export default function reducer(state = {}, action = {}) {
         editError: action.error,
         editResult: null,
       };
+    case RECEIVE_CHAT:
+      if (state.activateResult._id !== action.result._id) {
+        return { ...state };
+      }
+
+      return {
+        ...state,
+        activateResult: action.result,
+      };
     case ACTIVATE:
       return {
         ...state,
@@ -120,6 +131,25 @@ export function socketEdit(chatId, values) {
     type: 'socket',
     types: [EDIT, EDIT_SUCCESS, EDIT_FAIL],
     promise: (socket) => socket.emit('EditChat', editValues),
+  }
+}
+
+// Subscription to receive any chat updates.
+export function receive() {
+  return (dispatch) => {
+    const chatUpdate = (chat) => {
+      console.info('update');
+      return dispatch({
+        type: RECEIVE_CHAT,
+        result: chat,
+      });
+    };
+
+    return dispatch({
+      type: 'socket',
+      types: [null, null, null],
+      promise: (socket) => socket.on('ReceiveChat', chatUpdate),
+    });
   }
 }
 
