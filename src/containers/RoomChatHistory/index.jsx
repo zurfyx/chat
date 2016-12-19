@@ -84,8 +84,9 @@ export class RoomChatHistory extends Component {
   }
 
   renderMessageContent(message) {
-    if (message.contentType === 'code') {
-      const language = message.contentTypeSpecifics.language;
+    // Code snippet.
+    if (message.type === 'code') {
+      const language = message.specifics.language;
       const prismLanguage = Prism.languages[language]
                               ? Prism.languages[language]
                               : Prism.languages['markup'];
@@ -96,6 +97,7 @@ export class RoomChatHistory extends Component {
         </pre>
       );
     }
+
     // Plain text (render with Markdown).
     return (
       <div
