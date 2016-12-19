@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm, Field } from 'redux-form';
 
+import FieldComponent from 'components/FieldComponent';
 import CodeFieldComponent from 'components/CodeFieldComponent';
 
 class CreateChatRoom extends Component {
@@ -27,6 +28,16 @@ class CreateChatRoom extends Component {
             label="Code"
             placeholder="Your code"
             component={CodeFieldComponent} />
+        </div>
+
+        <div className="field-container">
+          <Field
+            name="highlight"
+            label="Highlights"
+            placeholder="1-2, 3, ..."
+            component={FieldComponent}
+            type="text"
+          />
         </div>
 
         <div className="field-container">

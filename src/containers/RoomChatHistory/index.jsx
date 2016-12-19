@@ -1,13 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import marked from 'marked';
-import Prism from 'prismjs';
 
 import { retrieve as retrieveMessages } from 'redux/modules/message';
 import { socketEdit } from 'redux/modules/chat';
 import ScrollContainer from 'components/ScrollContainer';
 
-import '../../../node_modules/prismjs/themes/prism.css'; // Prism CSS libraries.
+// Prism code highlight libraries.
+import Prism from 'prismjs';
+import 'prismjs/plugins/line-highlight/prism-line-highlight';
+import 'prismjs/themes/prism.css';
+import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
+
 import styles from './RoomChatHistory.scss';
 
 // Text messages Markdown config
@@ -36,6 +40,10 @@ export class RoomChatHistory extends Component {
   componentDidMount() {
     const chatId = this.props.chat._id;
     this.props.retrieveMessages(chatId);
+  }
+
+  componentDidUpdate() {
+    Prism.highlightAll();
   }
 
   stickMessage(message) {
@@ -86,14 +94,14 @@ export class RoomChatHistory extends Component {
   renderMessageContent(message) {
     // Code snippet.
     if (message.type === 'code') {
-      const language = message.specifics.language;
-      const prismLanguage = Prism.languages[language]
-                              ? Prism.languages[language]
-                              : Prism.languages['markup'];
-      const codeHtml = Prism.highlight(message.content, prismLanguage);
+      const language = message.specifics && message.specifics.language;
+      const highlight = message.specifics && message.specifics.highlight;
+
       return (
-        <pre>
-          <code dangerouslySetInnerHTML={{__html: codeHtml}} />
+        <pre data-line={highlight} className={styles.snippet}>
+          <code className={`language-${language}`}>
+            {message.content}
+          </code>
         </pre>
       );
     }

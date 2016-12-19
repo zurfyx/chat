@@ -14,11 +14,11 @@ export class CreateSnippet extends Component {
 
   handleSubmit(data) {
     const { create, complete } = this.props;
-    const { language, code } = data;
+    const { language, code, highlight } = data;
     const chatId = this.props.chat._id;
     const dbLanguage = language ? language : 'plain'; // TODO: move to default form values.
 
-    return create(chatId, code, 'code', { language: dbLanguage })
+    return create(chatId, code, 'code', { language: dbLanguage, highlight })
       .then(() => {
         // TODO: Error validation.
 
