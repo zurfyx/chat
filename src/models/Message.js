@@ -24,7 +24,8 @@ const messageSchema = new Schema({
   },
   specifics: {
     // Use with 'code'.
-    language: { type: String, enum: ['plain', 'markdown', 'html', 'javascript', 'css'] }
+    language: { type: String, enum: ['plain', 'markdown', 'html', 'javascript', 'css'] },
+    highlight: { type: String },
   },
 
   deletedAt: Date,
