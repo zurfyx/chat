@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 
 import { chain } from '~/helpers/promise';
-import User from '~/models/User';
-import Room from '~/models/Room';
 import Chat from '~/models/Chat';
-import Message from'~/models/Message';
 import { createAndSignin } from './auth';
+import { createRoom } from './room';
+import { createMessage } from './message';
 
 describe('Chat', () => {
   let user;
@@ -19,14 +18,8 @@ describe('Chat', () => {
       .then((createdUser) => user = createdUser)
       .then(() => createRoom(user))
       .then((createdRoom) => room = createdRoom)
-      .then(() => done());
-  });
-
-  afterEach((done) => {
-    chain
-      .then(() => User.remove({}))
-      .then(() => Room.remove({}))
-      .then(() => done());
+      .then(() => done())
+      .catch((error) => console.error(error));
   });
 
   describe('PATCH /chat/:_id', () => {
@@ -35,14 +28,8 @@ describe('Chat', () => {
       chain
         .then(() => createChat(room))
         .then((createdChat) => chat = createdChat)
-        .then(() => done());
-    });
-
-    afterEach((done) => {
-      chain
-        .then(() => Chat.remove({}))
-        .then(() => Message.remove({}))
-        .then(() => done());
+        .then(() => done())
+        .catch((error) => console.error(error));
     });
 
     it('should add a sticky to a chat that does not have', (done) => {
@@ -62,13 +49,7 @@ describe('Chat', () => {
   });
 });
 
-export function createRoom(owner) {
-  const room = new Room();
-  room.title = 'sample';
-  room.slug = 'sample';
-  room.owner = owner;
-  return room.save();
-}
+
 
 export function createChat(room) {
   const chat = new Chat();
@@ -76,11 +57,3 @@ export function createChat(room) {
   return chat.save();
 }
 
-export function createMessage(chat, owner) {
-  const message = new Message();
-  message.content = 'random text';
-  message.chat = chat;
-  message.owner = owner;
-  message.contentType = 'plain';
-  return message.save();
-}

@@ -24,10 +24,10 @@ export function findMessage(messageId, otherParams) {
  * Given an existing userId and chatId, save a new message with the given string
  * content.
  */
-export function createMessage(userId, chatId, content, contentType, contentTypeSpecifics) {
-  const sanitizedContent = validator.trim(content);
+export function createMessage(userId, chatId, values) {
+  const sanitizedContent = validator.trim(values.content);
 
-  if (validator.isEmpty(content)) {
+  if (validator.isEmpty(values.content)) {
     throw 'Message cannot be empty.';
   }
 
@@ -35,8 +35,8 @@ export function createMessage(userId, chatId, content, contentType, contentTypeS
   newMessage.owner = userId;
   newMessage.chat = chatId;
   newMessage.content = sanitizedContent;
-  newMessage.contentType = contentType;
-  newMessage.contentTypeSpecifics = contentTypeSpecifics;
+  newMessage.type = values.type;
+  newMessage.specifics = values.specifics;
 
   return newMessage.save();
 }

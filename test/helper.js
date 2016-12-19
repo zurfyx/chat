@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import request from 'superagent';
+import { forEach } from 'async-foreach';
 
 import config from '../config/config';
 
@@ -17,6 +18,15 @@ before(() => {
 
   // Run the server with these new configs.
   require('~/server');
+});
+
+beforeEach((done) => {
+  // Empty models, so that we start from 0 in each test.
+  const connection = mongoose.connection;
+  forEach(Object.keys(connection.models), function(collection) {
+    const done = this.async();
+    connection.models[collection].remove({}).then(() => done());
+  }, () => done());
 });
 
 // Teardown

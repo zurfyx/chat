@@ -13,17 +13,16 @@ const messageSchema = new Schema({
   },
 
   content: String,
-
-  // contentType defines the sort of content that this message will contain, to
+  // type defines the sort of content that this message will contain, to
   // identify the stored content:
   // plain: standard text.
   // code: a programming snippet.
-  contentType: {
+  type: {
     type: String,
     enum: ['plain', 'code'],
-    required: 'Content type is required',
+    required: 'Type is required',
   },
-  contentTypeSpecifics: {
+  specifics: {
     // Use with 'code'.
     language: { type: String, enum: ['plain', 'markdown', 'html', 'javascript', 'css'] }
   },

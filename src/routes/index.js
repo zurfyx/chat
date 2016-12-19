@@ -84,7 +84,7 @@ router.post('/chats/:_id/fork-upgrade', isAuthenticated, isChatIdValid, chat.for
 
 // Chat -> Message.
 router.get('/chats/:_id/messages', isChatIdValid, message.messages);
-router.post('/chats/:_id/messages', c(message.create, (req) => [req.user, req.params._id, req.body.content, req.body.contentType, req.body.contentTypeSpecifics]));
+router.post('/chats/:_id/messages', c(message.create, (req) => [req.user, req.params._id, req.body]));
 
 /**
  * Messages
