@@ -1,3 +1,7 @@
+# Config files.
+config/*
+!config/default.js
+
 .idea/
 data/
 data-session/

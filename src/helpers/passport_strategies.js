@@ -1,9 +1,9 @@
 import passport from 'passport';
+import config from 'config';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GithubStrategy } from 'passport-github';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
-import config from '~/../config/auth';
 import User from '~/models/User';
 import { objectByString } from '~/helpers/object';
 
@@ -169,9 +169,9 @@ function oauthLink(mappings, user, accessToken, profile, done) {
  * Sign in with GitHub.
  */
 passport.use(new GithubStrategy({
-  clientID: config.github.clientID,
-  clientSecret: config.github.clientSecret,
-  callbackURL: config.github.callbackURL,
+  clientID: config.get('passport.github.clientID'),
+  clientSecret: config.get('passport.github.clientSecret'),
+  callbackURL: config.get('passport.github.callbackURL'),
   passReqToCallback: true
 }, (...args) => {
   const mappings = {
@@ -191,9 +191,9 @@ passport.use(new GithubStrategy({
  Sign in with Google.
  */
 passport.use(new GoogleStrategy({
-  clientID: config.google.clientID,
-  clientSecret: config.google.clientSecret,
-  callbackURL: config.google.callbackURL,
+  clientID: config.get('passport.google.clientID'),
+  clientSecret: config.get('passport.google.clientSecret'),
+  callbackURL: config.get('passport.google.callbackURL'),
   passReqToCallback: true
 }, (...args) => {
   const mappings = {

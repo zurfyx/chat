@@ -10,8 +10,8 @@ import passport from 'passport';
 import { createClient as createRedisClient } from 'redis';
 import connectRedis from 'connect-redis';
 import Socketio from 'socket.io';
+import config from 'config';
 
-import config from '../config/config.js';
 import routes from './routes';
 import socketConnectionHandler from './sockets';
 
@@ -25,9 +25,9 @@ const port = process.env.PORT || 3030;
  * Databases initialization.
  */
 // Data database (Mongoose + MongoDB).
-const dbHost = config.database.data.host;
-const dbPort = config.database.data.port;
-const dbName = config.database.data.db;
+const dbHost = config.get('database.data.host');
+const dbPort = config.get('database.data.port');
+const dbName = config.get('database.data.db');
 mongoose.Promise = global.Promise;
 mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`);
 const db = mongoose.connection;
@@ -38,9 +38,9 @@ const redisClient = createRedisClient();
 const RedisStore = connectRedis(Session);
 const dbSession = new RedisStore({
   client: redisClient,
-  host: config.database.session.host,
-  port: config.database.session.port,
-  prefix: config.database.session.prefix,
+  host: config.get('database.session.host'),
+  port: config.get('database.session.port'),
+  prefix: config.get('database.session.prefix'),
   disableTTL: true
 });
 
@@ -66,8 +66,8 @@ app.use(expressValidator({
 const session = Session({
   resave: true,
   saveUninitialized: true,
-  key: config.session.key,
-  secret: config.session.secret,
+  key: config.get('session.key'),
+  secret: config.get('session.secret'),
   store: dbSession
 });
 app.use(session);
