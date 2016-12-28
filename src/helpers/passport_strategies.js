@@ -89,7 +89,7 @@ function oauthSignedIn(mappings, req, accessToken, refreshToken, profile, done) 
   // Check if provider ID is linked with the current signed in account.
   if (req.user[mappings.providerField] === profile[mappings.id]) {
     // Provider ID is already linked with current signed in account. User is just trying to relink it.
-    return done(null, req.user);
+    return oauthLink(mappings, req.user, accessToken, profile, done); // OAuth token will also get updated.
   }
 
   // Let's see who is linked to this provider ID...
@@ -121,7 +121,7 @@ function oauthSignedOut(mappings, req, accessToken, refreshToken, profile, done)
     if (err) { return done(err); }
     if (existingUser) {
       // Provider ID already linked. Sign in with that user.
-      return done(null, existingUser);
+      return oauthLink(mappings, existingUser, accessToken, profile, done); // OAuth token will also get updated.
     }
 
     // Provider ID not linked yet.

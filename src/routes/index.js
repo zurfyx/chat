@@ -39,7 +39,8 @@ const c = controllerHandler; // Just a name shortener.
  */
 router.post('/auth/signin', auth.signin);
 router.post('/auth/signup', auth.signup);
-router.get('/auth/github', passport.authenticate('github'));
+router.get('/auth/github', passport.authenticate('github', { scope: 'user:email' }));
+router.get('/auth/github/repo', passport.authenticate('github', { scope: 'user:email write:repo_hook' }));
 router.get('/auth/github/callback', auth.githubCallback);
 router.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
 router.get('/auth/google/callback', auth.googleCallback);
