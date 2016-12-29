@@ -12,6 +12,7 @@ import * as user from '~/controllers/user';
 import * as room from '~/controllers/room';
 import * as chat from '~/controllers/chat';
 import * as message from '~/controllers/message';
+import * as webhook from '~/controllers/webhook';
 
 const router = express.Router();
 
@@ -92,6 +93,11 @@ router.post('/chats/:_id/messages', c(message.create, (req) => [req.user, req.pa
  */
 router.put('/messages/:_id', isAuthenticated, isMessageIdValid, isMessageOwner, message.editMessage);
 router.delete('/messages/:_id', isAuthenticated, isMessageIdValid, isMessageOwner, message.deleteMessage);
+
+/**
+ * Webhooks
+ */
+router.post('/webhooks/github', c(webhook.github, (req) => [req.body, req.query]));
 
 /**
  * Default.
