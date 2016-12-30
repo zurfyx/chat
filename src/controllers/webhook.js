@@ -1,15 +1,12 @@
 import { chain } from '~/helpers/promise';
 import { githubWebhook } from '~/services/webhook';
 
-export const github = (info, params) => {
+export const github = (info) => {
   // TODO: restrict to GitHub IPs only.
+  // TODO. Restrict to exact URL to avoid duplicated requests with URL variants.
   return chain
+    .then(() => githubWebhook(info))
     .then(() => {
-      // A trivial way to avoid duplicates is to restrict the URL to a single one (no parameters).
-      // GitHub already prevents duplicates.
-      if (!(Object.keys(params).length === 0 && params.constructor === Object)) {
-        throw 'GitHub webhooks URL can\'t have params.';
-      }
-    })
-    .then(() => githubWebhook(info));
+      return { message: 'OK' };
+    });
 }

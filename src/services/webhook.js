@@ -25,6 +25,5 @@ export function githubWebhook(info) {
     default: return; // Given action is not supported yet (exit without saving).
   }
 
-  console.info(webhook);
   return webhook.save();
 }
