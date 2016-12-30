@@ -1,9 +1,15 @@
 import mongoose, { Schema } from 'mongoose';
 
 const webhookSchema = new Schema({
-  type: { type: String, required: 'Type is required' }, // GitHub
-  
+  type: {
+    type: String,
+    required: 'Type is required',
+    enum: ['github'],
+  }, // github
+  uid: { type: String, required: 'Unique identifier is required' }, // 8a39eb00
+
   github: {
+    event: String, // 'issue_comment'
     action: String, // 'created'
     repository: String, // 'user/repository'
 
@@ -22,6 +28,8 @@ const webhookSchema = new Schema({
   }
 
 }, { timestamps: true });
+
+webhookSchema.index({ type: 1, uid: 1 }, { unique: true });
 
 const Webhook = mongoose.model('Webhook', webhookSchema);
 
