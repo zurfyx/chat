@@ -18,13 +18,13 @@ module.exports = {
   // Passport (OAuth & local login).
   passport: {
     github: {
-      clientID: '',
-      clientSecret: '',
+      clientID: '???',
+      clientSecret: '???',
       callbackURL: 'http://localhost:3000/api/auth/github/callback',
     },
     google: {
-      clientID: '',
-      clientSecret: '',
+      clientID: '???',
+      clientSecret: '???',
       callbackURL: 'http://localhost:3000/api/auth/google/callback',
     },
   },
