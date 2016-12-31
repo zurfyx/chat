@@ -17,7 +17,9 @@ const webhookSchema = new Schema({
       number: Number, // 2
       title: String, // 'how to create a webhook'
       user: String, // 'somebody'
-      body: String, // ?
+      state: String, // 'open'
+      locked: Boolean, // false
+      body: String, // 'body'
     },
 
     comment: {

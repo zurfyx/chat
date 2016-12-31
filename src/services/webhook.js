@@ -22,11 +22,30 @@ export function githubWebhook(event, uid, data) {
           number: data.issue.number,
           title: data.issue.title,
           user: data.issue.user.login,
+          state: data.issue.state,
+          locked: data.issue.locked,
+          body: data.issue.body,
         },
         comment: {
           id: data.comment.id,
           user: data.comment.user.login,
           body: data.comment.body,
+        },
+      };
+      break;
+    }
+    case 'issues': {
+      webhook.github = {
+        event,
+        action: data.action,
+        repository: data.repository.full_name,
+        issue: {
+          number: data.issue.number,
+          title: data.issue.title,
+          user: data.issue.user,
+          state: data.issue.state,
+          locked: data.issue.locked,
+          body: data.issue.body,
         },
       };
       break;
