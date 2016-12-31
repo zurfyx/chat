@@ -47,18 +47,53 @@ Example output:
 "type": "github",
 "uid": "1234-abcd-1234-abcd",
 "github": {
-  "event": {
-    "event": "issues",
-    "action": "opened",
-    "repository": "octocat/Hello_world",
-    "issue": {
-      "number": 1,
-      "title": "aaa",
-      "user": "octocat",
-      "state": "open",
-      "locked": false,
-      "body": "abc"
-    }
+  "event": "issues",
+  "action": "opened",
+  "repository": "octocat/Hello_world",
+  "issue": {
+    "number": 1,
+    "title": "aaa",
+    "user": "octocat",
+    "state": "open",
+    "locked": false,
+    "body": "abc"
+  }
+}
+```
+
+### push
+
+Type: `github`<br>
+Event: `push`
+
+Example output:
+
+```
+"_id": "1234abcd",
+"type": "github",
+"uid": "1234-abcd-1234-abcd",
+"github": {
+  "event": "push",
+  "repository": "octocat/Hello_world",
+  "commits": [
+    "id": "1234abcd",
+    "tree_id": "1234abcd",
+    "distinct": true,
+    "message": "init",
+    "timestamp": "2015-05-05T19:40:15-04:00",
+    "url": "https://github.com/..."
+  ],
+  "head_commit": {
+    "id": "1234abcd",
+    "tree_id": "1234abcd",
+    "distinct": true,
+    "message": "init",
+    "timestamp": "2015-05-05T19:40:15-04:00",
+    "url": "https://github.com/..."
+  },
+  "pusher": {
+    name: "octocat",
+    email: "octocat@example.com"
   }
 }
 ```

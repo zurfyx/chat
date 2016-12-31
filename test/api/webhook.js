@@ -85,6 +85,33 @@ describe('Webhook', () => {
           });
         });
     });
+
+    it('should create a Webhook entry if the request is valid (push test)', (done) => {
+      request
+        .post(`${server}/webhooks/github`)
+        .set('X-Forwarded-For', GITHUB_VALID_IP)
+        .set('X-GitHub-Delivery', '1111')
+        .set('X-GitHub-Event', 'push')
+        .send({
+          repository: { full_name: 'github/repo' },
+          commits: [{ id: '1' }],
+          head_commit: { id: '1' },
+          pusher: { name: 'a', email: 'a@b.com' },
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.eql({ message: 'OK' });
+          Webhook.findOne({}).exec().then((webhook) => {
+            expect(webhook.type).to.equal('github');
+            expect(webhook.uid).to.equal('1111');
+            expect(webhook.github.repository).to.equal('github/repo');
+            expect(webhook.github.commits.length).to.equal(1);
+            expect(webhook.github.head_commit.id).to.equal('1');
+            expect(webhook.github.pusher.name).to.equal('a');
+            done();
+          });
+        });
+    });
   });
 });
 

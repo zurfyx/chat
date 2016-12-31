@@ -26,9 +26,31 @@ const webhookSchema = new Schema({
       id: Number, // 9962140
       user: String, // 'somebodyElse'
       body: String, // 'i dun know'
-    }
-  }
+    },
 
+    commits: [{
+      id: String,
+      tree_id: String,
+      distinct: Boolean,
+      message: String,
+      timestamp: Date, // 2015-05-05T19:40:15-04:00
+      url: String,
+    }],
+
+    head_commit: {
+      id: String,
+      tree_id: String,
+      distinct: Boolean,
+      message: String,
+      timestamp: Date, // 2015-05-05T19:40:15-04:00
+      url: String,
+    },
+
+    pusher: {
+      name: String, // 'somebody',
+      email: String, // 'somebody@example.com
+    },
+  },
 }, { timestamps: true });
 
 webhookSchema.index({ type: 1, uid: 1 }, { unique: true });
