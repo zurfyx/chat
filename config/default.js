@@ -29,9 +29,17 @@ module.exports = {
     },
   },
 
+  // Running behind a proxy?
+  proxy: false,
+
   // Session cookie.
   session: {
     key: 'SID',
     secret: 'luke skywalker',
   },
+
+  /**
+   * Config below shouldn't need to be modified.
+   */
+  githubIpRange: '192.30.252.0/22',
 }

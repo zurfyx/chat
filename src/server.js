@@ -84,6 +84,10 @@ if (process.env.NODE_ENV !== 'production') {
 // URLs.
 app.use('/', routes);
 
+// Proxy configuration.
+if (config.get('proxy')) {
+  app.enable('trust proxy');
+}
 
 // Socket.IO
 const io = Socketio(server);

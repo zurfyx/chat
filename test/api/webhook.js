@@ -3,8 +3,21 @@ import { expect } from 'chai';
 import { chain } from '~/helpers/promise';
 import Webhook from '~/models/Webhook';
 
+const GITHUB_VALID_IP = '192.30.252.42';
+
 describe('Webhook', () => {
   describe('POST /webhooks/github', () => {
+    it('should prevent entries from non-whitelisted ips', (done) => {
+      sendGithubWebhook('random-uid', '111.111.111.111')
+        .catch((err) => {
+          expect(err.status).to.equal(500);
+          Webhook.find({}).exec().then((webhooks) => {
+            expect(webhooks.length).to.equal(0);
+            done();
+          });
+        });
+    });
+
     it('should prevent duplicate entries', (done) => {
       chain
         .then(() => sendGithubWebhook())
@@ -43,10 +56,11 @@ describe('Webhook', () => {
   });
 });
 
-function sendGithubWebhook(uid = '45bb5780-ceca-11e6-9b9e-67ff3f65ca27') {
+function sendGithubWebhook(uid = '45bb5780-ceca-11e6-9b9e-67ff3f65ca27', ip = GITHUB_VALID_IP) {
   return new Promise((resolve, reject) => {
     request
       .post(`${server}/webhooks/github`)
+      .set('X-Forwarded-For', ip)
       .set('X-GitHub-Delivery', uid)
       .set('X-GitHub-Event', 'issue_comment')
       .send({
