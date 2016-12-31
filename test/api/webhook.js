@@ -86,6 +86,33 @@ describe('Webhook', () => {
         });
     });
 
+    it('should create a Webhook entry if the request is valid (pull_request test)', (done) => {
+      request
+        .post(`${server}/webhooks/github`)
+        .set('X-Forwarded-For', GITHUB_VALID_IP)
+        .set('X-GitHub-Delivery', '1111')
+        .set('X-GitHub-Event', 'pull_request')
+        .send({
+          repository: { full_name: 'github/repo' },
+          pull_request: {
+            number: 1,
+            user: { login: 'octocat' },
+          },
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.eql({ message: 'OK' });
+          Webhook.findOne({}).exec().then((webhook) => {
+            expect(webhook.type).to.equal('github');
+            expect(webhook.uid).to.equal('1111');
+            expect(webhook.github.repository).to.equal('github/repo');
+            expect(webhook.github.pull_request.number).to.equal(1);
+            expect(webhook.github.pull_request.user).to.equal('octocat');
+            done();
+          });
+        });
+    });
+
     it('should create a Webhook entry if the request is valid (push test)', (done) => {
       request
         .post(`${server}/webhooks/github`)

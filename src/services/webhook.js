@@ -50,6 +50,27 @@ export function githubWebhook(event, uid, data) {
       };
       break;
     }
+    case 'pull_request': {
+      webhook.github = {
+        event,
+        action: data.action,
+        repository: data.repository.full_name,
+        pull_request: {
+          number: data.pull_request.number,
+          state: data.pull_request.state,
+          locked: data.pull_request.locked,
+          title: data.pull_request.title,
+          user: data.pull_request.user.login,
+          body: data.pull_request.body,
+          merged: data.pull_request.merged,
+          commits: data.pull_request.commits,
+          additions: data.pull_request.additions,
+          deletions: data.pull_request.deletions,
+          changed_files: data.pull_request.changed_files,
+        },
+      };
+      break;
+    }
     case 'push': {
       webhook.github = {
         event,

@@ -28,6 +28,20 @@ const webhookSchema = new Schema({
       body: String, // 'i dun know'
     },
 
+    pull_request: {
+      number: Number,
+      state: String, // 'open'
+      locked: Boolean,
+      title: String,
+      user: String, // 'octocat'
+      body: String,
+      merged: Boolean,
+      commits: Number,
+      additions: Number,
+      deletions: Number,
+      changed_files: Number,
+    },
+
     commits: [{
       id: String,
       tree_id: String,

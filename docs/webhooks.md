@@ -2,6 +2,10 @@
 
 API webhooks available data, which depends on the event that generated it.
 
+The intention behind custom mappings was to reduce the huge amount of data that GitHub generates,
+and retrieve only the one that fits our needs.<br>
+Most of the resulting mappings are just reduced versions of the [GitHub's API v3](https://developer.github.com/v3/).
+
 ## GitHub
 
 ### issue_comment
@@ -57,6 +61,37 @@ Example output:
     "state": "open",
     "locked": false,
     "body": "abc"
+  }
+}
+```
+
+### pull_request
+
+Type: `github`<br>
+Event: `pull_request`
+
+Example output:
+
+```
+"_id": "1234abcd",
+"type": "github",
+"uid": "1234-abcd-1234-abcd",
+"github": {
+  "event": "pull_request",
+  "action": "opened",
+  "repository": "octocat/Hello_world",
+  "pull_request": {
+    "number": "1",
+    "state": "open",
+    "locked": false,
+    "title": "Changes",
+    "user": "octocat",
+    "body": "A lot of changes",
+    "merged": false,
+    "commits": 2,
+    "additions": 1000,
+    "deletions": 0,
+    "changed_files": 0
   }
 }
 ```
