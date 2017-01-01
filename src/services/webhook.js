@@ -1,3 +1,6 @@
+import config from 'config';
+import fetch from 'isomorphic-fetch';
+
 import Webhook from '~/models/Webhook';
 
 /**
@@ -106,4 +109,42 @@ export function githubWebhook(event, uid, data) {
     { $setOnInsert: webhook },
     { upsert: true },
   );
+}
+
+export function githubSubscribeWebhook(repository, token) {
+  if (!validGithubRepository) {
+    throw 'Provided GitHub repository is not valid.';
+  }
+
+  const [repositoryUser, repositoryName] = repository.split('/');
+  const webhookUrl = `https://api.github.com/repos/${repositoryUser}/${repositoryName}/hooks?access_token=${token}`;
+  let responseStatus;
+  return fetch(webhookUrl, {
+    method: 'POST',
+    body: JSON.stringify({
+      name: 'web',
+      active: true,
+      events: [
+        '*',
+      ],
+      config: {
+        url: `${config.get('host')}/webhooks/github`,
+        content_type: 'json',
+      },
+    }),
+  })
+    .then((response) => {
+      responseStatus = response.status;
+      return response.json();
+    })
+    .then((json) => {
+      if (responseStatus !== 201) {
+        throw json.errors ? json.errors[0].message : 'GitHub subscription failed.';
+      }
+    });
+}
+
+function validGithubRepository(repository) {
+  // TODO: validate repository parts.
+  return repository.split('/').length === 2;
 }

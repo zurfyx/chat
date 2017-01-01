@@ -31,6 +31,8 @@ module.exports = {
 
   // Running behind a proxy?
   proxy: false,
+  host: `localhost:${process.env.PORT}`, // How can others (inc. external peers) reach you?
+                                         // i.e. https://example.com/api
 
   // Session cookie.
   session: {
