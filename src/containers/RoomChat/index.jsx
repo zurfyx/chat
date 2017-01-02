@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import RoomChatActivity from 'containers/RoomChatActivity';
 import RoomChatHistory from 'containers/RoomChatHistory';
 import RoomChatMessage from 'components/RoomChatMessage';
 import EditableText from 'components/EditableText';
@@ -36,8 +37,13 @@ export class RoomChat extends Component {
           <EditableText value={chat.description} defaultValue="Description" onSubmit={this.editChatDescription} />
         </div>
 
-        <RoomChatHistory />
-        <RoomChatMessage />
+        <div className={styles.chatMain}>
+          <div className={styles.chatContent}>
+            <RoomChatHistory />
+            <RoomChatMessage />
+          </div>
+          <RoomChatActivity />
+        </div>
       </div>
     );
   }
