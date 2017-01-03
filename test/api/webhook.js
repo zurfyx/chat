@@ -140,6 +140,23 @@ describe('Webhook', () => {
         });
     });
   });
+
+  describe('GET /webhooks/github', () => {
+    it('should return a list of webhooks', (done) => {
+      chain
+        .then(() => sendGithubWebhook())
+        .then(() => {
+          request
+            .get(`${server}/webhooks/github/github/repo`)
+            .end((err, res) => {
+              expect(res.status).to.equal(200);
+              expect(res.body.length).to.equal(1);
+              expect(res.body[0].github.repository).to.equal('github/repo');
+              done();
+            });
+        });
+    });
+  });
 });
 
 function sendGithubWebhook(uid = '45bb5780-ceca-11e6-9b9e-67ff3f65ca27', ip = GITHUB_VALID_IP) {

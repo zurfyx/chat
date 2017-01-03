@@ -111,6 +111,10 @@ export function githubWebhook(event, uid, data) {
   );
 }
 
+export function findGitHubWebhook(repository) {
+  return Webhook.find({ type: 'github', 'github.repository': repository });
+}
+
 export function githubSubscribeWebhook(repository, token) {
   if (!validGithubRepository) {
     throw 'Provided GitHub repository is not valid.';

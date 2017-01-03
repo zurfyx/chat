@@ -3,7 +3,7 @@ import ipRangeCheck from 'ip-range-check';
 
 import { chain } from '~/helpers/promise';
 import { isAuthenticated } from '~/services/auth';
-import { githubWebhook, githubSubscribeWebhook } from '~/services/webhook';
+import { githubWebhook, findGitHubWebhook, githubSubscribeWebhook } from '~/services/webhook';
 
 export const github = (event, uid, ip, data) => {
   return chain
@@ -16,6 +16,10 @@ export const github = (event, uid, ip, data) => {
     .then(() => {
       return { message: 'OK' };
     });
+}
+
+export const githubFind = (repository) => {
+  return findGitHubWebhook(repository);
 }
 
 export const githubSubscribe = (currentUser, repository) => {

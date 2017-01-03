@@ -98,6 +98,7 @@ router.delete('/messages/:_id', isAuthenticated, isMessageIdValid, isMessageOwne
  * Webhooks
  */
 router.post('/webhooks/github', c(webhook.github, (req) => [req.get('X-GitHub-Event'), req.get('X-GitHub-Delivery'), req.ip, req.body]));
+router.get('/webhooks/github/:repositoryUser/:repositoryName', c(webhook.githubFind, (req) => [`${req.params.repositoryUser}/${req.params.repositoryName}`]));
 router.post('/webhooks/github/subscribe', c(webhook.githubSubscribe, (req) => [req.user, req.body.repository]));
 
 /**
