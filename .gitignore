@@ -3,10 +3,16 @@ config/*
 !config/default.js
 !config/test.js
 
-.idea/
+# DBs
 data/
 data-session/
-node_modules/
 
+# IDEs
+.idea/
+.vscode
+
+# Others
 *.rdb
 npm-debug.log
+coverage/
+node_modules/
