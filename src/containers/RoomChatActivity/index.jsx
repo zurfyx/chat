@@ -1,35 +1,40 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import { retrieveGithub } from 'redux/modules/webhook';
+import Activity from 'components/Activity';
+
 import styles from './RoomChatActivity.scss';
 
 export class RoomChatActivity extends Component {
+  
+  componentWillMount() {
+    // Subscribe to GitHub activities
+    if (this.props.chat.github) {
+      console.error('Github chat');
+      // TODO: activity updates through socket.
+      this.props.retrieveGithub(this.props.chat.github);
+      this.activityInterval = window.setInterval(() => {
+        this.props.retrieveGithub(this.props.chat.github);
+      }, 30000);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.activityInterval) {
+      window.clearInterval(this.activityInterval);
+    }
+  }
+
   render() {
+    const activities = this.props.chat.github && this.props.webhookActivities || [];
+
     return (
       <div className={styles.activityPage}>
         <h4>Activity</h4>
-        <div className={styles.entry}>
-          <div className={styles.icon}><i className="fa fa-comment" aria-hidden="true"></i></div>
-          <div className={styles.entryMain}>
-            <header>
-              <span className={styles.user}>octocat</span>
-              <span className={styles.timestamp}>2016-12-19T13:19:42.075Z</span>
-            </header>
-            <span>pushed</span>
-            <a className={styles.sha} title="9b1b9116043264b8be733f4b2c547be53262fb6a">9b1b9116043264b8be733f4b2c547be53262fb6a</a>
-          </div>
-        </div>
-        <div className={styles.entry}>
-          <div className={styles.icon}><i className="fa fa-comment" aria-hidden="true"></i></div>
-          <div className={styles.entryMain}>
-            <header>
-              <span className={styles.user}>octocat</span>
-              <span className={styles.timestamp}>2016-12-19T13:19:42.075Z</span>
-            </header>
-            <span>pushed</span>
-            <a className={styles.sha} title="9b1b9116043264b8be733f4b2c547be53262fb6a">9b1b9116043264b8be733f4b2c547be53262fb6a</a>
-          </div>
-        </div>
+        {activities.map((activity) =>
+          <Activity entry={activity} />
+        )}
       </div>
     );
   }
@@ -38,7 +43,9 @@ export class RoomChatActivity extends Component {
 const mapStateToProps = function mapStateToProps(state) {
   return {
     chat: state.chat.activateResult,
+
+    webhookActivities: state.webhook.retrieveResult,
   }
 };
 
-export default connect(mapStateToProps)(RoomChatActivity);
+export default connect(mapStateToProps, { retrieveGithub })(RoomChatActivity);
