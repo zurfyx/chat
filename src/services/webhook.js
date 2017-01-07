@@ -45,7 +45,7 @@ export function githubWebhook(event, uid, data) {
         issue: {
           number: data.issue.number,
           title: data.issue.title,
-          user: data.issue.user,
+          user: data.issue.user.login,
           state: data.issue.state,
           locked: data.issue.locked,
           body: data.issue.body,
@@ -112,7 +112,7 @@ export function githubWebhook(event, uid, data) {
 }
 
 export function findGitHubWebhook(repository) {
-  return Webhook.find({ type: 'github', 'github.repository': repository });
+  return Webhook.find({ type: 'github', 'github.repository': repository }).sort({ createdAt: -1 }).exec();
 }
 
 export function githubSubscribeWebhook(repository, token) {
