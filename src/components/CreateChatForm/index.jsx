@@ -23,6 +23,13 @@ class CreateChatRoom extends Component {
           component={FieldComponent}
           type="text" />
 
+        <Field
+          name="github"
+          label="Github repository"
+          placeholder="octocat/Hello_world"
+          component={FieldComponent}
+          type="text" />
+
         <div className="field-container">
           <button type="submit" disabled={submitting}>Create</button>
         </div>

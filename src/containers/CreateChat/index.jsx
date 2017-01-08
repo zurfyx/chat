@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 
-import { create, retrieve } from 'redux/modules/chat';
+import { create, subscribeGithub, retrieve } from 'redux/modules/chat';
 import CreateChatForm from 'components/CreateChatForm';
 
 export class CreateChat extends Component {
@@ -13,10 +13,24 @@ export class CreateChat extends Component {
   }
 
   handleSubmit(data) {
-    const { create, rooms, createError } = this.props;
+    const { rooms, create, createError, subscribeGithub, subscribeGithubError } = this.props;
     const roomId = rooms[0]._id;
 
-    return create(roomId, data.title, data.description)
+    return Promise.resolve()
+      .then(() => {
+        // GitHub subscription.
+        if (data.github) {
+          return subscribeGithub(data.github);
+        }
+      })
+      .then(() => {
+        // Verify GitHub subscription.
+        if (data.github && subscribeGithubError) {
+          const errorMessage = `GitHub subscription failed! ${subscribeGithubError}`;
+          throw new SubmissionError({ _error: errorMessage });
+        }
+      })
+      .then(() => create(roomId, data.title, data.description, data.github))
       .then(() => {
         if (createError) {
           const errorMessage = `Chat creation failed! ${typeof createError.message === 'string' ? createError.message : ''}`;
@@ -32,7 +46,6 @@ export class CreateChat extends Component {
   }
 
   render() {
-    console.info(this.props.rooms);
     return (
       <div className="content box">
         <div className="form-container-2">
@@ -56,6 +69,10 @@ CreateChat.PropTypes = {
   create: PropTypes.func.isRequired,
   isCreating: PropTypes.bool,
   createError: PropTypes.any,
+
+  subscribeGithub: PropTypes.func.isRequired,
+  isSubscribingGithub: PropTypes.bool,
+  subscribeGithubError: PropTypes.any,
 };
 
 const mapStateToProps = function mapStateToProps(state) {
@@ -64,7 +81,10 @@ const mapStateToProps = function mapStateToProps(state) {
 
     isCreating: state.chat.isCreating,
     createError: state.chat.createError,
+
+    isSubscribingGithub: state.chat.isSubscribingGithub,
+    subscribeGithubError: state.chat.subscribeGithubError,
   }
 };
 
-export default connect(mapStateToProps, { create, retrieve })(CreateChat);
+export default connect(mapStateToProps, { create, subscribeGithub, retrieve })(CreateChat);

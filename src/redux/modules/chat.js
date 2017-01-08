@@ -2,6 +2,10 @@ const CREATE = 'redux/chat/CREATE';
 const CREATE_SUCCESS = 'redux/chat/CREATE_SUCCESS';
 const CREATE_FAIL = 'redux/chat/CREATE_FAIL';
 
+const SUBSCRIBE_GITHUB = '/redux/chat/SUBSCRIBE_GITHUB';
+const SUBSCRIBE_GITHUB_SUCCESS = 'redux/chat/SUBSCRIBE_GITHUB_SUCCESS';
+const SUBSCRIBE_GITHUB_FAIL = 'redux/chat/SUBSCRIBE_GITHUB_FAIL';
+
 const RETRIEVE = 'redux/chat/RETRIEVE';
 const RETRIEVE_SUCCESS = 'redux/chat/RETRIEVE_SUCCESS';
 const RETRIEVE_FAIL = 'redux/chat/RETRIEVE_FAIL';
@@ -34,6 +38,23 @@ export default function reducer(state = {}, action = {}) {
         ...state,
         isCreating: false,
         createError: action.error,
+      };
+    case SUBSCRIBE_GITHUB:
+      return {
+        ...state,
+        isSubscribingGithub: true,
+      };
+    case SUBSCRIBE_GITHUB_SUCCESS:
+      return {
+        ...state,
+        isSubscribingGithub: false,
+        subscribeGithubError: null,
+      };
+    case SUBSCRIBE_GITHUB_FAIL:
+      return {
+        ...state,
+        isSubscribingGithub: false,
+        subscribeGithubError: action.error,
       };
     case RETRIEVE:
       return {
@@ -106,14 +127,24 @@ export default function reducer(state = {}, action = {}) {
   }
 }
 
-export function create(roomId, title, description) {
+export function create(roomId, title, description, github) {
   return {
     types: [CREATE, CREATE_SUCCESS, CREATE_FAIL],
     promise: (client) => client.post(`/api/rooms/${roomId}/chats`, {
       data: {
         title,
         description,
+        github,
       }
+    }),
+  };
+}
+
+export function subscribeGithub(repository) {
+  return {
+    types: [SUBSCRIBE_GITHUB, SUBSCRIBE_GITHUB_SUCCESS, SUBSCRIBE_GITHUB_FAIL],
+    promise: (client) => client.post('/api/webhooks/github/subscribe', {
+      data: { repository },
     }),
   };
 }
