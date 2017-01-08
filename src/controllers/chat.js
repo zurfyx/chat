@@ -19,8 +19,7 @@ export const createChat = (req, res, next) => {
   req.checkBody('title', 'Title cannot be blank').notEmpty();
   req.sanitize('title').trim();
   req.sanitize('description').trim();
-
-  // TODO GitHub
+  req.sanitize('github').trim();
 
   const errors = req.validationErrors();
   if (errors) {
@@ -31,6 +30,7 @@ export const createChat = (req, res, next) => {
   newChat.room = room;
   newChat.title = req.body.title;
   newChat.description = req.body.description;
+  newChat.github = req.body.github;
 
   newChat.save((err, chat) => {
     if (err) return next(err);
