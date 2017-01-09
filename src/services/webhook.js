@@ -142,9 +142,10 @@ export function githubSubscribeWebhook(repository, token) {
       return response.json();
     })
     .then((json) => {
-      if (responseStatus !== 201
-          && responseStatus !== 422
-          && json.errors[0].message !== 'Hook already exsits on this repository') {
+      if (responseStatus !== 201) {
+        if (json.errors && json.errors[0].message !== 'Hook already exsits on this repository') {
+          return;
+        }
         throw json.errors ? json.errors[0].message : 'GitHub subscription failed.';
       }
     });
