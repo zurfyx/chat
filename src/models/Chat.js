@@ -7,6 +7,11 @@ const chatSchema = new Schema({
     required: 'Room is required',
   },
 
+  parent: {
+    type: Schema.ObjectId,
+    ref: 'Chat',
+  },
+
   title: String,
   description: String,
 

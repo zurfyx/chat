@@ -80,7 +80,7 @@ router.post('/rooms/:_id/chats', isAuthenticated, isRoomIdValid, isRoomOwner, ch
 router.get('/chats/:_id', isChatIdValid, chat.getChat);
 router.patch('/chats/:_id', c(chat.edit, (req) => [req.user, req.params._id, req.body]));
 router.delete('/chats/:_id', isAuthenticated, isChatIdValid, chat.deleteChat);
-router.post('/chats/:_id/fork', isAuthenticated, isChatIdValid, chat.forkChat);
+router.post('/chats/:_id/fork', c(chat.fork, (req) => [req.user, req.params._id, req.body.chatTitle, req.body.initialMessage]));
 router.post('/chats/:_id/fork-merge', isAuthenticated, isChatIdValid, chat.forkMerge); // Merge fork with the original chat. (?)
 router.post('/chats/:_id/fork-upgrade', isAuthenticated, isChatIdValid, chat.forkUpgrade); // Fork to chat.
 

@@ -1,7 +1,7 @@
 import { chain } from '~/helpers/promise';
 import Chat from '~/models/Chat';
 import { isAuthenticated } from '~/services/auth';
-import { findChat, editChat, emitChat } from '~/services/chat';
+import { findChat, editChat, emitChat, forkChat } from '~/services/chat';
 
 export const chats = (req, res, next) => {
   const room = req.room;
@@ -59,10 +59,11 @@ export const deleteChat = (req, res, next) => {
   throw new Error('#TODO'); // TODO
 };
 
-export const forkChat = (req, res, next) => {
-  const chat = req.chat;
-
-  throw new Error('#TODO'); // TODO
+export const fork = (currentUser, chatId, chatTitle, initialMessage) => {
+  return chain
+  .then(() => isAuthenticated(currentUser))
+  .then(() => findChat(chatId))
+  .then(() => forkChat(currentUser, chatId, chatTitle, initialMessage));
 };
 
 export const forkMerge = (req, res, next) => {

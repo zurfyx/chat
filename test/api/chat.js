@@ -47,6 +47,35 @@ describe('Chat', () => {
         });
     });
   });
+
+  describe('POST /chat/:_id/fork', () => {
+    beforeEach((done) => {
+      // Create a sample Chat to work with.
+      chain
+        .then(() => createChat(room))
+        .then((createdChat) => chat = createdChat)
+        .then(() => done())
+        .catch((error) => console.error(error));
+    });
+
+    it('should create a forked chat with a sticky message', (done) => {
+      request
+        .post(`${server}/chats/${chat._id}/fork`)
+        .send({
+          chatTitle: 'pull request #42',
+          initialMessage: {
+            type: 'plain',
+            content: 'fixed foo',
+          },
+        })
+        .end((err, res) => {
+          if (err) throw `Request error: ${err}`;
+          expect(res.body.title).to.equal('pull request #42');
+          expect(res.body.sticky).not.to.be.undefined;
+          return done();
+        });
+    });
+  });
 });
 
 
