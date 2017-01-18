@@ -20,6 +20,10 @@ const ACTIVATE = 'redux/chat/ACTIVATE';
 const ACTIVATE_SUCCESS = 'redux/chat/ACTIVATE_SUCCESS';
 const ACTIVATE_FAIL = 'redux/chat/ACTIVATE_FAIL';
 
+const FORK = 'redux/chat/FORK';
+const FORK_SUCCESS = 'redux/chat/FORK_SUCCESS';
+const FORK_FAIL = 'redux/chat/FORK_FAIL';
+
 export default function reducer(state = {}, action = {}) {
   switch(action.type) {
     case CREATE:
@@ -122,6 +126,25 @@ export default function reducer(state = {}, action = {}) {
         activateError: action.error,
         activateResult: null,
       };
+    case FORK:
+      return {
+        ...state,
+        isForking: false,
+      };
+    case FORK_SUCCESS:
+      return {
+        ...state,
+        isForking: false,
+        forkError: null,
+        forkResult: action.result,
+      };
+    case FORK_FAIL:
+      return {
+        ...state,
+        isForking: false,
+        forkError: action.error,
+        forkResult: null,
+      };
     default:
       return state;
   }
@@ -188,5 +211,22 @@ export function activate(chatId) {
   return {
     types: [ACTIVATE, ACTIVATE_SUCCESS, ACTIVATE_FAIL],
     promise: (client) => client.get(`/api/chats/${chatId}`),
+  };
+}
+
+/**
+ * @param chatId
+ * @param chatTitle
+ * @param initialMessage { type: 'plain', content: 'foo' }
+ */
+export function fork(chatId, chatTitle, initialMessage) {
+  return {
+    types: [FORK, FORK_SUCCESS, FORK_FAIL],
+    promise: (client) => client.post(`/api/chats/${chatId}/fork`, {
+      data: {
+        chatTitle,
+        initialMessage,
+      },
+    }),
   };
 }

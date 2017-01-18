@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { retrieveGithub } from 'redux/modules/webhook';
-import Activity from 'components/Activity';
+import Activity from 'containers/Activity';
 
 import styles from './RoomChatActivity.scss';
 

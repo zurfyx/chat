@@ -1,4 +1,5 @@
 import Redux from 'redux';
+import fetch from 'isomorphic-fetch';
 
 export default function processEntry(entry) {
 
@@ -37,7 +38,22 @@ export default function processEntry(entry) {
           action: github.action,
           target: github.pull_request.number,
           more: {
-            fork: { title: '123', content: 'content', type: 'plain' },
+            fork: () => {
+              const url = `https://api.github.com/repos/${github.repository}/pulls/${github.pull_request.number}`;
+              return fetch(url)
+                .then(data => data.json())
+                .then(data => {
+                  const body = data.body || '*(no description)*';
+                  const conversation = `[Conversation](https://github.com/${github.repository}/pull/${github.pull_request.number})`;
+                  const commits = `[Commits](https://github.com/${github.repository}/pull/${github.pull_request.number}/commits)`;
+                  const filesChanged = `[Files changed](https://github.com/${github.repository}/pull/${github.pull_request.number}/files)`;
+                  return {
+                    title: data.title,
+                    content: `${body}\n\n${conversation} ${commits} ${filesChanged}`,
+                    type: 'plain',
+                  };
+                });
+            }
           },
         };
       }
@@ -57,4 +73,3 @@ export default function processEntry(entry) {
   }
 
 }
-

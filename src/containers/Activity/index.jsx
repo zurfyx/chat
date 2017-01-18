@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 
+import { fork } from 'redux/modules/chat';
 import processEntry from './entry';
 
 import styles from './Activity.scss';
 
-export default class Activity extends Component {
+export class Activity extends Component {
   constructor(props) {
     super(props);
 
@@ -13,8 +15,15 @@ export default class Activity extends Component {
   }
 
   handleFork(e, data) {
-    console.info('it works');
-    console.info(data);
+    data.data()
+      .then((result) => {
+        const { title, content, type } = result;
+        const initialMessage = { content, type };
+        this.props.fork(this.props.chat._id, title, initialMessage);
+      })
+      .catch(() => {
+        alert('There was an error when fetching information!');
+      })
   }
 
   render() {
@@ -37,11 +46,11 @@ export default class Activity extends Component {
           </div>
         </ContextMenuTrigger>
         {/* Context menu */}
-        <ContextMenu id={`contextmenu-${this.props.entry._id}`}>
+        {more.fork && <ContextMenu id={`contextmenu-${this.props.entry._id}`}>
           <MenuItem data={{ data: more.fork }} onClick={this.handleFork}>
             Fork
           </MenuItem>
-        </ContextMenu>
+        </ContextMenu>}
       </div>
     );
   }
@@ -50,3 +59,12 @@ export default class Activity extends Component {
 Activity.propTypes = {
   entry: PropTypes.object.isRequired,
 };
+
+const mapStateToProps = function mapStateToProps(state) {
+  return {
+    user: state.auth.user,
+    chat: state.chat.activateResult,
+  };
+}
+
+export default connect(mapStateToProps, { fork })(Activity);
