@@ -364,3 +364,26 @@ button {
     font-size: 1.5em;
   }
 }
+
+:global .react-contextmenu {
+  background-color: $grey;
+  border: 1px solid $black5;
+  border-radius: 1px;
+  padding: 4px 4px;
+  
+  > .react-contextmenu-item {
+    color: $black4;
+    padding: 3px 7px;
+    border-radius: 3px;
+
+    &:hover {
+      background-color: $whiteLight4;
+      color: $black3;
+      cursor: pointer;
+    }
+  }
+
+  > .react-contextmenu + .react-contextmenu-item {
+    margin-top: 5px;
+  }
+}

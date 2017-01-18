@@ -1,12 +1,14 @@
 @import '../../styles/variables';
 
-.entry {
-  display: flex;
-  flex-direction: row;
-
+.entryContainer {
   & + & {
     margin-top: 14px;
   }
+}
+
+.entry {
+  display: flex;
+  flex-direction: row;
 
   header {
     display: block;

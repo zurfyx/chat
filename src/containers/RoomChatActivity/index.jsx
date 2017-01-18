@@ -33,7 +33,7 @@ export class RoomChatActivity extends Component {
       <div className={styles.activityPage}>
         <h4>Activity</h4>
         {activities.map((activity) =>
-          <Activity entry={activity} />
+          <Activity key={`activity-${activity._id}`} entry={activity} />
         )}
       </div>
     );

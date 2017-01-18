@@ -49,6 +49,7 @@
     "prismjs": "^1.5.1",
     "react": "^15.3.2",
     "react-codemirror": "^0.3.0",
+    "react-contextmenu": "^2.0.0",
     "react-dom": "^15.3.2",
     "react-fontawesome": "^1.2.0",
     "react-modal": "^1.5.2",

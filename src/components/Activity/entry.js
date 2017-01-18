@@ -1,3 +1,5 @@
+import Redux from 'redux';
+
 export default function processEntry(entry) {
 
   if (entry.github) {
@@ -34,6 +36,9 @@ export default function processEntry(entry) {
           timestamp: entry.createdAt,
           action: github.action,
           target: github.pull_request.number,
+          more: {
+            fork: { title: '123', content: 'content', type: 'plain' },
+          },
         };
       }
       case 'push': {
