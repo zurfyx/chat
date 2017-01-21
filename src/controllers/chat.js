@@ -1,7 +1,7 @@
 import { chain } from '~/helpers/promise';
 import Chat from '~/models/Chat';
 import { isAuthenticated } from '~/services/auth';
-import { findChat, editChat, emitChat, forkChat } from '~/services/chat';
+import { findChat, editChat, emitChat, forkChat, forkMergeChat } from '~/services/chat';
 
 export const chats = (req, res, next) => {
   const room = req.room;
@@ -66,10 +66,16 @@ export const fork = (currentUser, chatId, chatTitle, initialMessage) => {
   .then(() => forkChat(currentUser, chatId, chatTitle, initialMessage));
 };
 
-export const forkMerge = (req, res, next) => {
-  const chat = req.chat;
-
-  throw new Error('#TODO'); // TODO
+export const forkMerge = (currentUser, chatId) => {
+  return chain
+    .then(() => isAuthenticated(currentUser))
+    .then(() => findChat(chatId))
+    .then((chat) => {
+      if (!chat.parent) {
+        throw 'This is a top-most chat. Can\'t be merged.';
+      }
+    })
+    .then(() => forkMergeChat(currentUser, chatId));
 };
 
 export const forkUpgrade = (req, res, next) => {

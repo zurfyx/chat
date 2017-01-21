@@ -19,13 +19,15 @@ const messageSchema = new Schema({
   // code: a programming snippet.
   type: {
     type: String,
-    enum: ['plain', 'code'],
+    enum: ['plain', 'code', 'fork'],
     required: 'Type is required',
   },
   specifics: {
     // Use with 'code'.
     language: { type: String, enum: ['plain', 'markdown', 'html', 'javascript', 'css'] },
     highlight: { type: String },
+    // Use with 'fork'.
+    chat: { type: Schema.ObjectId, ref: 'Chat' },
   },
 
   deletedAt: Date,

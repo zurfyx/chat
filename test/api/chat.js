@@ -70,6 +70,8 @@ describe('Chat', () => {
         })
         .end((err, res) => {
           if (err) throw `Request error: ${err}`;
+          expect(res.body.parent).not.be.undefined;
+          expect(res.body.parent).not.to.equal(res.body._id);
           expect(res.body.title).to.equal('pull request #42');
           expect(res.body.sticky).not.to.be.undefined;
           return done();

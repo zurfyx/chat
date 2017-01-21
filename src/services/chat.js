@@ -26,6 +26,7 @@ export function createChat(values) {
   // TODO: input validation.
   const newChat = new Chat();
   newChat.room = values.room;
+  newChat.parent = values.parent;
   newChat.title = values.title;
   newChat.description = values.description;
   newChat.github = values.github;
@@ -43,7 +44,7 @@ export function createChat(values) {
  */
 export function editChat(chatId, values) {
   const validKeys = ['title', 'description', 'firstMessageDate',
-    'lastMessageDate', 'sticky'];
+    'lastMessageDate', 'sticky', 'closed'];
   const permittedValues = filterPermittedKeys(validKeys, values);
 
   if (permittedValues.firstMessageDate && !isDate(permittedValues.firstMessageDate)) {
@@ -83,7 +84,21 @@ export function forkChat(userId, parentChatId, chatTitle, initialMessageValues) 
   let forkedChat;
   return chain
     .then(() => findChat(parentChatId))
-    .then((parentChat) => createChat({ room: parentChat.room, title: chatTitle }))
+    .then((parentChat) => createChat({ room: parentChat.room, parent: parentChatId, title: chatTitle }))
     .then((chat) => createMessage(userId, chat._id, initialMessageValues))
     .then((message) => editChat(message.chat, { sticky: message._id }));
+}
+
+export function forkMergeChat(userId, chatId) {
+  return chain
+    .then(() => editChat(chatId, { closed: true }))
+    .then((chat) => createMessage(userId, chat.parent, { 
+      content: `Chat ${chat._id} was merged.`,
+      type: 'fork',
+      specifics: { chat: chat._id },
+    }))
+    .then((message) => createMessage(userId, chatId, {
+      content: `Chat was merged into ${message.chat}.`,
+      type: 'plain',
+    }));
 }

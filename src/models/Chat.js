@@ -24,6 +24,8 @@ const chatSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Message',
   },
+
+  closed: Boolean,
 }, { timestamps: true });
 
 const Chat = mongoose.model('Chat', chatSchema);
