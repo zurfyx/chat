@@ -5,7 +5,7 @@ import RoomChatActivity from 'containers/RoomChatActivity';
 import RoomChatHistory from 'containers/RoomChatHistory';
 import RoomChatMessage from 'components/RoomChatMessage';
 import EditableText from 'components/EditableText';
-import { socketEdit } from 'redux/modules/chat';
+import { socketEdit, forkMerge } from 'redux/modules/chat';
 
 export class RoomChat extends Component {
   constructor(props) {
@@ -13,6 +13,7 @@ export class RoomChat extends Component {
 
     this.editChatTitle = this.editChatTitle.bind(this);
     this.editChatDescription = this.editChatDescription.bind(this);
+    this.handleForkMerge = this.handleForkMerge.bind(this);
   }
 
   editChatTitle(title) {
@@ -26,6 +27,10 @@ export class RoomChat extends Component {
     this.props.socketEdit(this.props.chat._id, { description });
   }
 
+  handleForkMerge() {
+    this.props.forkMerge(this.props.chat._id);
+  }
+
   render() {
     const styles = require('./RoomChat.scss');
     const { chat } = this.props;
@@ -33,7 +38,10 @@ export class RoomChat extends Component {
     return (
       <div className={styles.roomChatPage}>
         <div className={styles.chatHeader}>
-          <h3><EditableText value={chat.title} defaultValue="Chat title" onSubmit={this.editChatTitle} /></h3>
+          <div className={styles.chatHeaderTitle}>
+            {chat.parent && <i className="fa fa-code-fork" aria-hidden="true" onClick={this.handleForkMerge}></i>}
+            <h3><EditableText value={chat.title} defaultValue="Chat title" onSubmit={this.editChatTitle} /></h3>
+          </div>
           <EditableText value={chat.description} defaultValue="Description" onSubmit={this.editChatDescription} />
         </div>
 
@@ -51,6 +59,7 @@ export class RoomChat extends Component {
 
 RoomChat.PropTypes = {
   socketEdit: PropTypes.func.isRequired,
+  forkMerge: PropTypes.func.isRequired,
 
   chat: PropTypes.element.isRequired,
 };
@@ -61,4 +70,4 @@ const mapStateToProps = function mapStateToProps(state) {
   }
 };
 
-export default connect(mapStateToProps, { socketEdit })(RoomChat);
+export default connect(mapStateToProps, { socketEdit, forkMerge })(RoomChat);

@@ -24,6 +24,10 @@ const FORK = 'redux/chat/FORK';
 const FORK_SUCCESS = 'redux/chat/FORK_SUCCESS';
 const FORK_FAIL = 'redux/chat/FORK_FAIL';
 
+const FORK_MERGE = 'redux/chat/FORK_MERGE';
+const FORK_MERGE_SUCCESS = 'redux/chat/FORK_MERGE_SUCCESS';
+const FORK_MERGE_FAIL = 'redux/chat/FORK_MERGE_FAIL';
+
 export default function reducer(state = {}, action = {}) {
   switch(action.type) {
     case CREATE:
@@ -145,6 +149,25 @@ export default function reducer(state = {}, action = {}) {
         forkError: action.error,
         forkResult: null,
       };
+    case FORK_MERGE:
+      return {
+        ...state,
+        isForkMerging: true,
+      };
+    case FORK_MERGE_SUCCESS:
+      return {
+        ...state,
+        isForkMerging: false,
+        forkMergeError: null,
+        forkMergeResult: action.result,
+      }
+    case FORK_MERGE_FAIL:
+      return {
+        ...state,
+        isForkMerging: false,
+        forkMergeError: action.error,
+        forkMergeResult: null,
+      }
     default:
       return state;
   }
@@ -227,6 +250,15 @@ export function fork(chatId, chatTitle, initialMessage) {
         chatTitle,
         initialMessage,
       },
+    }),
+  };
+}
+
+export function forkMerge(chatId) {
+  return {
+    types: [FORK_MERGE, FORK_MERGE_SUCCESS, FORK_MERGE_FAIL],
+    promise: (client) => client.post(`/api/chats/${chatId}/fork/merge`, {
+      data: {}
     }),
   };
 }

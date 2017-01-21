@@ -14,8 +14,28 @@
   padding: 9px 15px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.chatHeaderTitle {
+  display: block;
+
+  i {
+    font-size: 1.6em;
+    width: 1.6em;
+    text-align: center;
+    line-height: 1.6em;
+    background: $greenMedium1;
+    color: #fff;
+    border-radius: 0.8em;
+    margin-right: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 
   h3 {
+    display: inline-block;
     color: $black4;
     font-size: 2em;
     margin: 0 0 3px 0;
