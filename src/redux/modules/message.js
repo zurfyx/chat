@@ -1,5 +1,6 @@
 const RETRIEVE = 'redux/message/RETRIEVE';
 const RETRIEVE_SUCCESS = 'redux/message/RETRIEVE_SUCCESS';
+const RETRIEVE_APPEND_SUCCESS = 'redux/message/RETRIEVE_APPEND_SUCCESS';
 const RETRIEVE_FAIL = 'redux/message/RETRIEVE_FAIL';
 
 // TODO
@@ -35,6 +36,13 @@ export default function reducer(state = {}, action = {}) {
         retrieveError: null,
         retrieveResult: action.result, // TODO: merge with current results.
       };
+    case RETRIEVE_APPEND_SUCCESS:
+      return {
+        ...state,
+        isRetrieving: false,
+        retrieveError: null,
+        retrieveResult: state.retrieveResult.concat(action.result),
+      }
     case RETRIEVE_FAIL:
       return {
         ...state,
@@ -57,6 +65,14 @@ export default function reducer(state = {}, action = {}) {
 export function retrieve(chatId) {
   return {
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
+    promise: (client) => client.get(`/api/chats/${chatId}/messages`),
+  }
+}
+
+export function retrieveAppend(chatId) {
+  // TODO: Temporal function for loading chat forks until we get the message storage done.
+  return {
+    types: [RETRIEVE, RETRIEVE_APPEND_SUCCESS, RETRIEVE_FAIL],
     promise: (client) => client.get(`/api/chats/${chatId}/messages`),
   }
 }
