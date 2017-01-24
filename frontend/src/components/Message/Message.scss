@@ -1,0 +1,132 @@
+@import '../../styles/variables';
+
+.message {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid $grey;
+  padding-top: 25px;
+  margin-top: 25px;
+  overflow: auto;
+  word-break: break-all;
+
+  &:hover .messageStick {
+    visibility: visible;
+  }
+}
+
+.message.sticky {
+  margin-top: 0;
+  padding-bottom: 15px;
+  border: 0;
+  border-bottom: 1px solid $grey;
+
+  .messageStick {
+    visibility: visible;
+  }
+}
+
+.messageSenderImage {
+  background-image: url(http://orig06.deviantart.net/6c2b/f/2016/260/7/4/bonfim_br_sprite_by_prettyjianachica-dahzsnt.png);
+  background-size: cover;
+  border-radius: 999px;
+  width: 40px;
+  height: 40px;
+}
+
+.messageInformation {
+  flex: 1;
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+.messageHeader {
+  padding-bottom: 10px;
+}
+
+.messageRight {
+  float: right;
+
+  > * {
+    margin-left: 10px;
+  }
+}
+
+.messageSenderName {
+  font-weight: 600;
+}
+
+.messageTimestamp, .messageStick {
+  color: $black5;
+  font-size: 0.8em;
+}
+
+.messageStick {
+  color: $black9;
+  padding: 3px;
+  visibility: hidden;
+
+  &:hover {
+    background-color: $black9;
+    border-radius: 5px;
+    color: $greyExtreme-1;
+  }
+}
+
+.messageEdited {
+
+}
+
+.messageContent {
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 1em;
+  }
+
+  img {
+    border-radius: 3px;
+    max-width: 60%;
+    max-height: 300px;
+  }
+
+  > table {
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th, td {
+      border: 1px solid $greyLight1;
+      border-style: none solid solid none;
+    }
+
+    th, td {
+      padding: 6px 13px;
+    }
+
+    tr:nth-child(2n) {
+      background-color: $greyExtreme-1;
+    }
+
+    tr:first-child th:first-child { border-top-left-radius: 3px; }
+    tr:first-child th:last-child { border-top-right-radius: 3px; }
+    tr:last-child td:first-child { border-bottom-left-radius: 3px; }
+    tr:last-child td:last-child { border-bottom-right-radius: 3px; }
+    tr:first-child th { border-top-style: solid; }
+    tr td:first-child, tr th:first-child { border-left-style: solid; }
+  }
+}
+
+pre.snippet {
+  background-color: transparent;
+}
+
+.loadMoreFork {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+.indent {
+  padding-left: 20px;
+}

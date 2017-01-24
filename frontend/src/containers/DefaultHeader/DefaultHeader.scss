@@ -1,0 +1,65 @@
+@import '../../styles/variables';
+
+.headerPage {
+  position:fixed;
+  top: 0;
+  left: 0;
+  height: 60px;
+  background-color: $whiteLight1;
+  border-bottom: 1px solid $grey;
+  min-width: 100%;
+
+  a.logo {
+    color: $black3;
+    display: block;
+    font-weight: bold;
+    padding: 16px;
+    font-size: 1.2em;
+
+    &:hover {
+      color: $black3;
+    }
+  }
+}
+
+.headerPage nav {
+  float: right;
+  font-size: 1.2em;
+  padding: 16px;
+
+  a {
+    color: $black3;
+
+    &:hover {
+      color: $black3;
+    }
+  }
+
+  li + li {
+    margin-left: 12px;
+  }
+}
+
+.headerPage.transparent {
+  background-color: transparent;
+  border: 0;
+  color: $whiteLight2;
+
+  a.logo {
+    color: $whiteLight1;
+
+    &:hover {
+      color: $whiteLight1;
+    }
+  }
+}
+
+.headerPage.transparent nav {
+  a {
+    color: $whiteLight1;
+
+    &:hover {
+      color: $whiteLight1;
+    }
+  }
+}

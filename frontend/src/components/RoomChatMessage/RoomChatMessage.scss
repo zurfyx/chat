@@ -1,0 +1,9 @@
+@import '../../styles/variables';
+
+.chatBox {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid $grey;
+  margin-left: 10px;
+  margin-right: 10px;
+}

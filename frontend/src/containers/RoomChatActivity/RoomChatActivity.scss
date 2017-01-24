@@ -1,0 +1,13 @@
+@import '../../styles/variables';
+
+.activityPage {
+  background-color: $greyExtreme-1;
+  height: 100%;
+  width: 242px;
+  padding: 7px;
+
+  h4 {
+    color: $black7;
+    text-transform: uppercase;
+  }
+}

@@ -1,0 +1,64 @@
+@import '../../styles/variables';
+
+.roomSidebarPage {
+  background-color: $blueDark9;
+  color: $whiteLight1;
+  width: 220px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  > div {
+    padding: 15px;
+  }
+}
+
+.roomInfo {
+  margin-bottom: 50px;
+}
+
+.roomTitle > h2 {
+  margin-top: 0;
+  color: $whiteLight1;
+
+  &:hover, &:link, &:visited, &:active {
+    color: $whiteLight1;
+  }
+}
+
+ul.chatList {
+  margin: 0 0 0 0;
+  padding: 0;
+
+  li {
+    color: $whiteLight1;
+    border-top: 1px solid $whiteLight4;
+    margin-top: 20px;
+    padding-top: 15px;
+    list-style-type: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  li + li {
+    border-top: 1px solid rgba($whiteLight4, 0.42);
+  }
+}
+
+.new {
+  color: $whiteLight1;
+  background-color: transparent;
+  border: 1px solid $whiteLight1;
+  border-radius: 5px;
+  height: 25px;
+  float: right;
+  margin-top: -5px;
+  transition: border 0.2s ease;
+
+  &:hover {
+    background-color: transparent;
+    border: 1px solid $greenLight1;
+  }
+}

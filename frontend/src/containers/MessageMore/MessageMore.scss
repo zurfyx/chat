@@ -1,0 +1,33 @@
+@import '../../styles/variables';
+
+.messageMore {
+  width: 50px;
+  text-align: center;
+}
+
+.foldContainer {
+  &:hover > .moreButton {
+    background-color: transparent;
+    border-top: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid $blueLight1;
+
+    i {
+      color: $whiteLight1;
+    }
+  }
+
+  > ul {
+    margin-top: -100px;
+  }
+}
+
+.moreButton {
+  //border: 2px solid currentColor;
+  border-radius: 3px;
+  display: inline-block;
+  margin-top: 1em;
+  //padding: 8px;
+  font-size: 1.1em;
+}

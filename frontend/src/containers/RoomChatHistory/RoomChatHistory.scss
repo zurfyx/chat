@@ -1,0 +1,17 @@
+@import '../../styles/variables';
+
+.roomChatHistory {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stickies {
+  padding: 0 15px 15px 15px;
+}
+
+.loadMore {
+  color: $black9;
+  font-weight: bold;
+  text-align: center;
+}

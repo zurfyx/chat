@@ -1,0 +1,18 @@
+@import '../../styles/variables';
+
+.chatForm {
+  flex: 1;
+  margin: 0;
+
+  textarea {
+    border: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+    min-height: 5em;
+    max-height: 55%;
+    padding-top: 1em;
+    resize: none;
+    overflow: hidden;
+  }
+}

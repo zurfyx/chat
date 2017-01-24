@@ -1,0 +1,56 @@
+@import '../../styles/variables';
+
+.roomChatPage {
+  flex: 1; // From RoomBase.
+  display: flex; // For the Chat.
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chatHeader {
+  border-bottom: 1px solid $grey;
+  color: $black5;
+  font-size: 0.9em;
+  padding: 9px 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.chatHeaderTitle {
+  display: block;
+
+  i {
+    font-size: 1.6em;
+    width: 1.6em;
+    text-align: center;
+    line-height: 1.6em;
+    background: $greenMedium1;
+    color: #fff;
+    border-radius: 0.8em;
+    margin-right: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  h3 {
+    display: inline-block;
+    color: $black4;
+    font-size: 2em;
+    margin: 0 0 3px 0;
+    padding: 0;
+  }
+}
+
+.chatMain {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.chatContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
