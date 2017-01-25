@@ -3,16 +3,23 @@ config/*
 !config/default.js
 !config/test.js
 
-# DBs
+# Public (distribution).
+public/bundle.js
+
+# DBs.
 data/
 data-session/
-
-# IDEs
-.idea/
-.vscode
-
-# Others
 *.rdb
+
+# Node.
 npm-debug.log
 coverage/
 node_modules/
+
+# IDEs.
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

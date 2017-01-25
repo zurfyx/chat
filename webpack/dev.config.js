@@ -9,7 +9,7 @@ module.exports = {
     "react-hot-loader/patch",
     "webpack-dev-server/client?http://0.0.0.0:" + PORT,
     "webpack/hot/only-dev-server",
-    path.join(__dirname, "..", "src", "app.jsx")
+    path.join(__dirname, "..", "frontend", "app.jsx")
   ],
   output: {
     filename: "bundle.js",
@@ -18,7 +18,7 @@ module.exports = {
   devtool: "#eval-source-map",
   devServer: {
     colors: true,
-    contentBase: path.join(__dirname, "..", "dist"),
+    contentBase: path.join(__dirname, "..", "public"),
     historyApiFallback: {
       index: "index.html"
     },
@@ -90,7 +90,7 @@ module.exports = {
   },
   resolve: {
     root: [
-      path.resolve('./src')
+      path.resolve('./frontend')
     ],
     extensions: ["", ".js", ".jsx"]
   },
@@ -98,5 +98,5 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
-  ]
+  ],
 };
