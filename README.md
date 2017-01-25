@@ -11,6 +11,12 @@ Requirements:
 npm install
 ```
 
+Start MongoDB & Redis: *(skip this step if you have them running already)*
+
+```
+scripts/startdb.sh
+```
+
 Run the project (see [Execution](#execution) for alternative options):
 
 ```
