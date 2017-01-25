@@ -4,8 +4,9 @@
 
 Requirements:
 
-- [MongoDB](https://www.mongodb.com/)
-- [Redis](https://redis.io)
+- [Node.js](https://nodejs.org) (v6+) ([setup](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions))
+- [MongoDB](https://www.mongodb.com/) ([setup](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04))
+- [Redis](https://redis.io) ([setup](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-16-04))
 
 ```
 npm install
