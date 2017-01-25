@@ -5,13 +5,12 @@ import cookieParser from 'cookie-parser';
 import expressValidator from 'express-validator';
 import Session from 'express-session';
 import morgan from 'morgan';
-import mongoose from 'mongoose';
 import passport from 'passport';
-import { createClient as createRedisClient } from 'redis';
-import connectRedis from 'connect-redis';
 import Socketio from 'socket.io';
 import config from 'config';
 
+import initializeMongodb from './databases/mongodb';
+import initializeRedis from './databases/redis';
 import routes from './routes';
 import socketConnectionHandler from './sockets';
 
@@ -21,28 +20,9 @@ const port = process.env.PORT || 3030;
 
 // Hey you! care about my order http://stackoverflow.com/a/16781554/2034015
 
-/*
- * Databases initialization.
- */
-// Data database (Mongoose + MongoDB).
-const dbHost = config.get('database.data.host');
-const dbPort = config.get('database.data.port');
-const dbName = config.get('database.data.db');
-mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`);
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'DB connection error!'));
-
-// Session database (Redis).
-const redisClient = createRedisClient();
-const RedisStore = connectRedis(Session);
-const dbSession = new RedisStore({
-  client: redisClient,
-  host: config.get('database.session.host'),
-  port: config.get('database.session.port'),
-  prefix: config.get('database.session.prefix'),
-  disableTTL: true
-});
+// Databases.
+initializeMongodb();
+const dbSession = initializeRedis(Session);
 
 // Cookies.
 app.use(cookieParser());
@@ -99,6 +79,8 @@ io.on('connection', socketConnectionHandler);
 
 // Listen.
 server.listen(port);
+console.info('-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-');
 console.info(`🌐  API + 🗲 Socket listening on port ${port}`);
+console.info('-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-');
 
 export default server;

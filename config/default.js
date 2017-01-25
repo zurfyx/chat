@@ -5,7 +5,8 @@ module.exports = {
     data: {
       host: 'localhost',
       port: 27017,
-      db: 'nyao'
+      db: 'nyao',
+      reconnectTimeout: 5000, // ms.
     },
     // Redis.
     session: {
