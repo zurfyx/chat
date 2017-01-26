@@ -1,5 +1,10 @@
 # Nyao - the open-source chat application for developers
 
+<p align="center">
+  <a href="https://travis-ci.com/zurfyx/nyao"><img src="https://travis-ci.com/zurfyx/nyao.svg?token=kXP2msyJWy3GocoENpsq&branch=master" alt="Build Status" /></a>
+  <a href="https://dependencyci.com/github/zurfyx/nyao"><img src="https://dependencyci.com/github/zurfyx/nyao/badge" alt="Dependency Status" /></a>
+</p>
+
 ## Getting started
 
 Requirements:
