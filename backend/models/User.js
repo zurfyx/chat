@@ -3,7 +3,7 @@
  * https://github.com/sahat/hackathon-starter/blob/master/models/User.js
  */
 
-import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import mongoose, { Schema } from 'mongoose';
 
@@ -37,7 +37,7 @@ userSchema.pre('save', function (next) {
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
+    bcrypt.hash(user.password, salt, (err, hash) => {
       if (err) { return next(err); }
       user.password = hash;
       next();
