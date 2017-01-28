@@ -50,21 +50,21 @@
       }
     },
     "test-backend": {
-      "command": "mocha --compilers js:babel-core/register \"./backend/__tests__/**/*@(.js|.jsx)\"",
+      "command": "mocha --compilers js:babel-core/register \"./backend/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
       "env": {
         "NODE_ENV": "test",
         "PORT": 3030
       }
     },
     "test-frontend": {
-      "command": "mocha --compilers js:babel-core/register \"./frontend/__tests__/**/*@(.js|.jsx)\"",
+      "command": "mocha --compilers js:babel-core/register \"./frontend/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
       "env": {
         "NODE_ENV": "test",
         "PORT": 3030
       }
     },
     "coverage": {
-      "command": "istanbul cover _mocha -- --compilers js:babel-core/register \"./@(backend|frontend)/__tests__/**/*@(.js|.jsx)\"",
+      "command": "istanbul cover _mocha -- --compilers js:babel-core/register \"./@(backend|frontend)/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
       "env": {
         "NODE_ENV": "test",
         "PORT": 3030
