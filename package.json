@@ -30,7 +30,7 @@
     "test-backend": "better-npm-run test-backend",
     "test-frontend": "better-npm-run test-frontend",
     "test-e2e": "echo \"E2E tests are coming soon...\"",
-    "coverage": "better-npm-run coverage",
+    "coverage": "better-npm-run coverage-backend && mv coverage/coverage.raw.json coverage/coverage.backend.raw.json && better-npm-run coverage-frontend && mv coverage/coverage.raw.json coverage/coverage.frontend.raw.json && istanbul-merge --out coverage/coverage.raw.json coverage/coverage.backend.raw.json coverage/coverage.frontend.raw.json",
     "lint": "eslint ."
   },
   "betterScripts": {
@@ -52,22 +52,33 @@
     "test-backend": {
       "command": "mocha --compilers js:babel-core/register \"./backend/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
       "env": {
+        "NODE_PATH": "./backend",
         "NODE_ENV": "test",
         "PORT": 3030
       }
     },
     "test-frontend": {
-      "command": "mocha --compilers js:babel-core/register \"./frontend/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
+      "command": "mocha --webpack-config webpack.config-test.js --compilers js:babel-core/register --require ignore-styles --require ./frontend/__tests__/helper.js \"frontend/**/*.test@(.js|.jsx)\" --timeout 5000",
       "env": {
+        "NODE_PATH": "./frontend",
+        "NODE_ENV": "test",
+        "PORT": 3000
+      }
+    },
+    "coverage-backend": {
+      "command": "istanbul --include-all-sources cover _mocha -- --compilers js:babel-core/register \"./backend/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
+      "env": {
+        "NODE_PATH": "./backend",
         "NODE_ENV": "test",
         "PORT": 3030
       }
     },
-    "coverage": {
-      "command": "istanbul cover _mocha -- --compilers js:babel-core/register \"./@(backend|frontend)/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
+    "coverage-frontend": {
+      "command": "istanbul --include-all-sources cover _mocha -- --compilers js:babel-core/register --require ignore-styles --require ./frontend/__tests__/helper.js \"frontend/**/*.test@(.js|.jsx)\" --timeout 5000",
       "env": {
+        "NODE_PATH": "./frontend",
         "NODE_ENV": "test",
-        "PORT": 3030
+        "PORT": 3000
       }
     }
   },
@@ -135,7 +146,9 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "file-loader": "^0.9.0",
+    "ignore-styles": "^5.0.1",
     "istanbul": "^1.1.0-alpha.1",
+    "istanbul-merge": "^1.1.1",
     "jsdom": "^9.9.1",
     "mocha": "^3.2.0",
     "mockgoose": "^6.0.8",

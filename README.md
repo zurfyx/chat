@@ -3,6 +3,8 @@
 <p align="center">
   <a href="https://travis-ci.com/zurfyx/nyao"><img src="https://travis-ci.com/zurfyx/nyao.svg?token=kXP2msyJWy3GocoENpsq&branch=master" alt="Build Status" /></a>
   <a href="https://dependencyci.com/github/zurfyx/nyao"><img src="https://dependencyci.com/github/zurfyx/nyao/badge" alt="Dependency Status" /></a>
+  <a href="https://codecov.io/gh/zurfyx/nyao"><img src="https://codecov.io/gh/zurfyx/nyao/branch/master/graph/badge.svg?token=fqr6VP4POE" alt="Codecov" /></a>
+
 </p>
 
 ## Getting started
