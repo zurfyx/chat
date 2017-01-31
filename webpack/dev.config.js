@@ -17,6 +17,8 @@ module.exports = {
   },
   devtool: "#eval-source-map",
   devServer: {
+    host: '0.0.0.0',
+    port: PORT,
     colors: true,
     contentBase: path.join(__dirname, "..", "public"),
     historyApiFallback: {
@@ -25,11 +27,12 @@ module.exports = {
     hot: true,
     inline: false,
     progress: true,
-    port: PORT,
     proxy: {
       "/api/": {
         target: "http://localhost:" + API_PORT,
-        pathRewrite: {"^/api": ""}
+        pathRewrite: {"^/api": ""},
+        changeOrigin: false,
+        xfwd: true,
       }
     },
     stats: "errors-only"
