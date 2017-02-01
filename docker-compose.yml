@@ -2,6 +2,8 @@ version: '2'
 services:
   web:
     build: .
+    environment:
+      - 'NODE_CONFIG={"database": {"data": {"host": "mongo"}, "session": {"host": "redis" }}}'
     ports:
       - "3000:3000"
     volumes:

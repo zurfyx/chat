@@ -3,14 +3,14 @@ module.exports = {
   database: {
     // MongoDB.
     data: {
-      host: 'mongo',
+      host: 'localhost',
       port: 27017,
       db: 'nyao',
       reconnectTimeout: 5000, // ms.
     },
     // Redis.
     session: {
-      host: 'redis',
+      host: 'localhost',
       port: 6379,
       prefix: 'nyao_',
     },
