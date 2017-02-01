@@ -19,10 +19,10 @@ docker-compose up
 or
 
 ```
-docker-compose run --service-ports web /bin/bash -c 'npm start'
+docker-compose run --service-ports web npm start
 ```
 
-Alternative [execution](#execution) options.
+Other [execution](#execution) options.
 
 ### Node
 
@@ -79,7 +79,7 @@ Production (frontend only):
 When using Docker, npm commands can be passed by overriding the default web command:
 
 ```
-docker-compose run --service-ports web /bin/bash -c 'npm start'
+docker-compose run --service-ports web npm start
 ```
 
 ## Configuration
