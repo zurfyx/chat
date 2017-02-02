@@ -1,6 +1,7 @@
 # Nyao - the open-source chat application for developers
 
 <p align="center">
+  <a href="https://circleci.com/gh/zurfyx/nyao"><img src="https://circleci.com/gh/zurfyx/nyao.svg?style=shield&circle-token=989c19693484a1e864875e0aa3f826d57cd2a235" alt="CircleCI" /></a>
   <a href="https://travis-ci.com/zurfyx/nyao"><img src="https://travis-ci.com/zurfyx/nyao.svg?token=kXP2msyJWy3GocoENpsq&branch=master" alt="Build Status" /></a>
   <a href="https://dependencyci.com/github/zurfyx/nyao"><img src="https://dependencyci.com/github/zurfyx/nyao/badge" alt="Dependency Status" /></a>
   <a href="https://codecov.io/gh/zurfyx/nyao"><img src="https://codecov.io/gh/zurfyx/nyao/branch/master/graph/badge.svg?token=fqr6VP4POE" alt="Codecov" /></a>
