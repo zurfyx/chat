@@ -9,6 +9,23 @@
 
 ## Getting started
 
+### Docker (quickest)
+
+It is taken for granted that you have both [Docker](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/install/).
+
+```
+docker-compose up
+```
+or
+
+```
+docker-compose run --service-ports web npm start
+```
+
+Other [execution](#execution) options.
+
+### Node
+
 Requirements:
 
 - [Node.js](https://nodejs.org) (v6+) ([setup](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions))
@@ -56,6 +73,14 @@ Development (backend only):
 Production (frontend only):
 
 `npm run start-dev-frontend`
+
+### Docker
+
+When using Docker, npm commands can be passed by overriding the default web command:
+
+```
+docker-compose run --service-ports web npm start
+```
 
 ## Configuration
 
