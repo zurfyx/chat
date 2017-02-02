@@ -9,6 +9,7 @@ import passport from 'passport';
 import Socketio from 'socket.io';
 import config from 'config';
 
+import { info, error } from './helpers/log';
 import initializeMongodb from './databases/mongodb';
 import initializeRedis from './databases/redis';
 import routes from './routes';
@@ -51,6 +52,12 @@ const session = Session({
   store: dbSession
 });
 app.use(session);
+app.use((req, res, next) => {
+  if (!req.session) {
+    error('Session not found (is Redis down?).');
+  }
+  next();
+});
 
 // Passport.
 app.use(passport.initialize());
@@ -79,8 +86,8 @@ io.on('connection', socketConnectionHandler);
 
 // Listen.
 server.listen(port);
-console.info('-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-');
-console.info(`🌐  API + 🗲 Socket listening on port ${port}`);
-console.info('-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-');
+info('-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-');
+info(`🌐  API + 🗲 Socket listening on port ${port}`);
+info('-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-·-');
 
 export default server;

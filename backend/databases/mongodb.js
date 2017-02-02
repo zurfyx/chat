@@ -1,6 +1,8 @@
 import config from 'config';
 import mongoose from 'mongoose';
 
+import { dev, error } from '~/helpers/log';
+
 mongoose.Promise = Promise;
 
 const dbHost = config.get('database.data.host');
@@ -19,28 +21,28 @@ export default function initializeMongodb() {
   const db = mongoose.connection;
 
   db.on('connecting', () => {
-    console.info('Connecting to MongoDB...');
+    dev('Connecting to MongoDB...');
   });
 
-  db.on('error', (error) => {
-    console.error(`MongoDB connection error: ${error}`);
+  db.on('error', (err) => {
+    error(`MongoDB connection error: ${err}`);
     mongoose.disconnect();
   });
 
   db.on('connected', () => {
-    console.info('Connected to MongoDB!');
+    dev('Connected to MongoDB!');
   });
 
   db.once('open', () => {
-    console.info('MongoDB connection opened!');
+    dev('MongoDB connection opened!');
   });
 
   db.on('reconnected', () => {
-    console.info('MongoDB reconnected!');
+    dev('MongoDB reconnected!');
   });
 
   db.on('disconnected', () => {
-    console.error(`MongoDB disconnected! Reconnecting in ${reconnectTimeout / 1000}s...`);
+    error(`MongoDB disconnected! Reconnecting in ${reconnectTimeout / 1000}s...`);
     setTimeout(() => connect(), reconnectTimeout);
   });
 

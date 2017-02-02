@@ -38,7 +38,9 @@
       "command": "nodemon backend/server.js --exec babel-node",
       "env": {
         "NODE_ENV": "development",
-        "PORT": 3030
+        "PORT": 3030,
+        "DEBUG": "api:info,api:dev,api:error",
+        "DEBUG_COLORS": true
       }
     },
     "start-dev-frontend": {
@@ -54,7 +56,8 @@
       "env": {
         "NODE_PATH": "./backend",
         "NODE_ENV": "test",
-        "PORT": 3030
+        "PORT": 3030,
+        "DEBUG": "api:info,api:dev,api:error"
       }
     },
     "test-frontend": {
@@ -70,7 +73,8 @@
       "env": {
         "NODE_PATH": "./backend",
         "NODE_ENV": "test",
-        "PORT": 3030
+        "PORT": 3030,
+        "DEBUG": "api:error"
       }
     },
     "coverage-frontend": {
@@ -93,6 +97,7 @@
     "connect-redis": "^3.1.0",
     "cookie-parser": "^1.4.3",
     "crypto": "0.0.3",
+    "debug": "^2.6.0",
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "express-validator": "^2.20.10",
