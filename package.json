@@ -54,7 +54,6 @@
     "test-backend": {
       "command": "mocha --compilers js:babel-core/register \"./backend/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
       "env": {
-        "NODE_PATH": "./backend",
         "NODE_ENV": "test",
         "PORT": 3030,
         "DEBUG": "api:info,api:dev,api:error"
@@ -63,7 +62,6 @@
     "test-frontend": {
       "command": "mocha --webpack-config webpack.config-test.js --compilers js:babel-core/register --require ignore-styles --require ./frontend/__tests__/helper.js \"frontend/**/*.test@(.js|.jsx)\" --timeout 5000",
       "env": {
-        "NODE_PATH": "./frontend",
         "NODE_ENV": "test",
         "PORT": 3000
       }
@@ -71,7 +69,6 @@
     "coverage-backend": {
       "command": "istanbul --include-all-sources cover _mocha -- --compilers js:babel-core/register \"./backend/__tests__/**/*@(.js|.jsx)\" --timeout 5000",
       "env": {
-        "NODE_PATH": "./backend",
         "NODE_ENV": "test",
         "PORT": 3030,
         "DEBUG": "api:error"
@@ -80,7 +77,6 @@
     "coverage-frontend": {
       "command": "istanbul --include-all-sources cover _mocha -- --compilers js:babel-core/register --require ignore-styles --require ./frontend/__tests__/helper.js \"frontend/**/*.test@(.js|.jsx)\" --timeout 5000",
       "env": {
-        "NODE_PATH": "./frontend",
         "NODE_ENV": "test",
         "PORT": 3000
       }
