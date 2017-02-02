@@ -35,7 +35,7 @@
   },
   "betterScripts": {
     "start-dev-backend": {
-      "command": "babel-watch backend/server.js",
+      "command": "nodemon backend/server.js --exec babel-node",
       "env": {
         "NODE_ENV": "development",
         "PORT": 3030
@@ -135,7 +135,6 @@
     "babel-preset-stage-0": "^6.22.0",
     "babel-preset-stage-2": "^6.18.0",
     "babel-root-import": "^4.1.3",
-    "babel-watch": "^2.0.5",
     "chai": "^3.5.0",
     "css-loader": "^0.26.1",
     "enzyme": "^2.7.1",
@@ -154,6 +153,7 @@
     "mockgoose": "^6.0.8",
     "nock": "^9.0.2",
     "node-sass": "^4.3.0",
+    "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.4.2",
     "react-hot-loader": "^3.0.0-beta.6",
     "redbox-react": "^1.3.3",
