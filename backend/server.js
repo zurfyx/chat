@@ -64,9 +64,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Logging (debug only).
-if (process.env.NODE_ENV !== 'production') {
-  app.use(morgan('dev'));
-}
+app.use(morgan('combined', { stream: { write: msg => info(msg) } }));
 
 // URLs.
 app.use('/', routes);
