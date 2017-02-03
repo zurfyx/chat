@@ -1,7 +1,8 @@
 {
   "extends": "airbnb",
   "rules": {
-    "no-underscore-dangle": [2, { "allow": ["_id", "_json"] }]
+    "no-underscore-dangle": [2, { "allow": ["_id", "_json"] }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
   },
   "settings": {
     "import/resolver": {

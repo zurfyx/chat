@@ -1,6 +1,9 @@
 import express from 'express';
 import passport from 'passport';
 
+import * as log from '~/helpers/log';
+import { ApiError } from '~/helpers/api';
+
 import { isAuthenticated } from '~/middleware/auth';
 import { isUserIdValid } from '~/middleware/user';
 import { isRoomIdValid, isRoomOwner } from '~/middleware/room';
@@ -26,9 +29,8 @@ const router = express.Router();
 const controllerHandler = (promise, params) => (req, res, next) => {
   const boundParams = params ? params(req) : [];
   return promise(...boundParams)
-    .then((result) => res.json(result))
-    .catch((error) => res.status(500) && next(error)
-    );
+    .then(result => res.json(result))
+    .catch(error => res.status(500) && next(error));
 };
 const c = controllerHandler; // Just a name shortener.
 
@@ -102,20 +104,22 @@ router.get('/webhooks/github/:repositoryUser/:repositoryName', c(webhook.githubF
 router.post('/webhooks/github/subscribe', c(webhook.githubSubscribe, (req) => [req.user, req.body.repository]));
 
 /**
- * Default.
- * Authentication errors & de will end up here.
+ * Error-handler.
  */
-router.use((err, req, res, next) => {
-  res.status(err.status || 500);
-
-  if (!err.status) {
-    console.error('~~~ UNEXPECTED ERROR ~~~');
-    console.error(err);
-    err.stack && console.error(err.stack);
-    console.error('~~~~~~~~~~~~~~~~~~~~~~~~~');
+router.use((err, req, res, _next) => {
+  // Expected errors always throw ApiError.
+  // Unexpected errors will either throw unexpected stuff or crash the application.
+  if (Object.prototype.isPrototypeOf.call(ApiError.prototype, err)) {
+    return res.status(err.status || 500).json({ error: err.message });
   }
 
-  return res.json({ error: err });
+  log.error('~~~ Unexpected error exception start ~~~');
+  log.error(req);
+  log.error(err);
+  log.error('~~~ Unexpected error exception end ~~~');
+
+
+  return res.status(500).json({ error: '⁽ƈ ͡ (ुŏ̥̥̥̥םŏ̥̥̥̥) ु' });
 });
 
 export default router;
