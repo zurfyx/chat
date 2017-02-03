@@ -20,10 +20,10 @@
   "main": "frontend/app.jsx",
   "scripts": {
     "start": "npm run start-prod",
-    "start-prod": "concurrent \"npm run start-prod-backend\" \"npm run start-prod-frontend\"",
+    "start-prod": "concurrently \"npm run start-prod-backend\" \"npm run start-prod-frontend\"",
     "start-prod-backend": "npm run start-dev-backend",
     "start-prod-frontend": "npm run start-dev-frontend",
-    "start-dev": "concurrent \"npm run start-dev-backend\" \"npm run start-dev-frontend\"",
+    "start-dev": "concurrently \"npm run start-dev-backend\" \"npm run start-dev-frontend\"",
     "start-dev-backend": "better-npm-run start-dev-backend",
     "start-dev-frontend": "better-npm-run start-dev-frontend",
     "test": "npm run test-backend && npm run test-frontend && npm run test-e2e",
