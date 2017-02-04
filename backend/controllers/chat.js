@@ -1,7 +1,7 @@
 import { chain } from '~/helpers/promise';
 import { ApiError } from '~/helpers/api';
 import Chat from '~/models/Chat';
-import { isAuthenticated } from '~/services/auth';
+import { findAuthentication } from '~/services/auth';
 import { findChat, editChat, emitChat, forkChat, forkMergeChat } from '~/services/chat';
 
 export const chats = (req, res, next) => {
@@ -42,7 +42,7 @@ export const createChat = (req, res, next) => {
 
 export const edit = (currentUser, chatId, chatValues) => {
   return chain
-    .then(() => isAuthenticated(currentUser))
+    .then(() => findAuthentication(currentUser))
     .then(() => findChat(chatId))
     .then(() => editChat(chatId, chatValues))
     .then((chat) => emitChat(chat.room, chat));
@@ -62,14 +62,14 @@ export const deleteChat = (req, res, next) => {
 
 export const fork = (currentUser, chatId, chatTitle, initialMessage) => {
   return chain
-  .then(() => isAuthenticated(currentUser))
+  .then(() => findAuthentication(currentUser))
   .then(() => findChat(chatId))
   .then(() => forkChat(currentUser, chatId, chatTitle, initialMessage));
 };
 
 export const forkMerge = (currentUser, chatId) => {
   return chain
-    .then(() => isAuthenticated(currentUser))
+    .then(() => findAuthentication(currentUser))
     .then(() => findChat(chatId))
     .then((chat) => {
       if (!chat.parent) {

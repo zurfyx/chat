@@ -4,7 +4,7 @@ import passport from 'passport';
 import * as log from '~/helpers/log';
 import { ApiError } from '~/helpers/api';
 
-import { isAuthenticated } from '~/middleware/auth';
+import { findAuthentication } from '~/middleware/auth';
 import { isUserIdValid } from '~/middleware/user';
 import { isRoomIdValid, isRoomOwner } from '~/middleware/room';
 import { isChatIdValid } from '~/middleware/chat';
@@ -64,27 +64,27 @@ router.get('/users/:_id/rooms/owned', c(room.findOwnerByUser, (req) => [req.para
  * Rooms
  */
 router.get('/rooms', room.rooms);
-router.post('/rooms', isAuthenticated, room.createRoom);
+router.post('/rooms', findAuthentication, room.createRoom);
 router.get('/rooms/search', room.searchRooms);
 router.get('/rooms/:_id', isRoomIdValid, room.getRoom);
-router.put('/rooms/:_id', isAuthenticated, isRoomIdValid, isRoomOwner, room.editRoom);
-router.post('/rooms/:_id/join', isAuthenticated, isRoomIdValid, room.joinRoom);
-router.post('/rooms/:_id/leave', isAuthenticated, isRoomIdValid, room.leaveRoom);
-router.delete('/rooms/:_id', isAuthenticated, isRoomIdValid, isRoomOwner, room.deleteRoom);
+router.put('/rooms/:_id', findAuthentication, isRoomIdValid, isRoomOwner, room.editRoom);
+router.post('/rooms/:_id/join', findAuthentication, isRoomIdValid, room.joinRoom);
+router.post('/rooms/:_id/leave', findAuthentication, isRoomIdValid, room.leaveRoom);
+router.delete('/rooms/:_id', findAuthentication, isRoomIdValid, isRoomOwner, room.deleteRoom);
 
 // Room -> Chat.
 router.get('/rooms/:_id/chats', isRoomIdValid, chat.chats);
-router.post('/rooms/:_id/chats', isAuthenticated, isRoomIdValid, isRoomOwner, chat.createChat);
+router.post('/rooms/:_id/chats', findAuthentication, isRoomIdValid, isRoomOwner, chat.createChat);
 
 /**
  * Chats
  */
 router.get('/chats/:_id', isChatIdValid, chat.getChat);
 router.patch('/chats/:_id', c(chat.edit, (req) => [req.user, req.params._id, req.body]));
-router.delete('/chats/:_id', isAuthenticated, isChatIdValid, chat.deleteChat);
+router.delete('/chats/:_id', findAuthentication, isChatIdValid, chat.deleteChat);
 router.post('/chats/:_id/fork', c(chat.fork, (req) => [req.user, req.params._id, req.body.chatTitle, req.body.initialMessage]));
 router.post('/chats/:_id/fork/merge', c(chat.forkMerge, (req) => [req.user, req.params._id])); // Merge fork with the original chat. (?)
-router.post('/chats/:_id/fork/upgrade', isAuthenticated, isChatIdValid, chat.forkUpgrade); // Fork to chat.
+router.post('/chats/:_id/fork/upgrade', findAuthentication, isChatIdValid, chat.forkUpgrade); // Fork to chat.
 
 // Chat -> Message.
 router.get('/chats/:_id/messages', isChatIdValid, message.messages);
@@ -93,8 +93,8 @@ router.post('/chats/:_id/messages', c(message.create, (req) => [req.user, req.pa
 /**
  * Messages
  */
-router.put('/messages/:_id', isAuthenticated, isMessageIdValid, isMessageOwner, message.editMessage);
-router.delete('/messages/:_id', isAuthenticated, isMessageIdValid, isMessageOwner, message.deleteMessage);
+router.put('/messages/:_id', findAuthentication, isMessageIdValid, isMessageOwner, message.editMessage);
+router.delete('/messages/:_id', findAuthentication, isMessageIdValid, isMessageOwner, message.deleteMessage);
 
 /**
  * Webhooks

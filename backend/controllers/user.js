@@ -1,11 +1,11 @@
 import { chain } from '~/helpers/promise';
-import { isAuthenticated } from '~/services/auth';
+import { findAuthentication } from '~/services/auth';
 import { findUsers, findUser } from '~/services/user';
 
 // Current logged in user.
 export const whoami = (currentUser) => {
   return chain
-    .then(() => isAuthenticated(currentUser))
+    .then(() => findAuthentication(currentUser))
     .then(() => findUser(currentUser._id));
 };
 

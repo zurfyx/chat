@@ -3,7 +3,7 @@ import ipRangeCheck from 'ip-range-check';
 
 import { chain } from '~/helpers/promise';
 import { ApiError } from '~/helpers/api';
-import { isAuthenticated } from '~/services/auth';
+import { findAuthentication } from '~/services/auth';
 import { githubWebhook, findGitHubWebhook, githubSubscribeWebhook } from '~/services/webhook';
 
 export const github = (event, uid, ip, data) => {
@@ -31,7 +31,7 @@ export const githubSubscribe = (currentUser, repository) => {
         throw new ApiError('A repository is required.');
       }
     })
-    .then(() => isAuthenticated(currentUser))
+    .then(() => findAuthentication(currentUser))
     .then((user) => {
       // TODO: Filter by token scope.
       const githubTokens = currentUser.tokens.filter((token) => token.kind === 'github');

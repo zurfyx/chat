@@ -2,7 +2,7 @@ import Message from '~/models/Message';
 
 import { chain } from '~/helpers/promise';
 import { ApiError } from '~/helpers/api';
-import { isAuthenticated } from '~/services/auth';
+import { findAuthentication } from '~/services/auth';
 import { findChat } from '~/services/chat';
 import { createMessage, emitMessage } from '~/services/message';
 
@@ -20,7 +20,7 @@ export const messages = (req, res, next) => {
 export const create = (currentUserId, chatId, messageValues) => {
   let roomId;
   return chain
-    .then(() => isAuthenticated(currentUserId))
+    .then(() => findAuthentication(currentUserId))
     .then(() => findChat(chatId))
     .then((chat) => roomId = chat.room)
     .then(() => createMessage(currentUserId, chatId, messageValues))
