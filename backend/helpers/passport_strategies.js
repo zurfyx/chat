@@ -4,8 +4,10 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GithubStrategy } from 'passport-github';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
-import User from '~/models/User';
+import validator from 'validator';
+import { normalizeEmail } from '~/helpers/sanitize';
 import { objectByString } from '~/helpers/object';
+import User from '~/models/User';
 
 /**
  * See docs/auth-flow.svg
@@ -24,18 +26,23 @@ passport.deserializeUser((id, done) => {
 /**
  * Sign in using Email and Password.
  */
-passport.use('local-signin', new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-  User.findOne({ email }, (err, user) => {
-    if (err) { return done(err); }
-    if (!user) {
-      return done(null, false, { message: `Email ${email} not found.` });
-    }
-    user.comparePassword(password, (err, isMatch) => {
-      if (err) { return done(err); }
-      if (isMatch) {
-        return done(null, user);
+passport.use('local-signin', new LocalStrategy({
+  usernameField: 'email',
+}, (reqEmail, reqPassword, done) => {
+  const email = normalizeEmail(reqEmail);
+  const password = reqPassword;
+
+  User.findOne({ email }, (error, user) => {
+    if (error) return done(error);
+    if (!user) return done(null, false, 'Email not found.');
+
+    return user.comparePassword(password, (comparePasswordError, isMatch) => {
+      if (comparePasswordError) return done(comparePasswordError);
+      if (!isMatch) {
+        return done(null, false, 'Incorrect password.');
       }
-      return done(null, false, { message: 'Invalid email or password.' });
+
+      return done(null, user);
     });
   });
 }));

@@ -27,20 +27,17 @@ const router = express.Router();
  * @param params (req) => [params, ...].
  */
 const controllerHandler = (promise, params) => (req, res, next) => {
-  const boundParams = params ? params(req) : [];
+  const boundParams = params ? params(req, res, next) : [];
   return promise(...boundParams)
-    .then(result => res.json(result))
+    .then(result => res.json(result || { message: 'OK' }))
     .catch(error => res.status(500) && next(error));
 };
 const c = controllerHandler; // Just a name shortener.
 
 /**
  * Authentication.
- * There is no need to use any of these nor their controller's logic
- * with sockets, so we'll leave them with the old (req, res, next) controllers
- * for the time being.
  */
-router.post('/auth/signin', auth.signin);
+router.post('/auth/signin', c(auth.signin, (req, res, next) => [req, res, next]));
 router.post('/auth/signup', auth.signup);
 router.get('/auth/github', passport.authenticate('github', { scope: 'user:email' }));
 router.get('/auth/github/repo', passport.authenticate('github', { scope: 'user:email write:repo_hook' }));

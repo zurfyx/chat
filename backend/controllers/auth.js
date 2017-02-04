@@ -1,32 +1,36 @@
 import passport from 'passport';
+import validator from 'validator';
 
+import { chain } from '~/helpers/promise';
+import { ApiError } from '~/helpers/api';
 import '~/helpers/passport_strategies';
 
 // Sign in using email and password.
-export const signin = (req, res, next) => {
-  req.checkBody('email', 'Email is not valid').isEmail();
-  req.checkBody('password', 'Password cannot be blank').notEmpty();
-  req.sanitize('email');
+export function signin(req, res, next) {
+  const reqEmail = req.body.email;
+  const reqPassword = req.body.password;
 
-  const errors = req.validationErrors();
+  return chain
+    .then(() => {
+      if (!validator.isEmail(reqEmail)) {
+        throw new ApiError('Invalid email');
+      }
+      if (validator.isEmpty(reqPassword)) {
+        throw new ApiError('Password cannot be empty');
+      }
+    })
+    .then(() => new Promise((resolve, reject) => {
+      passport.authenticate('local-signin', (error, user, info) => {
+        if (error) return reject(new Error(error));
+        if (!user) return reject(new ApiError(info));
 
-  if (errors) {
-    return next(errors);
-  }
-
-  req.body.email = req.body.email.toLowerCase().trim();
-
-  passport.authenticate('local-signin', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return next(info);
-
-    req.logIn(user, (err) => {
-      if (err) return next(err);
-
-      return res.json({ message: 'OK' });
-    });
-  })(req, res, next);
-};
+        return req.logIn(user, (loginError) => {
+          if (loginError) return reject(new Error(loginError));
+          return resolve();
+        });
+      })(req, res, next);
+    }));
+}
 
 // Sign up using email and password.
 export const signup = (req, res, next) => {
