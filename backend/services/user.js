@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+import { ApiError } from '~/helpers/api';
 import User from '~/models/User';
 
 export const basicFields = `username profile.name profile.gender 
@@ -17,11 +18,11 @@ export function findUsers() {
  */
 export function findUser(userId) {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw 'User ID is invalid.';
+    throw new ApiError('User ID is invalid.');
   }
 
   return User.findOne({ _id: userId }, basicFields).exec().then((user) => {
-    if (!user) throw 'User not found.';
+    if (!user) throw new ApiError('User not found.');
 
     return user;
   });
