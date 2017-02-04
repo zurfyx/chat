@@ -1,4 +1,5 @@
 import { chain } from '~/helpers/promise';
+import { ApiError } from '~/helpers/api';
 import Chat from '~/models/Chat';
 import { isAuthenticated } from '~/services/auth';
 import { findChat, editChat, emitChat, forkChat, forkMergeChat } from '~/services/chat';
@@ -56,7 +57,7 @@ export const getChat = (req, res, next) => {
 export const deleteChat = (req, res, next) => {
   const chat = req.chat;
 
-  throw new Error('#TODO'); // TODO
+  throw new ApiError('#TODO'); // TODO
 };
 
 export const fork = (currentUser, chatId, chatTitle, initialMessage) => {
@@ -81,5 +82,5 @@ export const forkMerge = (currentUser, chatId) => {
 export const forkUpgrade = (req, res, next) => {
   const chat = req.chat;
 
-  throw new Error('#TODO'); // TODO
+  throw new ApiError('#TODO'); // TODO
 };

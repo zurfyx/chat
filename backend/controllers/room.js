@@ -1,22 +1,27 @@
+import { chain } from '~/helpers/promise';
+import { ApiError } from '~/helpers/api';
 import Room from '~/models/Room';
 import { findUser } from '~/services/user';
 import { findJoinedRoomsByUser, findRoomBySlug } from '~/services/room';
 
 // Returns the rooms that an user has joined.
 export const findJoinedByUser = (userId) => {
-  return findUser(userId)
+  return chain
+    .then(() => findUser(userId))
     .then(() => findJoinedRoomsByUser(userId));
 };
 
 // Returns the rooms that an user owns.
 export const ownedRooms = (userId) => { // TODO: fix
-  return findUser(userId)
+  return chain
+    .then(() => findUser(userId))
     .then(() => findJoinedRoomsByUser(userId));
 };
 
 // Returns the room that matches the slug.
 export const findBySlug = (slug) => {
-  return findRoomBySlug(slug);
+  return chain
+    .then(() => findRoomBySlug(slug));
 };
 
 // Returns all available rooms.
@@ -124,5 +129,5 @@ export const leaveRoom = (req, res, next) => {
 export const deleteRoom = (req, res, next) => {
   const room = req.room;
 
-  throw new Error('#TODO'); // TODO
+  throw new ApiError('#TODO'); // TODO
 };

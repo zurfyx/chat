@@ -1,6 +1,7 @@
 import Message from '~/models/Message';
 
 import { chain } from '~/helpers/promise';
+import { ApiError } from '~/helpers/api';
 import { isAuthenticated } from '~/services/auth';
 import { findChat } from '~/services/chat';
 import { createMessage, emitMessage } from '~/services/message';
@@ -29,7 +30,7 @@ export const create = (currentUserId, chatId, messageValues) => {
 export const editMessage = (req, res, next) => {
   const message = req.message;
 
-  throw new Error('#TODO'); // TODO
+  throw new ApiError('#TODO'); // TODO
 };
 
 export const deleteMessage = (req, res, next) => {

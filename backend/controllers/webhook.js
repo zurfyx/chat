@@ -2,6 +2,7 @@ import config from 'config';
 import ipRangeCheck from 'ip-range-check';
 
 import { chain } from '~/helpers/promise';
+import { ApiError } from '~/helpers/api';
 import { isAuthenticated } from '~/services/auth';
 import { githubWebhook, findGitHubWebhook, githubSubscribeWebhook } from '~/services/webhook';
 
@@ -9,7 +10,7 @@ export const github = (event, uid, ip, data) => {
   return chain
     .then(() => {
       if (!ipRangeCheck(ip, config.get('githubIpRange'))) {
-        throw 'IP does not match GitHub whitelist.';
+        throw new ApiError('IP does not match GitHub whitelist.');
       }
     })
     .then(() => githubWebhook(event, uid, data))
@@ -19,14 +20,15 @@ export const github = (event, uid, ip, data) => {
 }
 
 export const githubFind = (repository) => {
-  return findGitHubWebhook(repository);
+  return chain
+    .then(() => findGitHubWebhook(repository));
 }
 
 export const githubSubscribe = (currentUser, repository) => {
   return chain
     .then(() => {
       if (!repository) {
-        throw 'A repository is required.';
+        throw new ApiError('A repository is required.');
       }
     })
     .then(() => isAuthenticated(currentUser))
