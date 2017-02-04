@@ -28,13 +28,15 @@ passport.deserializeUser((id, done) => {
  */
 passport.use('local-signin', new LocalStrategy({
   usernameField: 'email',
-}, (reqEmail, reqPassword, done) => {
+}, async (reqEmail, reqPassword, done) => {
   const email = normalizeEmail(reqEmail);
   const password = reqPassword;
 
-  User.findOne({ email }, (error, user) => {
-    if (error) return done(error);
-    if (!user) return done(null, false, 'Email not found.');
+  try {
+    const user = await User.findOne({ email }).exec();
+    if (!user) {
+      return done(null, false, 'Email not found.');
+    }
 
     return user.comparePassword(password, (comparePasswordError, isMatch) => {
       if (comparePasswordError) return done(comparePasswordError);
@@ -44,7 +46,9 @@ passport.use('local-signin', new LocalStrategy({
 
       return done(null, user);
     });
-  });
+  } catch (error) {
+    return done(error);
+  }
 }));
 
 /**
