@@ -1,8 +1,8 @@
 import { isDate } from 'validator';
 
 import { chain } from '~/helpers/promise';
-import { isId } from '~/helpers/validation';
-import { filterPermittedKeys } from '~/helpers/validation';
+import { isId } from '~/helpers/validate';
+import { filterPermittedKeys } from '~/helpers/sanitize';
 import { emitToRoom } from '~/helpers/socket';
 import Chat from '~/models/Chat';
 import { findMessage, createMessage } from '~/services/message';

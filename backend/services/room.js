@@ -1,4 +1,4 @@
-import { isId } from '~/helpers/validation';
+import { isId } from '~/helpers/validate';
 import Room from '~/models/Room';
 
 /**

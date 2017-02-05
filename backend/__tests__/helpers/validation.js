@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { filterPermittedKeys } from '~/helpers/validation';
+
+import { filterPermittedKeys } from '~/helpers/sanitize';
 
 describe('Validation', () => {
   describe('filterPermittedKeys', () => {

@@ -1,6 +1,6 @@
 import validator from 'validator';
 
-import { isId } from '~/helpers/validation';
+import { isId } from '~/helpers/validate';
 import { emitToRoom } from '~/helpers/socket';
 import Message from '~/models/Message';
 
