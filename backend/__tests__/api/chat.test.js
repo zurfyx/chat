@@ -2,9 +2,9 @@ import { expect } from 'chai';
 
 import { chain } from '~/helpers/promise';
 import Chat from '~/models/Chat';
-import { createAndSignin } from './auth';
-import { createRoom } from './room';
-import { createMessage } from './message';
+import { createAndSignin } from './auth.test';
+import { createRoom } from './room.test';
+import { createMessage } from './message.test';
 
 describe('Chat', () => {
   let user;

@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 
 import { chain } from '~/helpers/promise';
-import Message from'~/models/Message';
-import { createAndSignin } from './auth';
-import { createRoom } from './room';
-import { createChat } from './chat';
+import Message from '~/models/Message';
+import { createAndSignin } from './auth.test';
+import { createRoom } from './room.test';
+import { createChat } from './chat.test';
 
 describe('Message', () => {
   let user;

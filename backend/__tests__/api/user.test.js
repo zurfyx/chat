@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import User from '~/models/User';
-import { create, createAndSignin, demoUser } from './auth';
+import { create, createAndSignin, demoUser } from './auth.test';
 
 // Check an user against the basic fields.
 function expectDemoUserBasicFields(user) {

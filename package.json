@@ -52,7 +52,7 @@
       }
     },
     "test-backend": {
-      "command": "mocha --require babel-polyfill --compilers js:babel-core/register \"./backend/__tests__/**/*@(.js|.jsx)\" --timeout 15000",
+      "command": "mocha --compilers js:babel-core/register --require babel-polyfill ./backend/__tests__/helper.js \"./backend/**/*.test.js\" --timeout 15000",
       "env": {
         "NODE_ENV": "test",
         "PORT": 3030,
@@ -60,14 +60,14 @@
       }
     },
     "test-frontend": {
-      "command": "mocha --webpack-config webpack.config-test.js --require babel-polyfill --compilers js:babel-core/register --require ignore-styles --require ./frontend/__tests__/helper.js \"frontend/**/*.test@(.js|.jsx)\" --timeout 15000",
+      "command": "mocha --webpack-config webpack.config-test.js --compilers js:babel-core/register --require babel-polyfill --require ignore-styles ./frontend/__tests__/helper.js \"./frontend/**/*.test@(.js|.jsx)\" --timeout 15000",
       "env": {
         "NODE_ENV": "test",
         "PORT": 3000
       }
     },
     "coverage-backend": {
-      "command": "istanbul --include-all-sources cover _mocha -- --require babel-polyfill --compilers js:babel-core/register \"./backend/__tests__/**/*@(.js|.jsx)\" --timeout 15000",
+      "command": "istanbul --include-all-sources cover _mocha -- --compilers js:babel-core/register --require babel-polyfill ./backend/__tests__/helper.js \"./backend/**/*.test.js\" --timeout 15000",
       "env": {
         "NODE_ENV": "test",
         "PORT": 3030,
@@ -75,7 +75,7 @@
       }
     },
     "coverage-frontend": {
-      "command": "istanbul --include-all-sources cover _mocha -- --compilers js:babel-core/register --require babel-polyfill --require ignore-styles --require ./frontend/__tests__/helper.js \"frontend/**/*.test@(.js|.jsx)\" --timeout 15000",
+      "command": "istanbul --include-all-sources cover _mocha -- --compilers js:babel-core/register --require babel-polyfill --require ignore-styles ./frontend/__tests__/helper.js \"./frontend/**/*.test@(.js|.jsx)\" --timeout 15000",
       "env": {
         "NODE_ENV": "test",
         "PORT": 3000
