@@ -3,12 +3,12 @@
  * https://github.com/sahat/hackathon-starter/blob/master/models/User.js
  */
 
-import bcrypt from 'bcrypt';
-import crypto from 'crypto';
 import mongoose, { Schema } from 'mongoose';
 
 import { isEmail } from '~/helpers/validate';
 import { isUsername, isPassword } from './validate';
+import { hashPassword } from './middleware';
+import { comparePassword, gravatar } from './methods';
 
 const userSchema = new Schema({
   username: {
@@ -50,42 +50,15 @@ const userSchema = new Schema({
 }, { timestamps: true });
 
 /**
- * Triggers.
+ * Middleware.
  */
-// Password hashing with bcrypt.
-userSchema.pre('save', function hashPassword(next) {
-  const user = this;
-  if (!user.isModified('password')) {
-    return next();
-  }
-  return bcrypt.genSalt(10, (error, salt) => {
-    if (error) return next(error);
-    return bcrypt.hash(user.password, salt, (hashError, hash) => {
-      if (hashError) { return next(hashError); }
-      user.password = hash;
-      return next();
-    });
-  });
-});
+userSchema.pre('save', hashPassword);
 
 /**
  * Methods.
  */
-// Password validator.
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch);
-  });
-};
-
-// User's gravatar.
-userSchema.methods.gravatar = function gravatar(size = 200) {
-  if (!this.email) {
-    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
-  }
-  const md5 = crypto.createHash('md5').update(this.email).digest('hex');
-  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
-};
+userSchema.methods.comparePassword = comparePassword;
+userSchema.methods.gravatar = gravatar;
 
 const User = mongoose.model('User', userSchema);
 

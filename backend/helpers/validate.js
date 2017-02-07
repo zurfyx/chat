@@ -5,7 +5,7 @@
  *
  * Format: Mongoose http://mongoosejs.com/docs/validation.html
  * Input: value:any.
- * Output: [assertion:Boolean, errorMessage:string]
+ * Output: [assertion:Boolean, (optional) errorMessage:string]
  *
  * Prefer validating with validator when possible.
  */
@@ -13,7 +13,7 @@
 import validator from 'validator';
 import mongoose from 'mongoose';
 
-export const isEmail = val => [validator.isEmail(val), 'Invalid email.'];
+export const isEmail = val => [validator.isEmail(val)];
 
 export function isId(value) {
   return [mongoose.Types.ObjectId.isValid(value), 'Invalid ID.'];

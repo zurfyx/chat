@@ -38,14 +38,12 @@ passport.use('local-signin', new LocalStrategy({
       return done(null, false, 'Email not found.');
     }
 
-    return user.comparePassword(password, (comparePasswordError, isMatch) => {
-      if (comparePasswordError) return done(comparePasswordError);
-      if (!isMatch) {
-        return done(null, false, 'Incorrect password.');
-      }
+    const passwordMatch = user.comparePassword(password);
+    if (!passwordMatch) {
+      return done(null, false, 'Incorrect password.');
+    }
 
-      return done(null, user);
-    });
+    return done(null, user);
   } catch (error) {
     return done(error);
   }
