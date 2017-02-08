@@ -15,19 +15,19 @@ const userSchema = new Schema({
     type: String,
     unique: true,
     sparse: true,
-    validate: [isUsername],
+    validate: [{ validator: isUsername, msg: 'Username must consist of only alphanumeric values with a length between 5 and 20 characters.' }],
   },
 
   email: {
     type: String,
     required: true,
     unique: true,
-    validate: [isEmail],
+    validate: [{ validator: isEmail, msg: 'Invalid email.' }],
   },
 
   password: {
     type: String,
-    validate: [isPassword],
+    validate: [{ validator: isPassword, msg: 'Password must have a minimum of 4 characters.' }],
   },
   passwordResetToken: String, // TODO.
   passwordResetExpires: Date, // TODO.

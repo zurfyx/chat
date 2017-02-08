@@ -34,6 +34,25 @@ describe('Model: User', () => {
     mockery.disable();
   });
 
+  // http://stackoverflow.com/a/42116795
+  it('should throw error on invalid email', async () => {
+    const user = new User({ email: 'invalid email' });
+
+    try {
+      await user.validate();
+      throw Error('Email was not valid, expected exception');
+    } catch (error) {
+      expect(error.errors.email).to.exist;
+    }
+  });
+
+  it('should not throw error on valid email', async () => {
+    const user = new User({ email: 'nyao@example.com' });
+
+    const validate = await user.validate();
+    expect(validate).not.to.exist;
+  });
+
   it('should create an User object', async () => {
     const UserMock = sinon.mock(new User({ email: 'nyao@example.com' }));
     const user = UserMock.object;

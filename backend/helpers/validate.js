@@ -3,18 +3,17 @@
  * Local validator (which are only used once) are stored next to the component.
  * I.e. isUsername in ~/models/User/validate.js
  *
- * Format: Mongoose http://mongoosejs.com/docs/validation.html
- * Input: value:any.
- * Output: [assertion:Boolean, (optional) errorMessage:string]
+ * Input: value: any.
+ * Output: Boolean
  *
- * Prefer validating with validator when possible.
+ * Prefer validating with validator over your own code.
  */
 
 import validator from 'validator';
 import mongoose from 'mongoose';
 
-export const isEmail = val => [validator.isEmail(val)];
+export const isEmail = value => validator.isEmail(value);
 
 export function isId(value) {
-  return [mongoose.Types.ObjectId.isValid(value), 'Invalid ID.'];
+  return mongoose.Types.ObjectId.isValid(value);
 }
