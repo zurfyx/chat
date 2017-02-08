@@ -2,6 +2,7 @@
 
 import { expect } from 'chai';
 import sinon from 'sinon';
+import mockery from 'mockery';
 
 import User from '../';
 
@@ -13,6 +14,24 @@ describe('Model: User', () => {
     } catch (error) {
       expect(error.errors.email).to.exist;
     }
+  });
+
+  it('should call email validator', async () => {
+    const isEmailStub = sinon.stub();
+    isEmailStub.withArgs('nyao@example.com').returns([true]);
+
+    mockery.enable({ warnOnReplace: false, warnOnUnregistered: false });
+    mockery.registerAllowable('../');
+    mockery.registerMock('../../helpers/validate', { isEmail: isEmailStub });
+
+    const UserMock = require('../').default; // eslint-disable-line global-require
+    const user = new UserMock({ email: 'nyao@example.com' });
+
+    await user.validate();
+    expect(isEmailStub).to.be.calledOnce;
+
+    mockery.deregisterAll();
+    mockery.disable();
   });
 
   it('should create an User object', async () => {
