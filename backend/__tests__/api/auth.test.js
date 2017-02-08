@@ -4,7 +4,7 @@ import { chain } from '~/helpers/promise';
 import User from '~/models/User';
 
 export const demoUser = {
-  username: 'demo',
+  username: 'demouser',
   email: 'demo@example.com',
   password: 'password',
   profile: {
