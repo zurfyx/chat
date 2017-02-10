@@ -83,6 +83,14 @@ When using Docker, npm commands can be passed by overriding the default web comm
 docker-compose run --service-ports web npm start
 ```
 
+#### Testing
+
+Test your new Docker config by running (rebuilds project image):
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.test.yml up
+```
+
 ## Configuration
 
 The default configuration file resides in `config/default.js`.
