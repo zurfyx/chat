@@ -10,10 +10,9 @@ export const whoami = (currentUser) => {
 };
 
 // Returns all users.
-export const users = () => {
-  return chain
-    .then(() => findUsers());
-};
+export async function users() {
+  return await findUsers();
+}
 
 // Returns the user that matches userId.
 export const find = (userId) => {
