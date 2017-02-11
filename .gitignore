@@ -16,6 +16,9 @@ npm-debug.log
 coverage/
 node_modules/
 
+# Logs.
+*.log
+
 # IDEs.
 .idea/
 .vscode/*
