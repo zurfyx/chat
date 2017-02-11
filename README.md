@@ -83,12 +83,12 @@ When using Docker, npm commands can be passed by overriding the default web comm
 docker-compose run --service-ports web npm start
 ```
 
-#### Testing
+#### Production
 
-Test your new Docker config by running (rebuilds project image):
+Production Docker Compose gathers the `latest` version from the Docker Hub.
 
 ```
-docker-compose -f docker-compose.yml -f docker-compose.test.yml up
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 ```
 
 ## Configuration

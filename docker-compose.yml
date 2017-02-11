@@ -1,14 +1,14 @@
 version: '2'
 services:
   web:
-    image: zurfyx/nyao
+    image: zurfyx/nyao:latest
     environment:
       - 'NODE_CONFIG={"database": {"data": {"host": "mongo"}, "session": {"host": "redis" }}}'
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
       - /app/node_modules
+      - .:/app
     depends_on: 
       - mongo
       - redis

@@ -1,0 +1,6 @@
+version: '2'
+services:
+  web:
+    image: zurfyx/nyao:latest
+    volumes:
+      - /app
