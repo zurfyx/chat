@@ -4,3 +4,5 @@ services:
     image: zurfyx/nyao:latest
     volumes:
       - /app
+      - ./config:/app/config
+      - ./data:/app/data
