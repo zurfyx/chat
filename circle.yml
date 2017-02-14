@@ -14,9 +14,10 @@ test:
     - docker-compose run web npm test
 
 deployment:
-  hub:
+  latest:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push zurfyx/nyao:$CIRCLE_SHA1
       - docker push zurfyx/nyao:latest
+      - .scripts/deploy.sh
