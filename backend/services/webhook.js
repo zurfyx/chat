@@ -104,10 +104,10 @@ export function githubWebhook(event, uid, data) {
     default: return; // Given action is not supported yet (exit without saving).
   }
 
-  return Webhook.update(
+  return Webhook.findOneAndUpdate(
     { type: 'github', uid },
     { $setOnInsert: webhook },
-    { upsert: true },
+    { upsert: true, new: true },
   );
 }
 
