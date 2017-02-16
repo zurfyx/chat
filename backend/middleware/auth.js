@@ -1,6 +1,6 @@
 // Login Required middleware.
 export const findAuthentication = (req, res, next) => {
-  if (req.findAuthentication()) {
+  if (req.isAuthenticated()) {
     return next();
   }
 
