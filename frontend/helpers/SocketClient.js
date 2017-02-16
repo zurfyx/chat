@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
 // TODO Move me elsewhere!
-const host = 'http://localhost:3000';
+const host = window.location.protocol + "//" + window.location.host;
 const socketPath = '/api/socket.io';
 
 export default class socketAPI {

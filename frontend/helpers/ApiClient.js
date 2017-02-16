@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
 // TODO Move me elsewhere!
-const host = 'http://localhost:3000';
+const host = window.location.protocol + "//" + window.location.host;
 
 export default class clientAPI {
   constructor() {
