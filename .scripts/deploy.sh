@@ -19,7 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     git pull
     docker-compose pull
     docker-compose stop
-    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate
     docker system prune -f
 EOF
 )
