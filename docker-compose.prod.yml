@@ -2,7 +2,12 @@ version: '2'
 services:
   web:
     image: zurfyx/nyao:latest
+    restart: unless-stopped
     volumes:
       - /app
       - ./config:/app/config
       - ./data:/app/data
+  mongo:
+      restart: unless-stopped
+  redis:
+      restart: unless-stopped

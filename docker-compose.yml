@@ -14,12 +14,10 @@ services:
       - redis
   mongo:
     image: mongo
-    restart: unless-stopped
     command: --smallfiles
     volumes:
       - ./data/mongo:/data/mongo
   redis:
     image: redis
-    restart: unless-stopped
     volumes:
       - ./data/redis:/data/redis
