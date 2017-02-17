@@ -16,8 +16,8 @@ services:
     image: mongo
     command: --smallfiles
     volumes:
-      - ./data/mongo:/data/mongo
+      - ./data/mongodb:/data/db
   redis:
     image: redis
     volumes:
-      - ./data/redis:/data/redis
+      - ./data/redis:/data
