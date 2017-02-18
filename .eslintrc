@@ -6,7 +6,8 @@
   },
   "settings": {
     "import/resolver": {
-      "babel-root-import": {}
+      "babel-root-import": {},
+      "webpack": { "config": "webpack/dev.config.js" }
     }
   }
 }
