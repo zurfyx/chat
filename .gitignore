@@ -4,7 +4,7 @@ config/*
 !config/test.js
 
 # Public (distribution).
-public/bundle.js
+public/*bundle.js
 
 # DBs.
 data/

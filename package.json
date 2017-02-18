@@ -44,7 +44,7 @@
       }
     },
     "start-dev-frontend": {
-      "command": "webpack-dev-server --config webpack/dev.config.js --require babel-polyfill",
+      "command": "webpack-dev-server --config webpack/dev.config.js",
       "env": {
         "NODE_ENV": "development",
         "PORT": 3000,
@@ -169,8 +169,8 @@
     "style-loader": "^0.13.1",
     "superagent": "^3.1.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
   },
   "engines": {
     "node": ">=6.0",
