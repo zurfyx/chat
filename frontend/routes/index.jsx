@@ -2,25 +2,40 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
 import App from 'containers/App';
-import DefaultHeader from 'containers/DefaultHeader';
-import TransparentHeader from 'components/TransparentHeader';
-import DefaultFooter from 'components/DefaultFooter';
-import Home from 'components/Home';
-import Rooms from 'containers/Rooms';
-import CreateRoom from 'containers/CreateRoom';
-import RoomBase from 'containers/RoomBase';
-import RoomSidebar from 'containers/RoomSidebar';
-import RoomChat from 'containers/RoomChat';
-import Contact from 'components/Contact';
+
+/** Split route code in a different chunk.
+ * https://webpack.js.org/guides/code-splitting-require/#require-ensure-
+ *
+ * Usage with React Router's getComponents:
+ * https://github.com/ReactTraining/react-router/blob/master/docs/API.md#getcomponentsnextstate-callback
+ * <Route path="..." getComponents={getComponents({ main: 'components/Home' })} />
+ */
+function getComponents(components) {
+  return (nextState, callback) => {
+    const componentNames = Object.keys(components);
+    const componentRoutes = componentNames.map(componentName => components[componentName]);
+
+    // Resolve component routes.
+    Promise
+      .all(componentRoutes.map(route => System.import(`../${route}/index.jsx`))) // Webpack v2 import.
+      .then((resolvedRoutes) => {
+        const objectResolvedComponents = resolvedRoutes.reduce((result, current, index) => {
+          Object.assign(result, { [componentNames[index]]: current.default || current });
+          return result;
+        }, {});
+        callback(null, objectResolvedComponents);
+      });
+  };
+}
 
 const routes = (
   <Route path="/" component={App}>
-    <IndexRoute components={{main: Home, header: TransparentHeader}} />
-    <Route path="/rooms" components={{main: Rooms, header: DefaultHeader}} />
-    <Route path="/rooms/new" components={{main: CreateRoom, header: DefaultHeader}} />
-    <Route path="/room/:slug" components={{main: RoomBase}} />
-    <Route path="/room/:slug/:chat" components={{main: RoomBase}} />
-    <Route path="/contact" components={{main: Contact, header: DefaultHeader, footer: DefaultFooter}} />
+    <IndexRoute getComponents={getComponents({ main: 'components/Home', header: 'components/TransparentHeader' })} />
+    <Route path="/rooms" getComponents={getComponents({ main: 'containers/Rooms', header: 'containers/DefaultHeader' })} />
+    <Route path="/rooms/new" getComponents={getComponents({ main: 'containers/CreateRoom', header: 'containers/DefaultHeader' })} />
+    <Route path="/room/:slug" getComponents={getComponents({ main: 'containers/RoomBase' })} />
+    <Route path="/room/:slug/:chat" getComponents={getComponents({ main: 'containers/RoomBase' })} />
+    <Route path="/contact" getComponents={getComponents({ main: 'components/Contact', header: 'containers/DefaultHeader', footer: 'components/DefaultFooter' })} />
   </Route>
 );
 
