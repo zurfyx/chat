@@ -150,7 +150,7 @@ function oauthSignedOut(mappings, req, accessToken, refreshToken, profile, done)
 
       // GitHub email was not found on any user. Let's create a new account for them!
       const user = new User();
-      user.email = profile._json.email;
+      user.email = profile._json.email || undefined; // Prevent null values.
       // Linking does pretty much what we need to create the account (let's use this one).
       return oauthLink(mappings, user, accessToken, profile, done);
     });
@@ -170,6 +170,7 @@ function oauthLink(mappings, user, accessToken, profile, done) {
   user.profile.location = user.profile.location || objectByString(profile, mappings.location);
   user.profile.website = user.profile.website || objectByString(profile, mappings.website);
   user.save((err) => {
+    // console.info(err);
     return done(err, user, { message : `${mappings.provider} account has been linked.` });
   });
 }
