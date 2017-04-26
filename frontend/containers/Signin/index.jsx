@@ -43,7 +43,7 @@ export class Signin extends Component {
         </header>
 
         <div className="field-container">
-          <form action="/api/auth/github">
+          <form action="/api/auth/github/repo">
             <button type="submit"><FontAwesome name="github" /> Sign in with GitHub</button>
           </form>
         </div>
