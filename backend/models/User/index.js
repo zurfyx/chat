@@ -13,6 +13,7 @@ import { comparePassword, gravatar } from './methods';
 const userSchema = new Schema({
   username: {
     type: String,
+    index: true,
     unique: true,
     sparse: true,
     validate: [{ validator: isUsername, msg: 'Username must consist of only alphanumeric values with a length between 5 and 20 characters.' }],
@@ -20,7 +21,9 @@ const userSchema = new Schema({
 
   email: {
     type: String,
+    index: true,
     unique: true,
+    sparse: true,
     validate: [{ validator: isEmail, msg: 'Invalid email.' }],
   },
 

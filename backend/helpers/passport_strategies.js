@@ -137,7 +137,6 @@ function oauthSignedOut(mappings, req, accessToken, refreshToken, profile, done)
     // of them, so we'll create a new account.
     if (!profile[mappings.email]) {
       const user = new User();
-      user.email = profile._json.email || undefined; // Prevent null values.
       // Linking does pretty much what we need to create the account (let's use this one).
       return oauthLink(mappings, user, accessToken, profile, done);
     }
