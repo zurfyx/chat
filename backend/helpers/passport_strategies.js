@@ -118,7 +118,7 @@ function oauthSignedIn(mappings, req, accessToken, refreshToken, profile, done) 
         return done(err, false, { message });
       }
 
-      // Link this GitHub profile to this user account.
+      // Link this profile to this user account.
       return oauthLink(mappings, user, accessToken, profile, done);
     });
   });
@@ -131,6 +131,15 @@ function oauthSignedOut(mappings, req, accessToken, refreshToken, profile, done)
     if (existingUser) {
       // Provider ID already linked. Sign in with that user.
       return oauthLink(mappings, existingUser, accessToken, profile, done); // OAuth token will also get updated.
+    }
+
+    // OAuth did not return any email value. We can't figure out whether the user has other accounts
+    // of them, so we'll create a new account.
+    if (!profile[mappings.email]) {
+      const user = new User();
+      user.email = profile._json.email || undefined; // Prevent null values.
+      // Linking does pretty much what we need to create the account (let's use this one).
+      return oauthLink(mappings, user, accessToken, profile, done);
     }
 
     // Provider ID not linked yet.
