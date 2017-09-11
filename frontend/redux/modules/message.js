@@ -23,7 +23,7 @@ const NEW_MESSAGE = 'redux/message/NEW_MESSAGE';
  * @returns {*}
  */
 export default function reducer(state = {}, action = {}) {
-  switch(action.type) {
+  switch (action.type) {
     case RETRIEVE:
       return {
         ...state,

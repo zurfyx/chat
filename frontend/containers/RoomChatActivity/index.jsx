@@ -11,12 +11,10 @@ export class RoomChatActivity extends Component {
   componentWillMount() {
     // Subscribe to GitHub activities
     if (this.props.chat.github) {
-      console.error('Github chat');
-      // TODO: activity updates through socket.
       this.props.retrieveGithub(this.props.chat.github);
       this.activityInterval = window.setInterval(() => {
         this.props.retrieveGithub(this.props.chat.github);
-      }, 30000);
+      }, 5000);
     }
   }
 
@@ -32,9 +30,9 @@ export class RoomChatActivity extends Component {
     return (
       <div className={styles.activityPage}>
         <h4>Activity</h4>
-        {activities.map((activity) =>
+        {activities.map(activity => (
           <Activity key={`activity-${activity._id}`} entry={activity} />
-        )}
+        ))}
       </div>
     );
   }
@@ -45,7 +43,7 @@ const mapStateToProps = function mapStateToProps(state) {
     chat: state.chat.activateResult,
 
     webhookActivities: state.webhook.retrieveResult,
-  }
+  };
 };
 
 export default connect(mapStateToProps, { retrieveGithub })(RoomChatActivity);

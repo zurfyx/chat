@@ -18,6 +18,6 @@ export function retrieve(userId) {
   return {
     type: 'socket',
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
-    promise: (socket) => socket.emit('GetUser', { _id: userId }),
+    promise: socket => socket.emit('GetUser', { _id: userId }),
   };
 }

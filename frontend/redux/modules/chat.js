@@ -29,7 +29,7 @@ const FORK_MERGE_SUCCESS = 'redux/chat/FORK_MERGE_SUCCESS';
 const FORK_MERGE_FAIL = 'redux/chat/FORK_MERGE_FAIL';
 
 export default function reducer(state = {}, action = {}) {
-  switch(action.type) {
+  switch (action.type) {
     case CREATE:
       return {
         ...state,

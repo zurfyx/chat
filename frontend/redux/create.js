@@ -13,7 +13,7 @@ export default function configureStore(initialState, socketClient, apiClient) {
     thunkMiddleware,
     socketMiddleware(socketClient),
     clientMiddleware(apiClient),
-    loggerMiddleware
+    // loggerMiddleware
   ];
 
   const store = createStore(

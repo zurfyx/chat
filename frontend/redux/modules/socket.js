@@ -51,7 +51,7 @@ export function connect() {
   return {
     type: 'socket',
     types: [CONNECT, CONNECT_SUCCESS, CONNECT_FAIL],
-    promise: (socket) => socket.connect(),
+    promise: socket => socket.connect(),
   };
 }
 
@@ -59,6 +59,6 @@ export function disconnect() {
   return {
     type: 'socket',
     types: [DISCONNECT, DISCONNECT_SUCCESS, DISCONNECT_FAIL],
-    promise: (socket) => socket.disconnect(),
+    promise: socket => socket.disconnect(),
   }
 }

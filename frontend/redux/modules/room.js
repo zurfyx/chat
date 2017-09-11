@@ -11,7 +11,7 @@ const ENTER_SUCCESS = 'redux/room/ENTER_SUCCESS';
 const ENTER_FAIL = 'redux/room/ENTER_FAIL';
 
 export default function reducer(state = {}, action = {}) {
-  switch(action.type) {
+  switch (action.type) {
     case CREATE:
       return {
         ...state,
@@ -54,7 +54,7 @@ export default function reducer(state = {}, action = {}) {
 export function create(title, slug, description) {
   return {
     types: [CREATE, CREATE_SUCCESS, CREATE_FAIL],
-    promise: (client) => client.post('/api/rooms', {
+    promise: client => client.post('/api/rooms', {
       data: {
         title,
         slug,
@@ -67,7 +67,7 @@ export function create(title, slug, description) {
 export function retrieve(params) {
   return {
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
-    promise: (client) => client.get(`/api/rooms/search`, params),
+    promise: client => client.get(`/api/rooms/search`, params),
   };
 }
 
@@ -75,6 +75,6 @@ export function enter(slug) {
   return {
     type: 'socket',
     types: [ENTER, ENTER_SUCCESS, ENTER_FAIL],
-    promise: (socket) => socket.emit('EnterRoom', slug),
+    promise: socket => socket.emit('EnterRoom', slug),
   };
 }

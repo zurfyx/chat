@@ -137,11 +137,11 @@ export function load() {
 export function signin(email, password) {
   return {
     types: [SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAIL],
-    promise: (client) => client.post('/api/auth/signin', {
+    promise: client => client.post('/api/auth/signin', {
       data: {
         email,
         password,
-      }
+      },
     }),
   };
 }
@@ -149,23 +149,23 @@ export function signin(email, password) {
 export function signup(email, password, name) {
   return {
     types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
-    promise: (client) => client.post('/api/auth/signup', {
+    promise: client => client.post('/api/auth/signup', {
       data: {
         email,
         password,
         name,
-      }
+      },
     }),
-  }
+  };
 }
 
 export function signout() {
   return {
     types: [SIGNOUT, SIGNOUT_SUCCESS, SIGNOUT_SUCCESS],
-    promise: (client) => client.get('/api/auth/signout'),
+    promise: client => client.get('/api/auth/signout'),
   };
 }
 
 export function enableAuthModal(authType) {
-  return (dispatch) => dispatch({ type: AUTH_MODAL, authType });
+  return dispatch => dispatch({ type: AUTH_MODAL, authType });
 }
