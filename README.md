@@ -117,28 +117,6 @@ module.exports = {
 }
 ```
 
-### Configuration options
-
-**Database**
-
-*coming soon*
-
-**OAuth authentication**
-
-*coming soon*
-
-**Host**
-
-*coming soon*
-
-**Session**
-
-*coming soon*
-
-**Whitelists**
-
-*coming soon*
-
 ## Development
 
 ### Folder structure
