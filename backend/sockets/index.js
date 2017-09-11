@@ -2,6 +2,7 @@ import { infoDev } from '~/helpers/development';
 import { chain } from '~/helpers/promise';
 import store from '~/store';
 import { addSocketToRoom, removeSocketFromRoom } from '~/store/room';
+import * as user from '~/controllers/user';
 import * as room from '~/controllers/room';
 import * as message from '~/controllers/message';
 import * as chat from '~/controllers/chat';
@@ -22,7 +23,7 @@ const controllerHandler = (promise, params) => (data, acknowledgement) => {
 
   return promise(...boundParams)
     .then((result) => acknowledgement(result))
-    .catch((error) => {
+      .catch((error) => {
       console.error(error);
       return acknowledgement({error});
     });
@@ -46,6 +47,8 @@ export default function connectionHandler(socket) {
   });
 
   socket.on('UserID', (callback) => callback(userId));
+
+  socket.on('GetUser', c(user.find, (data) => [data._id]));
 
   /**
    * Socket will join (and listen) the given room notifications.

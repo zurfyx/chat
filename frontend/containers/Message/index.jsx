@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import marked from 'marked';
+
+import { retrieve as retrieveUser } from 'redux/modules/user';
 
 // Prism code highlight libraries.
 import Prism from 'prismjs';
@@ -21,11 +24,16 @@ marked.setOptions({
   smartypants: false
 });
 
-export default class Message extends Component {
+export class Message extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {};
     this.renderMessageContent = this.renderMessageContent.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.retrieveUser(this.props.message.owner);
   }
 
   renderMessageContent() {
@@ -83,7 +91,9 @@ export default class Message extends Component {
   }
 
   render() {
-    const { message, isSticky, stickMessage } = this.props;
+    const { message, isSticky, stickMessage, users } = this.props;
+
+    console.info(users);
 
     return (
       <div className={`${styles.message} ${isSticky && styles.sticky}`}>
@@ -91,7 +101,7 @@ export default class Message extends Component {
         </div>
         <div className={styles.messageInformation}>
           <div className={styles.messageHeader}>
-            <span className={styles.messageSenderName}>{message.owner}</span>
+            <span className={styles.messageSenderName}>{users[message.owner] && users[message.owner].profile.name}</span>
             <div className={styles.messageRight}>
               <a className={styles.messageStick} onClick={() => stickMessage(message)}>
                 <i className="fa fa-thumb-tack" title="Stick message"></i>
@@ -117,3 +127,11 @@ Message.PropTypes = {
   stickMessage: PropTypes.func.isRequired,
   loadMore: PropTypes.func.isRequired,
 }
+
+const mapStateToProps = function mapStateToProps(state) {
+  return {
+    users: state.user,
+  };
+};
+
+export default connect(mapStateToProps, { retrieveUser })(Message);

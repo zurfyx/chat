@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { retrieve as retrieveMessages, retrieveAppend as retrieveAppendMessages } from 'redux/modules/message';
 import { socketEdit } from 'redux/modules/chat';
 import ScrollContainer from 'components/ScrollContainer';
-import Message from 'components/Message';
+import Message from 'containers/Message';
 
 import styles from './RoomChatHistory.scss';
 
@@ -37,7 +37,6 @@ export class RoomChatHistory extends Component {
   }
 
   filterMessages() {
-    console.info(this.props.messages);
     return this.props.messages 
       ? this.props.messages.filter((message) => message.chat === this.props.chat._id)
       : [];

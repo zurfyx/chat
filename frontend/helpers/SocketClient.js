@@ -34,7 +34,7 @@ export default class socketAPI {
           return reject(response.error);
         }
 
-        return resolve();
+        return resolve(response);
       });
     });
   }

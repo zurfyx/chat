@@ -7,6 +7,7 @@ import auth from './auth';
 import room from './room';
 import chat from './chat';
 import message from './message';
+import user from './user';
 import webhook from './webhook';
 
 export default combineReducers({
@@ -16,6 +17,7 @@ export default combineReducers({
   room,
   chat,
   message,
+  user,
   webhook,
-  form
+  form,
 });
