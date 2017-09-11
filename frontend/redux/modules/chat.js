@@ -215,7 +215,6 @@ export function socketEdit(chatId, values) {
 export function receive() {
   return (dispatch) => {
     const chatUpdate = (chat) => {
-      console.info('update');
       return dispatch({
         type: RECEIVE_CHAT,
         result: chat,

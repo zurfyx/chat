@@ -93,8 +93,6 @@ export class Message extends Component {
   render() {
     const { message, isSticky, stickMessage, users } = this.props;
 
-    console.info(users);
-
     return (
       <div className={`${styles.message} ${isSticky && styles.sticky}`}>
         <div className={styles.messageSenderImage}>
