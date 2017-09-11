@@ -6,6 +6,7 @@ import * as user from '~/controllers/user';
 import * as room from '~/controllers/room';
 import * as message from '~/controllers/message';
 import * as chat from '~/controllers/chat';
+import * as webhook from '~/controllers/webhook';
 
 /**
  * Handles controller execution and responds to user (socket version).
@@ -76,4 +77,6 @@ export default function connectionHandler(socket) {
   socket.on('SendMessage', c(message.create, (data) => [userId, data.chatId, data]));
 
   socket.on('EditChat', c(chat.edit, (data) => [userId, data._id, data]));
+
+  socket.on('GetWebhook', c(webhook.githubFind, (data) => [`${data.repository}`]));
 }

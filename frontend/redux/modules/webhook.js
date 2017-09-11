@@ -34,7 +34,8 @@ export default function reducer(state = {}, action) {
 
 export function retrieveGithub(repository) {
   return {
+    type: 'socket',
     types: [RETRIEVE, RETRIEVE_SUCCESS, RETRIEVE_FAIL],
-    promise: (client) => client.get(`/api/webhooks/github/${repository}`),
+    promise: (socket) => socket.emit('GetWebhook', { repository }),
   }
 }
